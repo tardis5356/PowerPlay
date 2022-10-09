@@ -34,9 +34,9 @@ public class TARDIS_MSE_TeleOp extends BaseClass_PP {    // LinearOpMode {
         while (opModeIsActive()) {
             //george = potentiometer.getVoltage();
             telemetry.addData("drivetrain power multiplier", powerMultiplier);
-            telemetry.addData("mFL", mFL.getCurrentPosition());
+            telemetry.addData("mFL", -mFL.getCurrentPosition());
             telemetry.addData("mBL", mBL.getCurrentPosition());
-            telemetry.addData("mFR", mFR.getCurrentPosition());
+            telemetry.addData("mFR", -mFR.getCurrentPosition());
             telemetry.addData("mBR", mBR.getCurrentPosition());
             telemetry.update();
             //Update global sensor values
