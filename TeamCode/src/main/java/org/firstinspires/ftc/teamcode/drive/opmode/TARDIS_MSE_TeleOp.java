@@ -46,17 +46,18 @@ public class TARDIS_MSE_TeleOp extends BaseClass_PP {    // LinearOpMode {
             //Gamepad 1 Variables
             waitForStart();
             runtime.reset();
-            double leftY1 = gamepad1.left_stick_y * powerMultiplier;
-            double rightX1 = -(gamepad1.right_stick_x) / 2.5;
-            double leftX1 = -(gamepad1.left_stick_x) * powerMultiplier;
+            double leftY1 = gamepad1.left_stick_y;
+            double rightX1 = -(gamepad1.right_stick_x);
+            double leftX1 = -(gamepad1.left_stick_x);
 
             //Gamepad 2 Variables
             double leftY2 = (gamepad2.left_stick_y);
+            double rightX2 = gamepad2.right_stick_x;
+            boolean rightBumper2 = gamepad2.right_bumper;
+            float rightTrigger2 = gamepad2.right_trigger;
             boolean bButton = (gamepad1.b);
 
             telemetry.addData("leftY2", leftY2);
-
-            drive(leftY1, leftX1, rightX1);
 
             //changes drive speed
             if (bButton != previousBState && bButton) {

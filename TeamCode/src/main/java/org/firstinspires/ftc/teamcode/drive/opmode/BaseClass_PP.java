@@ -38,11 +38,15 @@ public abstract class BaseClass_PP extends LinearOpMode {
     DcMotor mE;//arm motor extends
     DcMotor mA;
     DcMotor mR;
-    DcMotor mL;
+    DcMotor mL; //lift
+    DcMotor mTMR; //tape measure
 
     //connected to sparkMini controller don't have enough ports
     CRServo mArm;
     CRServo mTGIArm;
+    CRServo sTME; //tape measure extend
+    CRServo sA; //controls arm
+
 
     Servo sV;//up-down wrist movement servo
     Servo sW;
@@ -112,6 +116,28 @@ public abstract class BaseClass_PP extends LinearOpMode {
 
 
     ////////////////////////////defines all components of the bot, one for each robot this year//////////////
+
+    public void defineComponentsCompBot() {
+        mBL = hardwareMap.dcMotor.get("mBL");
+        mBR = hardwareMap.dcMotor.get("mBR");
+        mFL = hardwareMap.dcMotor.get("mFL");
+        mFR = hardwareMap.dcMotor.get("mFR");
+
+        mL = hardwareMap.dcMotor.get("mL");
+        mTMR = hardwareMap.dcMotor.get("mTM");
+
+        sG = hardwareMap.servo.get("sG");
+        sW = hardwareMap.servo.get("sW");
+        sTME = hardwareMap.crservo.get("sTME");
+        sA = hardwareMap.crservo.get("sA");
+
+        mFL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mFR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mBR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
+    }
 
     //Defines all components for init()
     public void defineComponentsTestBed() {
