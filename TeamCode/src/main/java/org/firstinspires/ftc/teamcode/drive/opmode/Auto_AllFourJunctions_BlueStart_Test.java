@@ -23,14 +23,14 @@ public class Auto_AllFourJunctions_BlueStart_Test extends LinearOpMode {
         waitForStart();
         if (isStopRequested()) return;
 
-        //We are assuming the center of the field of 0,0 and F6 is (+x, +y)
+        //We are assuming the center of the field of 0,0 and A6 is (+x, +y)
         //We want to start the bot at x: -66, y: -36, heading: 180 degrees
-        Pose2d startPose = new Pose2d(-66, -36, Math.toRadians(0));
+        Pose2d startPose = new Pose2d(-36, 66, Math.toRadians(0));
 
         drive.setPoseEstimate(startPose);
 
         Trajectory traj1 = drive.trajectoryBuilder(startPose)
-                .lineTo(new Vector2d(-90, -36))
+                .lineTo(new Vector2d(36, 66))
                 .build();
 
         Trajectory traj2 = drive.trajectoryBuilder(traj1.end())
