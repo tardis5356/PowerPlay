@@ -26,12 +26,12 @@ public class Auto_BlueX2_CycleW3 extends LinearOpMode {
         drive.setPoseEstimate(startPose);
 
         Trajectory scoreX2 = drive.trajectoryBuilder(startPose)
-                .lineToConstantHeading(new Vector2d(-36, 0))
+                .lineToConstantHeading(new Vector2d(-36, 0)) // scoreX2
                 .build();
 
         Trajectory strafeFromX2 = drive.trajectoryBuilder(scoreX2.end())
-                .lineToConstantHeading(new Vector2d(-36, 3))
-                .splineToConstantHeading(new Vector2d(-60, 12), Math.toRadians(180))
+                .lineToConstantHeading(new Vector2d(-36, 3)) // strafeFromX2
+                .splineToConstantHeading(new Vector2d(-60, 12), Math.toRadians(180)) // strafeFromX2
                 .build();
 
 //        Trajectory collectCone = drive.trajectoryBuilder(strafeFromX2.end())
@@ -40,12 +40,12 @@ public class Auto_BlueX2_CycleW3 extends LinearOpMode {
 //                .build();
 
         Trajectory strafePrepW3 = drive.trajectoryBuilder(strafeFromX2.end())
-                .lineToConstantHeading(new Vector2d(-60, 36))
+                .lineToConstantHeading(new Vector2d(-60, 36)) // strafePrepW3
                 .build();
 
         Trajectory goTowardsW3 = drive.trajectoryBuilder(strafePrepW3.end())
-                .lineToConstantHeading(new Vector2d(-7.5,36))
-                .splineToSplineHeading(new Pose2d(-7.5, 31, Math.toRadians(135)), Math.toRadians(0))
+                .lineToConstantHeading(new Vector2d(-7.5,36)) // goTowardsW3
+                .splineToSplineHeading(new Pose2d(-7.5, 31, Math.toRadians(135)), Math.toRadians(0)) // goTowardsW3
                 .build();
 
 //        Trajectory scoreW3 = drive.trajectoryBuilder(goTowardsW3.end())
@@ -53,15 +53,15 @@ public class Auto_BlueX2_CycleW3 extends LinearOpMode {
 //                .build();
 
         Trajectory resetRotation = drive.trajectoryBuilder(goTowardsW3.end())
-                .lineToLinearHeading(new Pose2d(-7.5, 36, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-7.5, 36, Math.toRadians(180))) // resetRotation
                 .build();
 
         Trajectory goToA2 = drive.trajectoryBuilder(resetRotation.end())
-                .lineToConstantHeading(new Vector2d(-60, 36))
+                .lineToConstantHeading(new Vector2d(-60, 36)) // goToA2
                 .build();
 
         Trajectory collectCone2 = drive.trajectoryBuilder(goToA2.end())
-                .lineToConstantHeading(new Vector2d(-60, 12))
+                .lineToConstantHeading(new Vector2d(-60, 12)) // collectCone2
                 .build();
 //        Trajectory scoreW3 = drive.trajectoryBuilder(strafePrepW3.end())
 //                .splineToLinearHeading(new Pose2d(-7.5,31, Math.toRadians(135)), Math.toRadians(90))
