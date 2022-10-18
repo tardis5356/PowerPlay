@@ -39,14 +39,14 @@ public abstract class BaseClass_PP extends LinearOpMode {
     DcMotor mA;
     DcMotor mR;
     DcMotor mL; //lift
-    DcMotor mTMR; //tape measure
+    DcMotor mTME; //tape measure extend
 
     //connected to sparkMini controller don't have enough ports
     CRServo mArm;
     CRServo mTGIArm;
-    CRServo sTME; //tape measure extend
-    CRServo sA; //controls arm
-
+    Servo sA; //controls arm
+    Servo sTMT; //tape measure turret
+    Servo sBA; //beacon arm
 
     Servo sV;//up-down wrist movement servo
     Servo sW;
@@ -123,13 +123,14 @@ public abstract class BaseClass_PP extends LinearOpMode {
         mFL = hardwareMap.dcMotor.get("mFL");
         mFR = hardwareMap.dcMotor.get("mFR");
 
-        mL = hardwareMap.dcMotor.get("mL");
-        mTMR = hardwareMap.dcMotor.get("mTM");
+        mL = hardwareMap.dcMotor.get("mL"); // lift motor
+        mTME = hardwareMap.dcMotor.get("mTM"); //tape measure extension
 
         sG = hardwareMap.servo.get("sG");
         sW = hardwareMap.servo.get("sW");
-        sTME = hardwareMap.crservo.get("sTME");
-        sA = hardwareMap.crservo.get("sA");
+        sA = hardwareMap.servo.get("sA");
+        sBA = hardwareMap.servo.get("sBA");
+        sTMT = hardwareMap.servo.get("sTMT");
 
         mFL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mFR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
