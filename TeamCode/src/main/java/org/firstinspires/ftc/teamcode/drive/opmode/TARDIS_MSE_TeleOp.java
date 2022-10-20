@@ -30,6 +30,7 @@ public class TARDIS_MSE_TeleOp extends BaseClass_PP {    // LinearOpMode {
 
 
         waitForStart();
+        runtime.reset();
 
         while (opModeIsActive()) {
             //george = potentiometer.getVoltage();
@@ -44,8 +45,7 @@ public class TARDIS_MSE_TeleOp extends BaseClass_PP {    // LinearOpMode {
             //gyroUpdate();
 
             //Gamepad 1 Variables
-            waitForStart();
-            runtime.reset();
+            //waitForStart();
             double leftY1 = gamepad1.left_stick_y;
             double rightX1 = -(gamepad1.right_stick_x);
             double leftX1 = -(gamepad1.left_stick_x);
@@ -58,6 +58,8 @@ public class TARDIS_MSE_TeleOp extends BaseClass_PP {    // LinearOpMode {
             boolean bButton = (gamepad1.b);
 
             telemetry.addData("leftY2", leftY2);
+
+            drive(leftY1, leftX1, rightX1);
 
             //changes drive speed
             if (bButton != previousBState && bButton) {
