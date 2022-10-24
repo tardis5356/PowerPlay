@@ -32,10 +32,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teamcode.subsystems.Gripper;
+
 @TeleOp(name = "testbed teleop")
 public class testbed_teleop extends CommandOpMode {
 
-    private DcMotorEx rightFront, leftFront, rightBack, leftBack;
+    private DcMotorEx mFR, mFL, mBR, mBL;
     private BNO055IMU imu;
 
     private double offset = 0.0;
@@ -45,10 +47,14 @@ public class testbed_teleop extends CommandOpMode {
 //    double rightX1 = -(gamepad1.right_stick_x);
 //    double leftX1 = -(gamepad1.left_stick_x);
 
-    //    private GripperSubsystem m_gripper;
+    private Gripper Gripper;
 //    private GrabStone m_grabCommand;
 //    private ReleaseStone m_releaseCommand;
     private Button m_grabButton, m_releaseButton;
+
+//    private xControl = new PID();
+//    private yControl = new PID();
+//    private thetaControl = new PID();
 
     @Override
     public void initialize() {
@@ -58,20 +64,22 @@ public class testbed_teleop extends CommandOpMode {
         GamepadEx driver = new GamepadEx(gamepad1);
         GamepadEx manipulator = new GamepadEx(gamepad2);
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-// Motors and Other Stuff
-        rightFront = hardwareMap.get(DcMotorEx.class, "mFR");
-        leftFront = hardwareMap.get(DcMotorEx.class, "mFL ");
-        rightBack = hardwareMap.get(DcMotorEx.class, "mBR");
-        leftBack = hardwareMap.get(DcMotorEx.class, "mBL");
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-// Behaviors
-        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        // Motors and Other Stuff
+        mFR = hardwareMap.get(DcMotorEx.class, "mFR");
+        mFL = hardwareMap.get(DcMotorEx.class, "mFL ");
+        mBR = hardwareMap.get(DcMotorEx.class, "mBR");
+        mBL = hardwareMap.get(DcMotorEx.class, "mBL");
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        // Behaviors
+        mFL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mFR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mBR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        mFL.setDirection(DcMotorSimple.Direction.REVERSE);
+        mBL.setDirection(DcMotorSimple.Direction.REVERSE);
 
         imu.initialize(parameters);
 
@@ -79,12 +87,26 @@ public class testbed_teleop extends CommandOpMode {
         telemetry.addLine("Ready to start!");
         telemetry.update();
 
-//        m_gripper = new GripperSubsystem(hardwareMap, "gripper");
+        Gripper = new Gripper(hardwareMap);
 //        m_grabCommand = new GrabStone(m_gripper);
 //        m_releaseCommand = new ReleaseStone(m_gripper);
 
-//        m_grabButton = (new GamepadButton(m_driverOp, GamepadKeys.Button.A))
-//                .whenPressed(m_grabCommand);
+        // Manipulator Triggers
+        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5)
+                //If the trigger is pressed and the scoring arm is not in the robot then open the bucket
+                .whenActive(() -> {
+//                    if (!scoringArm.loading) {
+                        Gripper.open();
+//                    }
+                })
+                .whenInactive(() -> {
+//                    if (!scoringArm.loading) {
+                        Gripper.close();
+//                    }
+                });
+
+//        m_grabButton = (new GamepadButton(manipulator, GamepadKeys.Button.A))
+//                .whenPressed(Gripper.open());
 //        m_releaseButton = (new GamepadButton(m_driverOp, GamepadKeys.Button.B))
 //                .whenPressed(m_releaseCommand);
     }
@@ -93,27 +115,51 @@ public class testbed_teleop extends CommandOpMode {
     public void run() {
         super.run();
 
-//        Orientation orientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
-//
-//
-//        //Add the angle offset to be able to reset the 0 heading, and normalize it back to -pi to pi
-//        double heading = AngleUnit.normalizeRadians(orientation.firstAngle - offset);
-//
-//        double ly = -gamepad1.left_stick_y;
-//        double lx = gamepad1.left_stick_x;
+
+//        //FIELDCENTRIC
+        Orientation orientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+
+        //Add the angle offset to be able to reset the 0 heading, and normalize it back to -pi to pi
+        double heading = AngleUnit.normalizeRadians(orientation.firstAngle - offset);
+
+        double ly = -gamepad1.left_stick_y;
+        double lx = gamepad1.left_stick_x;
+        double rx = gamepad1.right_stick_x;
+
+        // Rotate by the heading of the robot
+        Vector2d vector = new Vector2d(lx, ly).rotated(-heading);
+        lx = vector.getX();
+        ly = vector.getY();
+
+        double normalize = Math.max(abs(ly) + abs(lx) + abs(rx), 1.0);
+
+        mFL.setPower((ly + lx + rx) / normalize * powerMultiplier);
+        mBL.setPower((ly - lx + rx) / normalize * powerMultiplier);
+        mFR.setPower((ly - lx - rx) / normalize * powerMultiplier);
+        mBR.setPower((ly + lx - rx) / normalize * powerMultiplier);
+
+        //ROBOTCENTRIC
+//        double y = -gamepad1.left_stick_y; // Remember, this is reversed!
+//        double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
 //        double rx = gamepad1.right_stick_x;
 //
-//        // Rotate by the heading of the robot
-//        Vector2d vector = new Vector2d(lx, ly).rotated(-heading);
-//        lx = vector.getX();
-//        ly = vector.getY();
+//        // Denominator is the largest motor power (absolute value) or 1
+//        // This ensures all the powers maintain the same ratio, but only when
+//        // at least one is out of the range [-1, 1]
+//        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+//        double frontLeftPower = (y + x + rx) / denominator;
+//        double backLeftPower = (y - x + rx) / denominator;
+//        double frontRightPower = (y - x - rx) / denominator;
+//        double backRightPower = (y + x - rx) / denominator;
 //
-//        double normalize = Math.max(abs(ly) + abs(lx) + abs(rx), 1.0);
-//
-//        leftFront.setPower((ly + lx + rx) / normalize * powerMultiplier);
-//        leftBack.setPower((ly - lx + rx) / normalize * powerMultiplier);
-//        rightFront.setPower((ly - lx - rx) / normalize * powerMultiplier);
-//        rightBack.setPower((ly + lx - rx) / normalize * powerMultiplier);
+//        mFL.setPower(frontLeftPower);
+//        mBL.setPower(backLeftPower);
+//        mFR.setPower(frontRightPower);
+//        mBR.setPower(backRightPower);
+
+        //PID INPUT
+
+
     }
 
 }

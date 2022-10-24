@@ -11,7 +11,7 @@ public class Gripper extends SubsystemBase {
     private final double closePosition = 0.52;
 
     public Gripper(HardwareMap hardwareMap) {
-        servo = hardwareMap.get(Servo.class, "sGripper");
+        servo = hardwareMap.get(Servo.class, "sG");
         open();
     }
 
