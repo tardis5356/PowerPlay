@@ -11,8 +11,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Drivetrain extends SubsystemBase {
     private DcMotorEx mFR, mFL, mBR, mBL;
 
-
-
     public Drivetrain(HardwareMap hardwareMap) {
         // Motors and Other Stuff
         mFR = hardwareMap.get(DcMotorEx .class, "mFR");
@@ -35,10 +33,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     public void open(){
-//        servo.setPosition(openPosition);
+
     }
 
-//    public void close(){
-//        servo.setPosition(closePosition);
-//    }
 }
