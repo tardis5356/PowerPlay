@@ -21,6 +21,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 
 @TeleOp(name = "Testbed Teleop")
@@ -38,6 +39,7 @@ public class Testbed_Teleop extends CommandOpMode {
     public float measuredMaxRoll = 5;
 
     private Gripper Gripper;
+    private Drivetrain Drivetrain;
 //    private GrabStone m_grabCommand;
 //    private ReleaseStone m_releaseCommand;
     private Button m_grabButton, m_releaseButton;
@@ -78,8 +80,12 @@ public class Testbed_Teleop extends CommandOpMode {
         telemetry.update();
 
         Gripper = new Gripper(hardwareMap);
+        Drivetrain = new Drivetrain(hardwareMap);
 //        m_grabCommand = new GrabStone(m_gripper);
 //        m_releaseCommand = new ReleaseStone(m_gripper);
+
+
+
 
         // Manipulator Triggers
         new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5)
@@ -104,30 +110,29 @@ public class Testbed_Teleop extends CommandOpMode {
     @Override
     public void run() {
         super.run();
-//        //FIELDCENTRIC
-        Orientation botOrientationRads = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
-        Orientation botOrientationDegs = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        // FIELDCENTRIC
+//        Orientation botOrientationRads = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+//
+//        //Add the angle offset to be able to reset the 0 heading, and normalize it back to -pi to pi
+//        double heading = AngleUnit.normalizeRadians(botOrientationRads.firstAngle - offset);
+//
+//        double ly = -gamepad1.left_stick_y;
+//        double lx = gamepad1.left_stick_x;
+//        double rx = gamepad1.right_stick_x;
+//
+//        // Rotate by the heading of the robot
+//        Vector2d vector = new Vector2d(lx, ly).rotated(-heading);
+//        lx = vector.getX();
+//        ly = vector.getY();
+//
+//        double normalize = Math.max(abs(ly) + abs(lx) + abs(rx), 1.0);
+//
+//        mFL.setPower((ly + lx + rx) / normalize * powerMultiplier);
+//        mBL.setPower((ly - lx + rx) / normalize * powerMultiplier);
+//        mFR.setPower((ly - lx - rx) / normalize * powerMultiplier);
+//        mBR.setPower((ly + lx - rx) / normalize * powerMultiplier);
 
-        //Add the angle offset to be able to reset the 0 heading, and normalize it back to -pi to pi
-        double heading = AngleUnit.normalizeRadians(botOrientationRads.firstAngle - offset);
-
-        double ly = -gamepad1.left_stick_y;
-        double lx = gamepad1.left_stick_x;
-        double rx = gamepad1.right_stick_x;
-
-        // Rotate by the heading of the robot
-        Vector2d vector = new Vector2d(lx, ly).rotated(-heading);
-        lx = vector.getX();
-        ly = vector.getY();
-
-        double normalize = Math.max(abs(ly) + abs(lx) + abs(rx), 1.0);
-
-        mFL.setPower((ly + lx + rx) / normalize * powerMultiplier);
-        mBL.setPower((ly - lx + rx) / normalize * powerMultiplier);
-        mFR.setPower((ly - lx - rx) / normalize * powerMultiplier);
-        mBR.setPower((ly + lx - rx) / normalize * powerMultiplier);
-
-        //ROBOTCENTRIC
+        // ROBOTCENTRIC
 //        double y = -gamepad1.left_stick_y; // Remember, this is reversed!
 //        double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
 //        double rx = gamepad1.right_stick_x;
@@ -146,33 +151,38 @@ public class Testbed_Teleop extends CommandOpMode {
 //        mFR.setPower(frontRightPower);
 //        mBR.setPower(backRightPower);
 
-
-        //ANTI-TIP
+        // ANTI-TIP
 //        (m−rmin/rmax−rmin)×(tmax−tmin)+tmin // FORMULA
-        if(rollOffset == 0) rollOffset = botOrientationDegs.thirdAngle;
+//        Orientation botOrientationDegs = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+//
+//        if(rollOffset == 0) rollOffset = botOrientationDegs.thirdAngle;
+//
+//        roll = Math.abs(botOrientationDegs.thirdAngle) - Math.abs(rollOffset);
+//
+//        if(roll > measuredMaxRoll) measuredMaxRoll = roll;
+//
+//        float weightedPowerMultiplier = roll/measuredMaxRoll;
+//
+//        if(weightedPowerMultiplier > 0.2) {
+//            powerMultiplier = POWER_MULTIPLIER-weightedPowerMultiplier;
+//        }
+//        else {
+//            powerMultiplier = POWER_MULTIPLIER;
+//        }
+//
+//        if (powerMultiplier > 1) powerMultiplier = 1;
 
-        roll = Math.abs(botOrientationDegs.thirdAngle) - Math.abs(rollOffset);
+//        telemetry.addData("heading", heading);
 
-        if(roll > measuredMaxRoll) measuredMaxRoll = roll;
+        Drivetrain.fieldcentric(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+        Drivetrain.antitip();
 
-        float weightedPowerMultiplier = roll/measuredMaxRoll;
-
-        if(weightedPowerMultiplier > 0.2) {
-            powerMultiplier = POWER_MULTIPLIER-weightedPowerMultiplier;
-        }
-        else {
-            powerMultiplier = POWER_MULTIPLIER;
-        }
-
-        if (powerMultiplier > 1) powerMultiplier = 1;
-
-        telemetry.addData("heading", heading);
         telemetry.addData("roll", roll);
         telemetry.addData("rollOffset", rollOffset);
         telemetry.addData("measuredMaxRoll", measuredMaxRoll);
 
-        telemetry.addData("weightedPowerMultiplier", weightedPowerMultiplier);
-        telemetry.addData("doubleWeightedPowerMultiplier", weightedPowerMultiplier*4);
+//        telemetry.addData("weightedPowerMultiplier", weightedPowerMultiplier);
+//        telemetry.addData("doubleWeightedPowerMultiplier", weightedPowerMultiplier*4);
         telemetry.addData("powerMultiplier", powerMultiplier);
         telemetry.update();
     }
