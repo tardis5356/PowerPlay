@@ -27,4 +27,8 @@ public class Gripper extends SubsystemBase {
     public void close(){
         servo.setPosition(closePosition);
     }
+
+    public double getGripperPosition() {
+        return servo.getPosition();
+    }
 }

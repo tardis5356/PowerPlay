@@ -111,26 +111,26 @@ public class Testbed_Teleop extends CommandOpMode {
     public void run() {
         super.run();
         // FIELDCENTRIC
-//        Orientation botOrientationRads = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
-//
-//        //Add the angle offset to be able to reset the 0 heading, and normalize it back to -pi to pi
-//        double heading = AngleUnit.normalizeRadians(botOrientationRads.firstAngle - offset);
-//
-//        double ly = -gamepad1.left_stick_y;
-//        double lx = gamepad1.left_stick_x;
-//        double rx = gamepad1.right_stick_x;
-//
-//        // Rotate by the heading of the robot
-//        Vector2d vector = new Vector2d(lx, ly).rotated(-heading);
-//        lx = vector.getX();
-//        ly = vector.getY();
-//
-//        double normalize = Math.max(abs(ly) + abs(lx) + abs(rx), 1.0);
-//
-//        mFL.setPower((ly + lx + rx) / normalize * powerMultiplier);
-//        mBL.setPower((ly - lx + rx) / normalize * powerMultiplier);
-//        mFR.setPower((ly - lx - rx) / normalize * powerMultiplier);
-//        mBR.setPower((ly + lx - rx) / normalize * powerMultiplier);
+        Orientation botOrientationRads = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+
+        //Add the angle offset to be able to reset the 0 heading, and normalize it back to -pi to pi
+        double heading = AngleUnit.normalizeRadians(botOrientationRads.firstAngle - offset);
+
+        double ly = -gamepad1.left_stick_y;
+        double lx = gamepad1.left_stick_x;
+        double rx = gamepad1.right_stick_x;
+
+        // Rotate by the heading of the robot
+        Vector2d vector = new Vector2d(lx, ly).rotated(-heading);
+        lx = vector.getX();
+        ly = vector.getY();
+
+        double normalize = Math.max(abs(ly) + abs(lx) + abs(rx), 1.0);
+
+        mFL.setPower((ly + lx + rx) / normalize * powerMultiplier);
+        mBL.setPower((ly - lx + rx) / normalize * powerMultiplier);
+        mFR.setPower((ly - lx - rx) / normalize * powerMultiplier);
+        mBR.setPower((ly + lx - rx) / normalize * powerMultiplier);
 
         // ROBOTCENTRIC
 //        double y = -gamepad1.left_stick_y; // Remember, this is reversed!
@@ -174,8 +174,8 @@ public class Testbed_Teleop extends CommandOpMode {
 
 //        telemetry.addData("heading", heading);
 
-        Drivetrain.fieldcentric(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
-        Drivetrain.antitip();
+//        Drivetrain.fieldcentric(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
+//        Drivetrain.antitip();
 
         telemetry.addData("roll", roll);
         telemetry.addData("rollOffset", rollOffset);

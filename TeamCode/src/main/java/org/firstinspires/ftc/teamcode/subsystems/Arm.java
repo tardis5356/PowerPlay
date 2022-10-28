@@ -20,8 +20,8 @@ public class Arm extends SubsystemBase {
     public static double  NEUTRAL_POSITION = 0.5, INTAKE_POSITION = 0.3, DELIVERY_POSITION = 0.6;
 
     public Arm(HardwareMap hardwareMap){
-        servo = hardwareMap.get(Servo.class, "sArm");
-        toNeutralPosition();
+        servo = hardwareMap.get(Servo.class, "sA");
+//        toNeutralPosition();
     }
 
     @Override
@@ -39,5 +39,9 @@ public class Arm extends SubsystemBase {
 
     public void toDeliverPosition(){
         servo.setPosition(DELIVERY_POSITION);
+    }
+
+    public double getArmPosition() {
+        return servo.getPosition();
     }
 }

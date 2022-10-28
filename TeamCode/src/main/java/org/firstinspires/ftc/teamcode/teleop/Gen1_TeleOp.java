@@ -32,7 +32,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.Lift;
+import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
+import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
 
 @TeleOp(name = "Gen1 TeleOp")
 public class Gen1_TeleOp extends CommandOpMode {
@@ -43,17 +47,16 @@ public class Gen1_TeleOp extends CommandOpMode {
     private double powerMultiplier = 1.0;
     private double POWER_MULTIPLIER = 1.0;
 
-    public Orientation tipOrientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-    public float roll = tipOrientation.secondAngle;
-
+    private Drivetrain Drivetrain;
+    private Lift Lift;
+    private Arm Arm;
     private Gripper Gripper;
+    private BeaconArm BeaconArm;
+
     //    private GrabStone m_grabCommand;
 //    private ReleaseStone m_releaseCommand;
     private Button m_grabButton, m_releaseButton;
 
-//    private xControl = new PID();
-//    private yControl = new PID();
-//    private thetaControl = new PID();
 
     @Override
     public void initialize() {
@@ -81,12 +84,15 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         imu.initialize(parameters);
 
-
-        telemetry.addData("roll", tipOrientation.secondAngle);
         telemetry.addData("powerMultiplier", powerMultiplier);
         telemetry.update();
 
+//        Drivetrain = new Drivetrain(hardwareMap);
         Gripper = new Gripper(hardwareMap);
+        Lift = new Lift(hardwareMap);
+        Arm = new Arm(hardwareMap);
+        BeaconArm = new BeaconArm(hardwareMap);
+
 //        m_grabCommand = new GrabStone(m_gripper);
 //        m_releaseCommand = new ReleaseStone(m_gripper);
 
@@ -95,6 +101,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                 //If the trigger is pressed and the scoring arm is not in the robot then open the bucket
                 .whenActive(() -> {
 //                    if (!scoringArm.loading) {
+                    telemetry.addData("gripepr open", Gripper);
                     Gripper.open();
 //                    }
                 })
@@ -113,12 +120,11 @@ public class Gen1_TeleOp extends CommandOpMode {
     @Override
     public void run() {
         super.run();
-//        //FIELDCENTRIC
-        Orientation botOrientationRads = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
-        Orientation botOrientationDegs = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        //FIELDCENTRIC
+        Orientation botOrientationRadians = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
 
         //Add the angle offset to be able to reset the 0 heading, and normalize it back to -pi to pi
-        double heading = AngleUnit.normalizeRadians(botOrientationRads.firstAngle - offset);
+        double heading = AngleUnit.normalizeRadians(botOrientationRadians.firstAngle - offset);
 
         double ly = -gamepad1.left_stick_y;
         double lx = gamepad1.left_stick_x;
@@ -136,6 +142,8 @@ public class Gen1_TeleOp extends CommandOpMode {
         mFR.setPower((ly - lx - rx) / normalize * powerMultiplier);
         mBR.setPower((ly + lx - rx) / normalize * powerMultiplier);
 
+
+        Lift.manualControl(-gamepad2.left_stick_y);
 
         //ANTI-TIP
 //        (m−rmin/rmax−rmin)×(tmax−tmin)+tmin // FORMULA
@@ -161,34 +169,14 @@ public class Gen1_TeleOp extends CommandOpMode {
 //
 //        telemetry.addData("weightedPowerMultiplier", weightedPowerMultiplier);
 //        telemetry.addData("powerMultiplier", powerMultiplier);
+        telemetry.addData("lift pos", Lift.getLiftPosition());
+        telemetry.addData("lift power", Lift.getLiftPower());
+        telemetry.addData("lift target", Lift.target);
+
+        telemetry.addData("arm pos", Arm.getArmPosition());
+        telemetry.addData("gripper pos", Gripper.getGripperPosition());
+
         telemetry.update();
-        /*
-        //REV DOCS
-        Heading is the measure of rotation along the z-axis.
-        If the Hub is laying flat on a table, the z-axis points upwards through the front plate of the Hub.
-
-        Pitch is the measure of rotation along the x-axis.
-        The x-axis is the axis that runs from the bottom of the hub, near the servo ports, to the top of the hub ,where the USB ports are.
-
-        Roll is the measure along the y-axis.
-        The y-axis is the axis that runs from the sensor ports on the right to the motor ports on the left.
-
-        // TOTES CODE
-        public void resetGyro(){
-            Orientation i = imu.getAngularOrientation();
-            xOffset = i.secondAngle;
-            yOffset = i.thirdAngle;
-            distanceSensorLocalizer.setGyroOffset(i.firstAngle-Math.toRadians(RobotConstants.getAlliance().selectOf(-90, 90)));
-        }
-        public void setSafeDrivePower(Pose2d raw){
-            Orientation i = imu.getAngularOrientation();
-            float x = 0, y = 0, adjX = xOffset-i.secondAngle, adjY = i.thirdAngle-yOffset;
-            if(Math.abs(adjY) > TIP_TOLERANCE) y = adjY;
-            if(Math.abs(adjX) > TIP_TOLERANCE) x = adjX;
-    //        setWeightedDrivePower(raw.plus(new Pose2d(x>0 ? Math.max(x-TIP_TOLERANCE, 0) : Math.min(x+TIP_TOLERANCE, 0), y>0 ? Math.max(y-TIP_TOLERANCE, 0) : Math.min(y+TIP_TOLERANCE, 0), 0)));
-            setWeightedDrivePower(raw.plus(new Pose2d(Range.clip(x*2, -TIP_AUTHORITY, TIP_AUTHORITY), Range.clip(y*2, -TIP_AUTHORITY, TIP_AUTHORITY), 0)));
-        }
-         */
     }
 
 }
