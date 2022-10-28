@@ -56,9 +56,6 @@ public class Lift extends SubsystemBase {
         power = pid + ff + stickValue;
 
         mL.setPower(power);
-
-//        if(mL.getCurrentPosition() < target - 50) power = 0.5;
-//        if(mL.getCurrentPosition() > target + 50) power = -0.5;
     }
 
     public void setTargetPosition(int targetPos){
