@@ -32,7 +32,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teamcode.commands.LiftToScoringPositionCommand;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.Junctions;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
@@ -56,11 +58,15 @@ public class Gen1_TeleOp extends CommandOpMode {
     //    private GrabStone m_grabCommand;
 //    private ReleaseStone m_releaseCommand;
     private Button m_grabButton, m_releaseButton;
+    private LiftToScoringPositionCommand liftRetractCommand, liftToIntakeCommand, liftToGroundJunctionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
+
+    FtcDashboard dashboard = FtcDashboard.getInstance();
 
 
     @Override
     public void initialize() {
 //        schedule(new BulkCacheCommand(hardwareMap));
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         // Object declarations
         GamepadEx driver = new GamepadEx(gamepad1);
@@ -95,7 +101,12 @@ public class Gen1_TeleOp extends CommandOpMode {
 
 //        m_grabCommand = new GrabStone(m_gripper);
 //        m_releaseCommand = new ReleaseStone(m_gripper);
-
+        liftToIntakeCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Junctions.INTAKE);
+        liftRetractCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Junctions.FULL_RETRACTION);
+        liftToGroundJunctionCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Junctions.GROUND_JUNCTION);
+        liftToLowJunctionCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Junctions.LOW_JUNCTION);
+        liftToMediumJunctionCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Junctions.MEDIUM_JUNCTION);
+        liftToHighJunctionCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Junctions.HIGH_JUNCTION);
         // Manipulator Triggers
         new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5)
                 //If the trigger is pressed and the scoring arm is not in the robot then open the bucket
@@ -115,6 +126,19 @@ public class Gen1_TeleOp extends CommandOpMode {
 //                .whenPressed(Gripper.open());
 //        m_releaseButton = (new GamepadButton(m_driverOp, GamepadKeys.Button.B))
 //                .whenPressed(m_releaseCommand);
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.X)) // extend and slow drive base
+                .whenActive(liftToHighJunctionCommand)
+                .whenActive(() -> powerMultiplier = 0.5);
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.Y)) // extend and slow drive base
+                .whenActive(liftToMediumJunctionCommand)
+                .whenActive(() -> powerMultiplier = 0.5);
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.B)) // extend and slow drive base
+                .whenActive(liftToLowJunctionCommand)
+                .whenActive(() -> powerMultiplier = 0.5);
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.A)) // extend and slow drive base
+                .whenActive(liftRetractCommand)
+                .whenActive(() -> powerMultiplier = 0.5);
+//                .cancelWhenActive(liftRetractCommand);
     }
 
     @Override
