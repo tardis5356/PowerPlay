@@ -20,9 +20,7 @@ public class Gripper extends SubsystemBase {
         // This method will be called once per scheduler run
     }
 
-    public void open(){
-        servo.setPosition(openPosition);
-    }
+    public void open(){ servo.setPosition(openPosition); }
 
     public void close(){
         servo.setPosition(closePosition);

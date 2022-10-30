@@ -32,13 +32,16 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teamcode.commands.LiftToIntakePositionCommand;
 import org.firstinspires.ftc.teamcode.commands.LiftToScoringPositionCommand;
+import org.firstinspires.ftc.teamcode.commands.ManualLiftCommand;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Junctions;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
+import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 
 @TeleOp(name = "Gen1 TeleOp")
 public class Gen1_TeleOp extends CommandOpMode {
@@ -47,18 +50,22 @@ public class Gen1_TeleOp extends CommandOpMode {
 
     private double offset = 0.0;
     private double powerMultiplier = 1.0;
-    private double POWER_MULTIPLIER = 1.0;
+    private double SLOW_POWER_MULTIPLIER = 0.5;
+    private double FAST_POWER_MULTIPLIER = 1.0;
 
     private Drivetrain Drivetrain;
     private Lift Lift;
     private Arm Arm;
+    private Wrist Wrist;
     private Gripper Gripper;
     private BeaconArm BeaconArm;
 
     //    private GrabStone m_grabCommand;
 //    private ReleaseStone m_releaseCommand;
     private Button m_grabButton, m_releaseButton;
-    private LiftToScoringPositionCommand liftRetractCommand, liftToIntakeCommand, liftToGroundJunctionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
+    private LiftToScoringPositionCommand liftRetractCommand, liftToGroundJunctionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
+    private LiftToIntakePositionCommand liftToIntakeCommand;
+    private ManualLiftCommand manualLiftCommand;
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -101,44 +108,50 @@ public class Gen1_TeleOp extends CommandOpMode {
 
 //        m_grabCommand = new GrabStone(m_gripper);
 //        m_releaseCommand = new ReleaseStone(m_gripper);
-        liftToIntakeCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Junctions.INTAKE);
-        liftRetractCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Junctions.FULL_RETRACTION);
-        liftToGroundJunctionCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Junctions.GROUND_JUNCTION);
-        liftToLowJunctionCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Junctions.LOW_JUNCTION);
-        liftToMediumJunctionCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Junctions.MEDIUM_JUNCTION);
-        liftToHighJunctionCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Junctions.HIGH_JUNCTION);
-        // Manipulator Triggers
-        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5)
-                //If the trigger is pressed and the scoring arm is not in the robot then open the bucket
-                .whenActive(() -> {
-//                    if (!scoringArm.loading) {
-                    telemetry.addData("gripepr open", Gripper);
-                    Gripper.open();
-//                    }
-                })
-                .whenInactive(() -> {
-//                    if (!scoringArm.loading) {
-                    Gripper.close();
-//                    }
-                });
+        liftToIntakeCommand = new LiftToIntakePositionCommand(Lift, Arm, Gripper, Wrist, Junctions.INTAKE);
+        liftRetractCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Wrist, Junctions.FULL_RETRACTION);
+        liftToGroundJunctionCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Wrist, Junctions.GROUND_JUNCTION);
+        liftToLowJunctionCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Wrist, Junctions.LOW_JUNCTION);
+        liftToMediumJunctionCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Wrist, Junctions.MEDIUM_JUNCTION);
+        liftToHighJunctionCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Wrist, Junctions.HIGH_JUNCTION);
+        manualLiftCommand = new ManualLiftCommand(Lift, manipulator.getLeftY());
 
-//        m_grabButton = (new GamepadButton(manipulator, GamepadKeys.Button.A))
-//                .whenPressed(Gripper.open());
-//        m_releaseButton = (new GamepadButton(m_driverOp, GamepadKeys.Button.B))
-//                .whenPressed(m_releaseCommand);
-        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.X)) // extend and slow drive base
-                .whenActive(liftToHighJunctionCommand)
-                .whenActive(() -> powerMultiplier = 0.5);
-        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.Y)) // extend and slow drive base
-                .whenActive(liftToMediumJunctionCommand)
-                .whenActive(() -> powerMultiplier = 0.5);
-        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.B)) // extend and slow drive base
+        // driver triggers
+        new Trigger(() -> driver.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5)
+                .whenActive(() -> { powerMultiplier = SLOW_POWER_MULTIPLIER; });
+
+        // manipulator triggers
+        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // closes gripper on left trigger
+                .whenActive(() -> { Gripper.close(); });
+        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5) // opens gripper on right trigger
+                .whenActive(() -> { Gripper.open(); });
+
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.A)) // extend to ground junction and slow drive base on A button
+                .whenActive(liftToGroundJunctionCommand)
+                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER);
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.B)) // extend to low junction and slow drive base on B button
                 .whenActive(liftToLowJunctionCommand)
-                .whenActive(() -> powerMultiplier = 0.5);
-        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.A)) // extend and slow drive base
-                .whenActive(liftRetractCommand)
-                .whenActive(() -> powerMultiplier = 0.5);
-//                .cancelWhenActive(liftRetractCommand);
+                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER);
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.Y)) // extend to medium junction and slow drive base on Y button
+                .whenActive(liftToMediumJunctionCommand)
+                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER);
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.X)) // extend to high junction and slow drive base on X button
+                .whenActive(liftToHighJunctionCommand)
+                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER);
+
+        new Trigger(() -> manipulator.getLeftY() > 0.2) // override all other commands and give manual control of lift
+                .whenActive(manualLiftCommand)
+                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
+                .cancelWhenActive(liftToHighJunctionCommand)
+                .cancelWhenActive(liftToMediumJunctionCommand)
+                .cancelWhenActive(liftToLowJunctionCommand)
+                .cancelWhenActive(liftToGroundJunctionCommand)
+                .cancelWhenActive(liftToIntakeCommand)
+                .cancelWhenActive(liftRetractCommand);
+
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_DOWN)) // retract to intake and speed up drive base on DOWN button
+                .whenActive(liftToIntakeCommand)
+                .whenActive(() -> powerMultiplier = FAST_POWER_MULTIPLIER);
     }
 
     @Override
