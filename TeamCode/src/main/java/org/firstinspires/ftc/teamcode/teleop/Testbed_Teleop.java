@@ -22,7 +22,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
-import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 
 @TeleOp(name = "Testbed Teleop")
 public class Testbed_Teleop extends CommandOpMode {
@@ -38,15 +37,7 @@ public class Testbed_Teleop extends CommandOpMode {
     public float rollOffset = 0;
     public float measuredMaxRoll = 5;
 
-    private Gripper Gripper;
     private Drivetrain Drivetrain;
-//    private GrabStone m_grabCommand;
-//    private ReleaseStone m_releaseCommand;
-    private Button m_grabButton, m_releaseButton;
-
-//    private xControl = new PID();
-//    private yControl = new PID();
-//    private thetaControl = new PID();
 
     @Override
     public void initialize() {
@@ -79,32 +70,7 @@ public class Testbed_Teleop extends CommandOpMode {
         telemetry.addData("powerMultiplier", powerMultiplier);
         telemetry.update();
 
-        Gripper = new Gripper(hardwareMap);
         Drivetrain = new Drivetrain(hardwareMap);
-//        m_grabCommand = new GrabStone(m_gripper);
-//        m_releaseCommand = new ReleaseStone(m_gripper);
-
-
-
-
-        // Manipulator Triggers
-        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5)
-                //If the trigger is pressed and the scoring arm is not in the robot then open the bucket
-                .whenActive(() -> {
-//                    if (!scoringArm.loading) {
-                        Gripper.open();
-//                    }
-                })
-                .whenInactive(() -> {
-//                    if (!scoringArm.loading) {
-                        Gripper.close();
-//                    }
-                });
-
-//        m_grabButton = (new GamepadButton(manipulator, GamepadKeys.Button.A))
-//                .whenPressed(Gripper.open());
-//        m_releaseButton = (new GamepadButton(m_driverOp, GamepadKeys.Button.B))
-//                .whenPressed(m_releaseCommand);
     }
 
     @Override
