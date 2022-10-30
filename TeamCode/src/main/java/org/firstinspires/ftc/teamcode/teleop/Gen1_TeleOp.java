@@ -152,6 +152,13 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_DOWN)) // retract to intake and speed up drive base on DOWN button
                 .whenActive(liftToIntakeCommand)
                 .whenActive(() -> powerMultiplier = FAST_POWER_MULTIPLIER);
+
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.LEFT_BUMPER)) // move beacon arm to loading position
+                .whenActive(() -> BeaconArm.loadingPosition());
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.RIGHT_BUMPER)) // move beacon arm to scoring position
+                .whenActive(() -> BeaconArm.deliveryPosition());
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_UP)) // move beacon arm to storage position
+                .whenActive(() -> BeaconArm.storagePosition());
     }
 
     @Override

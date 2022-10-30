@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.ServoImplEx;
 public class BeaconArm extends SubsystemBase {
     private final Servo servo;
 
-    private final double LOAD_POSITION = 0.99, SCORE_POSITION = 0.43;
+    private final double LOAD_POSITION = 0.99, DELIVERY_POSITION = 0.43, STORAGE_POSITION = 0.3;
 
     public BeaconArm(HardwareMap hardwareMap){
         servo = hardwareMap.get(Servo.class, "sBA");
@@ -25,8 +25,12 @@ public class BeaconArm extends SubsystemBase {
         servo.setPosition(LOAD_POSITION);
     }
 
-    public void scoringPosition(){
-        servo.setPosition(SCORE_POSITION);
+    public void deliveryPosition(){
+        servo.setPosition(DELIVERY_POSITION);
+    }
+
+    public void storagePosition(){
+        servo.setPosition(STORAGE_POSITION);
     }
 
 }
