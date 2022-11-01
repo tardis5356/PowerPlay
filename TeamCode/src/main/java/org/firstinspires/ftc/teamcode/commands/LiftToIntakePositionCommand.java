@@ -14,9 +14,9 @@ public class LiftToIntakePositionCommand extends ParallelCommandGroup {
         addCommands(
                 new LiftToPositionCommand(lift, junction.position, 5),
                 new InstantCommand(() -> {
-                    arm.toIntakePosition();
                     wrist.toIntakePosition();
                     gripper.open();
+                    arm.toIntakePosition();
                 })
         );
     }

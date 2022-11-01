@@ -104,6 +104,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         Gripper = new Gripper(hardwareMap);
         Lift = new Lift(hardwareMap);
         Arm = new Arm(hardwareMap);
+        Wrist = new Wrist(hardwareMap);
         BeaconArm = new BeaconArm(hardwareMap);
 
 //        m_grabCommand = new GrabStone(m_gripper);
@@ -119,46 +120,78 @@ public class Gen1_TeleOp extends CommandOpMode {
         // driver triggers
         new Trigger(() -> driver.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5)
                 .whenActive(() -> { powerMultiplier = SLOW_POWER_MULTIPLIER; });
+        new Trigger(() -> driver.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5)
+                .whenActive(() -> { powerMultiplier = FAST_POWER_MULTIPLIER; });
 
         // manipulator triggers
-        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // closes gripper on left trigger
-                .whenActive(() -> { Gripper.close(); });
-        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5) // opens gripper on right trigger
-                .whenActive(() -> { Gripper.open(); });
-
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.A)) // extend to ground junction and slow drive base on A button
                 .whenActive(liftToGroundJunctionCommand)
-                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER);
-        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.B)) // extend to low junction and slow drive base on B button
-                .whenActive(liftToLowJunctionCommand)
-                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER);
-        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.Y)) // extend to medium junction and slow drive base on Y button
-                .whenActive(liftToMediumJunctionCommand)
-                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER);
-        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.X)) // extend to high junction and slow drive base on X button
-                .whenActive(liftToHighJunctionCommand)
-                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER);
-
-        new Trigger(() -> manipulator.getLeftY() > 0.2) // override all other commands and give manual control of lift
-                .whenActive(manualLiftCommand)
                 .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
+                .cancelWhenActive(liftToIntakeCommand)
+                .cancelWhenActive(manualLiftCommand)
+                .cancelWhenActive(liftRetractCommand);
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.X)) // extend to low junction and slow drive base on B button
+                .whenActive(liftToLowJunctionCommand)
+                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
+                .cancelWhenActive(liftToHighJunctionCommand)
+                .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToGroundJunctionCommand)
                 .cancelWhenActive(liftToIntakeCommand)
+                .cancelWhenActive(manualLiftCommand)
                 .cancelWhenActive(liftRetractCommand);
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.Y)) // extend to medium junction and slow drive base on Y button
+                .whenActive(liftToMediumJunctionCommand)
+                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
+                .cancelWhenActive(liftToHighJunctionCommand)
+                .cancelWhenActive(liftToLowJunctionCommand)
+                .cancelWhenActive(liftToGroundJunctionCommand)
+                .cancelWhenActive(liftToIntakeCommand)
+                .cancelWhenActive(manualLiftCommand)
+                .cancelWhenActive(liftRetractCommand);
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.B)) // extend to high junction and slow drive base on X button
+                .whenActive(liftToHighJunctionCommand)
+                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
+                .cancelWhenActive(liftToMediumJunctionCommand)
+                .cancelWhenActive(liftToLowJunctionCommand)
+                .cancelWhenActive(liftToGroundJunctionCommand)
+                .cancelWhenActive(liftToIntakeCommand)
+                .cancelWhenActive(manualLiftCommand)
+                .cancelWhenActive(liftRetractCommand);
+
+//        new Trigger(() -> manipulator.getLeftY() > 0.2) // override all other commands and give manual control of lift
+//                .whenActive(manualLiftCommand)
+//                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
+//                .cancelWhenActive(liftToHighJunctionCommand)
+//                .cancelWhenActive(liftToMediumJunctionCommand)
+//                .cancelWhenActive(liftToLowJunctionCommand)
+//                .cancelWhenActive(liftToGroundJunctionCommand)
+//                .cancelWhenActive(liftToIntakeCommand)
+//                .cancelWhenActive(liftRetractCommand);
 
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_DOWN)) // retract to intake and speed up drive base on DOWN button
                 .whenActive(liftToIntakeCommand)
-                .whenActive(() -> powerMultiplier = FAST_POWER_MULTIPLIER);
+                .whenActive(() -> powerMultiplier = FAST_POWER_MULTIPLIER)
+                .cancelWhenActive(liftToHighJunctionCommand)
+                .cancelWhenActive(liftToMediumJunctionCommand)
+                .cancelWhenActive(liftToLowJunctionCommand)
+                .cancelWhenActive(liftToGroundJunctionCommand)
+                .cancelWhenActive(liftRetractCommand)
+                .cancelWhenActive(manualLiftCommand);
+
+        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // closes gripper on left trigger
+                .whenActive(() -> Gripper.close());
+        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5) // opens gripper on right trigger
+                .whenActive(() -> Gripper.open());
 
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.LEFT_BUMPER)) // move beacon arm to loading position
-                .whenActive(() -> BeaconArm.loadingPosition());
+                .whenActive(() -> BeaconArm.toLoadingPosition());
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.RIGHT_BUMPER)) // move beacon arm to scoring position
-                .whenActive(() -> BeaconArm.deliveryPosition());
+                .whenActive(() -> BeaconArm.toDeliveryPosition());
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_UP)) // move beacon arm to storage position
-                .whenActive(() -> BeaconArm.storagePosition());
+                .whenActive(() -> BeaconArm.toStoragePosition());
     }
 
     @Override
@@ -186,8 +219,17 @@ public class Gen1_TeleOp extends CommandOpMode {
         mFR.setPower((ly - lx - rx) / normalize * powerMultiplier);
         mBR.setPower((ly + lx - rx) / normalize * powerMultiplier);
 
+//        if(gamepad2.right_bumper){
+//            Gripper.close();
+//        }
+//        if(gamepad2.left_bumper){
+//            Gripper.open();
+//        }
 
-        Lift.manualControl(-gamepad2.left_stick_y);
+//        Gripper.open();
+
+
+//        Lift.manualControl(-gamepad2.left_stick_y);
 
         //ANTI-TIP
 //        (m−rmin/rmax−rmin)×(tmax−tmin)+tmin // FORMULA

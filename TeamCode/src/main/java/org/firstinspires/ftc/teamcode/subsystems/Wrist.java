@@ -1,19 +1,19 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+@Config
 public class Wrist extends SubsystemBase {
     private final Servo servo;
 
-    private final double initPosition = 0.4;
-    private final double intakePosition = 0.36;
-    private final double deliverPosition = 0.52;
+    public static double INIT_POSITION = 0.4, INTAKE_POSITION = 0.7, DELIVER_POSITION = 0;
 
     public Wrist(HardwareMap hardwareMap) {
         servo = hardwareMap.get(Servo.class, "sW");
-        toInitPosition();
+//        toInitPosition();
     }
 
     @Override
@@ -22,16 +22,14 @@ public class Wrist extends SubsystemBase {
     }
 
     public void toInitPosition(){
-        servo.setPosition(initPosition);
+        servo.setPosition(INIT_POSITION);
     }
 
     public void toIntakePosition(){
-        servo.setPosition(intakePosition);
+        servo.setPosition(INTAKE_POSITION);
     }
 
-    public void toDeliverPosition(){
-        servo.setPosition(deliverPosition);
-    }
+    public void toDeliverPosition(){ servo.setPosition(DELIVER_POSITION); }
 
     public double getGripperPosition() {
         return servo.getPosition();

@@ -1,18 +1,19 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+@Config
 public class Gripper extends SubsystemBase {
-    private final Servo servo;
+    private Servo servo;
 
-    private final double openPosition = 0.36;
-    private final double closePosition = 0.52;
+    public static double OPEN_POSITION = 0.35, CLOSED_POSITION = 0.28;
 
     public Gripper(HardwareMap hardwareMap) {
         servo = hardwareMap.get(Servo.class, "sG");
-        open();
+//        open();
     }
 
     @Override
@@ -20,10 +21,10 @@ public class Gripper extends SubsystemBase {
         // This method will be called once per scheduler run
     }
 
-    public void open(){ servo.setPosition(openPosition); }
+    public void open(){ servo.setPosition(OPEN_POSITION); }
 
     public void close(){
-        servo.setPosition(closePosition);
+        servo.setPosition(CLOSED_POSITION);
     }
 
     public double getGripperPosition() {

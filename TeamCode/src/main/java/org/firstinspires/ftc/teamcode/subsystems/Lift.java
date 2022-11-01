@@ -12,8 +12,8 @@ public class Lift extends SubsystemBase {
     private PIDController controller;
     private DcMotorEx mL;
 
-    public static double p = 0.8, i = 0, d = 0;
-    public static double f = 0.2;
+    public static double p = 0, i = 0, d = 0;
+    public static double f = 0; // 0.2
 
     public static int target = 0;
 
