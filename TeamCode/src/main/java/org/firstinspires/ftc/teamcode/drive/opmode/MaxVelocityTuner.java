@@ -5,14 +5,13 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.drive.DriveConstants;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants_MSE;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_MSE;
 
 import java.util.Objects;
 
@@ -37,7 +36,7 @@ public class MaxVelocityTuner extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        SampleMecanumDrive_MSE drive = new SampleMecanumDrive_MSE(hardwareMap);
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -69,7 +68,7 @@ public class MaxVelocityTuner extends LinearOpMode {
 
         drive.setDrivePower(new Pose2d());
 
-        double effectiveKf = DriveConstants.getMotorVelocityF(veloInchesToTicks(maxVelocity));
+        double effectiveKf = DriveConstants_MSE.getMotorVelocityF(veloInchesToTicks(maxVelocity));
 
         telemetry.addData("Max Velocity", maxVelocity);
         telemetry.addData("Voltage Compensated kF", effectiveKf * batteryVoltageSensor.getVoltage() / 12);
@@ -79,6 +78,6 @@ public class MaxVelocityTuner extends LinearOpMode {
     }
 
     private double veloInchesToTicks(double inchesPerSec) {
-        return inchesPerSec / (2 * Math.PI * DriveConstants.WHEEL_RADIUS) / DriveConstants.GEAR_RATIO * DriveConstants.TICKS_PER_REV;
+        return inchesPerSec / (2 * Math.PI * DriveConstants_MSE.WHEEL_RADIUS) / DriveConstants_MSE.GEAR_RATIO * DriveConstants_MSE.TICKS_PER_REV;
     }
 }

@@ -69,9 +69,9 @@ public class Optimus_TeleOp extends BaseClass_PP {
 //            sG.setPosition(leftY2);
 
             if (rightTrigger2 != 0) {
-                sG.setPosition(1);//0.85
+                sG.setPosition(0.65);//0.85
             } else {
-                sG.setPosition(0.5);//0.7
+                sG.setPosition(1);//0.7
             }
 //0.22, 0.35
 
