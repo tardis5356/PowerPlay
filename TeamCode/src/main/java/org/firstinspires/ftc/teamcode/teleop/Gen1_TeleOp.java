@@ -72,7 +72,6 @@ public class Gen1_TeleOp extends CommandOpMode {
 
     @Override
     public void initialize() {
-//        schedule(new BulkCacheCommand(hardwareMap));
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         // Object declarations

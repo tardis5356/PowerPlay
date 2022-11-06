@@ -9,11 +9,15 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 @Config
 public class Lift extends SubsystemBase {
-    private PIDController controller;
+    private PIDController controller,
+            extendController, retractController;
     private DcMotorEx mL;
 
-    public static double p = 0, i = 0, d = 0;
-    public static double f = 0; // 0.2
+    public static double pE = 0.05, pR = 0.01, i = 0, d = 0;
+//    public static double pE = 0.05, iE = 0, dE = 0;
+//    public static double pR = 0.05, iR = 0, dR = 0;
+
+    public static double f = 0.2; // 0.2 NEEDS TESTING????
 
     public static int target = 0;
 
@@ -22,8 +26,11 @@ public class Lift extends SubsystemBase {
     public double power = 0;
     public double stickValue = 0;
 
+    public boolean retract = false;
+
     public Lift(HardwareMap hardwareMap) {
-        controller = new PIDController(p, i, d);
+        controller = new PIDController(pE, i, d);
+//        retractController = new PIDController(pR, iR, dR);
 //        telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry());
 
         mL = hardwareMap.get(DcMotorEx.class, "mL");
@@ -36,37 +43,29 @@ public class Lift extends SubsystemBase {
 //        toIntakePosition();
     }
 
-    public void periodic(){
+    public void periodic() {
         liftPID();
     }
 
-    public void setTargetPosition(int targetPos){
-        target = targetPos;
+    public void updatePIDValues() {
+        if (retract) controller.setP(pR);
+        else controller.setP(pE);
     }
 
-//    public void toIntakePosition(){ target = Junctions.INTAKE_POSITION.position; }
-//
-//    public void toLowPosition(){
-//        target = Junctions.LOW_JUNCTION_POSITION.position;
-//    }
-//
-//    public void toMediumPosition(){
-//        target = Junctions.MEDIUM_JUNCTION_POSITION.position;
-//    }
-//
-//    public void toHighPosition(){
-//        target = Junctions.HIGH_JUNCTION_POSITION.position;
-//    }
+    public void setTargetPosition(int targetPos) {
+        double oldTargetPos = target; // get old target before setting new target
+        target = targetPos;
+        if (targetPos < oldTargetPos) retract = true; // set retraction to true
+        else retract = false; // set retraction to false
+        updatePIDValues();
+    }
 
     public void manualControl(double stick) {
-//        target += stick*5;
-//        mL.setPower(stick);
-        if(stick < 0) stickValue = stick*0.1;
-        else stickValue = stick*0.75;
+        if (stick < 0) stickValue = stick * 0.1;
+        else stickValue = stick * 0.75;
     }
 
     public void liftPID() {
-        controller.setPID(p, i, d);
         int liftPos = mL.getCurrentPosition();
         double pid = controller.calculate(liftPos, target);
         double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;

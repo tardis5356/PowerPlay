@@ -29,6 +29,10 @@ android {
 }
 
 dependencies {
+    // thank you so much mason
+    // without mason we would have never been able to transfer to commandbased
+    // I will love you forever mason+veer
+    // FTC#16379 <3333
     implementation project(':FtcRobotController')
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
     implementation 'org.openftc:easyopencv:1.5.2'
