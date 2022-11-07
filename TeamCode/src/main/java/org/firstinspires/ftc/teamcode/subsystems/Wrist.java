@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Wrist extends SubsystemBase {
     private final Servo servo;
 
-    public static double INIT_POSITION = 0.4, INTAKE_POSITION = 0.8, DELIVER_POSITION = 0.2;
+    public static double INIT_POSITION = 0.4, INTAKE_POSITION = 0.9, DELIVER_POSITION = 0.2;
 
     public Wrist(HardwareMap hardwareMap) {
         servo = hardwareMap.get(Servo.class, "sW");

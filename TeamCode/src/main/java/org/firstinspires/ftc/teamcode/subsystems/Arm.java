@@ -17,7 +17,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Arm extends SubsystemBase {
     private Servo servo;
 
-    public static double  NEUTRAL_POSITION = 0.5, INTAKE_POSITION = 0.14, DELIVERY_POSITION = 0.6;
+    public static double  NEUTRAL_POSITION = 0.5, INTAKE_POSITION = 0.15, DELIVERY_POSITION = 0.7;
 
     public Arm(HardwareMap hardwareMap){
         servo = hardwareMap.get(Servo.class, "sA");
