@@ -17,7 +17,7 @@ public class CompBot_TeleOp extends BaseClass_PP {
         boolean motorPowerFast = false;
         double powerMultiplier = 0.5;
         boolean previousBState = false;
-        double sWPosition = 0;
+//        double sWPosition = 0;
 
 
         telemetry.addData("Status", "Initialized");
@@ -60,7 +60,7 @@ public class CompBot_TeleOp extends BaseClass_PP {
             drive(leftY1, -leftX1, -rightX1);
 
             //sets power for lift
-            mL.setPower(leftY2);
+//            mL.setPower(leftY2/4);
 
             //extends tape measure
             mTME.setPower(leftX2);
@@ -69,7 +69,7 @@ public class CompBot_TeleOp extends BaseClass_PP {
             sTMT.setPower(rightX2);
 
             //sets power for arm
-            sA.setPower(rightY2);
+//            sA.setPower(rightY2);
 
             //controls gripper
             if(rightTrigger2 != 0) {
@@ -78,13 +78,13 @@ public class CompBot_TeleOp extends BaseClass_PP {
                 sG.setPosition(0);
             }
 
-            if (rightBumper2) { //&& sWHPosition < 1)
-                sWPosition += .008;
-            } else if (leftBumper2) {// && sWHPosition > 0) {
-                sWPosition -= .008;
-            }
-            sW.setPosition(Range.clip(sWPosition, 0, 1));
-            sWPosition = sW.getPosition();
+//            if (rightBumper2) { //&& sWHPosition < 1)
+//                sWPosition += .008;
+//            } else if (leftBumper2) {// && sWHPosition > 0) {
+//                sWPosition -= .008;
+//            }
+//            sW.setPosition(Range.clip(sWPosition, 0, 1));
+//            sWPosition = sW.getPosition();
 
 
 

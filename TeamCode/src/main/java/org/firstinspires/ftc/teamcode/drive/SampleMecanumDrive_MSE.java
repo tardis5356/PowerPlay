@@ -1,16 +1,16 @@
 package org.firstinspires.ftc.teamcode.drive;
 
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ACCEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_ACCEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_ANG_VEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MAX_VEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.MOTOR_VELO_PID;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.TRACK_WIDTH;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.encoderTicksToInches;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kA;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kStatic;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_MSE.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_MSE.MAX_ANG_ACCEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_MSE.MAX_ANG_VEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_MSE.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_MSE.MOTOR_VELO_PID;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_MSE.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_MSE.TRACK_WIDTH;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_MSE.encoderTicksToInches;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_MSE.kA;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_MSE.kStatic;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_MSE.kV;
 
 import androidx.annotation.NonNull;
 
@@ -53,7 +53,7 @@ import java.util.List;
  * Simple mecanum drive hardware implementation for REV hardware.
  */
 @Config
-public class SampleMecanumDrive extends MecanumDrive {
+public class SampleMecanumDrive_MSE extends MecanumDrive {
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(6, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(7, 0, 0);
 
@@ -77,7 +77,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     private BNO055IMU imu;
     private VoltageSensor batteryVoltageSensor;
 
-    public SampleMecanumDrive(HardwareMap hardwareMap) {
+    public SampleMecanumDrive_MSE(HardwareMap hardwareMap) {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
