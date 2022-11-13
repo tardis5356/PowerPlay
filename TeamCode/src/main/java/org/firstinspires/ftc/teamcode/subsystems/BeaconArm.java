@@ -1,21 +1,23 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
-@Config
 public class BeaconArm extends SubsystemBase {
-    private Servo servo;
+    private final Servo servo;
 
-    public static double LOAD_POSITION = 0.15, DELIVERY_POSITION = 0.5, STORAGE_POSITION = 0.9;
+    private final double loadPosition = 0.99;
+    private final double deliveryPosition = 0.43;
+    private final double storagePosition = 0.7;//guess, not tested
+
+    public boolean loading = true;
 
     public BeaconArm(HardwareMap hardwareMap){
         servo = hardwareMap.get(Servo.class, "sBA");
-//        toLoadingPosition();
+        toLoadingPosition();
     }
 
     @Override
@@ -23,16 +25,28 @@ public class BeaconArm extends SubsystemBase {
         //happens every loop
     }
 
+
     public void toLoadingPosition(){
-        servo.setPosition(LOAD_POSITION);
+        servo.setPosition(loadPosition);
+        loading = true;
     }
 
     public void toDeliveryPosition(){
-        servo.setPosition(DELIVERY_POSITION);
+        servo.setPosition(deliveryPosition);
+        loading = false;
     }
 
     public void toStoragePosition(){
-        servo.setPosition(STORAGE_POSITION);
+        servo.setPosition(storagePosition);
+        loading = false;
+    }
+
+    public void setPosition(double position){
+        servo.setPosition(position);
+    }
+
+    public double getBeaconArmPosition() {
+        return servo.getPosition();
     }
 
 }

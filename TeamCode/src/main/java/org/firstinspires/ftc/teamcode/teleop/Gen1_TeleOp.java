@@ -80,6 +80,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
         // Motors and Other Stuff
+        //defineComponents
         mFR = hardwareMap.get(DcMotorEx.class, "mFR");
         mFL = hardwareMap.get(DcMotorEx.class, "mFL ");
         mBR = hardwareMap.get(DcMotorEx.class, "mBR");
@@ -100,6 +101,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         telemetry.update();
 
 //        Drivetrain = new Drivetrain(hardwareMap);
+        //defining subsystems
         Gripper = new Gripper(hardwareMap);
         Lift = new Lift(hardwareMap);
         Arm = new Arm(hardwareMap);
@@ -108,6 +110,7 @@ public class Gen1_TeleOp extends CommandOpMode {
 
 //        m_grabCommand = new GrabStone(m_gripper);
 //        m_releaseCommand = new ReleaseStone(m_gripper);
+        //defining commands for presets for lift, arm, gripper, wrist
         liftToIntakeCommand = new LiftToIntakePositionCommand(Lift, Arm, Gripper, Wrist, Junctions.INTAKE);
         liftRetractCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Wrist, Junctions.FULL_RETRACTION);
         liftToGroundJunctionCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Wrist, Junctions.GROUND_JUNCTION);
@@ -117,12 +120,15 @@ public class Gen1_TeleOp extends CommandOpMode {
         manualLiftCommand = new ManualLiftCommand(Lift, manipulator.getLeftY());
 
         // driver triggers
+        //driver = gamepad 1
+
         new Trigger(() -> driver.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5)
                 .whenActive(() -> { powerMultiplier = SLOW_POWER_MULTIPLIER; });
         new Trigger(() -> driver.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5)
                 .whenActive(() -> { powerMultiplier = FAST_POWER_MULTIPLIER; });
 
         // manipulator triggers
+        //manipulator = gamepad 2
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.A)) // extend to ground junction and slow drive base on A button
                 .whenActive(liftToGroundJunctionCommand)
                 .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
@@ -260,6 +266,18 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         telemetry.addData("arm pos", Arm.getArmPosition());
         telemetry.addData("gripper pos", Gripper.getGripperPosition());
+        telemetry.addData("beacon pos", BeaconArm.getBeaconArmPosition());
+        telemetry.addData("wrist pos",  String.format("%.2f", Wrist.getWristPosition()));
+
+        telemetry.addData("right odometer", mFR.getCurrentPosition());
+        telemetry.addData("back odometer", mBR.getCurrentPosition());
+        telemetry.addData("left odometer", mFL.getCurrentPosition());
+
+//        telemetry.addLine("odometers");
+//        telemetry.addLine()
+//            .addData("right: ", mFR.getCurrentPosition())
+//            .addData("  back: ", mBR.getCurrentPosition())
+//            .addData("  left: ", mFL.getCurrentPosition());
 
         telemetry.update();
     }
