@@ -52,6 +52,7 @@ public class Gen1_TeleOp extends CommandOpMode {
     private double powerMultiplier = 1.0;
     private double SLOW_POWER_MULTIPLIER = 0.5;
     private double FAST_POWER_MULTIPLIER = 1.0;
+    private boolean manualModeOn = false;
 
     private Drivetrain Drivetrain;
     private Lift Lift;
@@ -127,6 +128,10 @@ public class Gen1_TeleOp extends CommandOpMode {
         new Trigger(() -> driver.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5)
                 .whenActive(() -> { powerMultiplier = FAST_POWER_MULTIPLIER; });
 
+        //teleOp manual mode
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_UP))
+                .toggleWhenActive(() -> {manualModeOn = true; }, () -> {manualModeOn = false;});
+
         // manipulator triggers
         //manipulator = gamepad 2
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.A)) // extend to ground junction and slow drive base on A button
@@ -186,17 +191,18 @@ public class Gen1_TeleOp extends CommandOpMode {
                 .cancelWhenActive(liftRetractCommand)
                 .cancelWhenActive(manualLiftCommand);
 
-        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // closes gripper on left trigger
-                .whenActive(() -> Gripper.close());
-        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5) // opens gripper on right trigger
-                .whenActive(() -> Gripper.open());
+            new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // closes gripper on left trigger
+                    .whenActive(() -> {if(!manualModeOn){ Gripper.close();} else{Arm.increasePosition();}} );
+            new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5) // opens gripper on right trigger
+                    .whenActive(() -> { if(!manualModeOn) {Gripper.open();} else {Arm.decreasePosition();}} );
 
-        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.LEFT_BUMPER)) // move beacon arm to loading position
+
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.LEFT_BUMPER)) // move beacon arm to loading position
                 .whenActive(() -> BeaconArm.toLoadingPosition());
-        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.RIGHT_BUMPER)) // move beacon arm to scoring position
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.RIGHT_BUMPER)) // move beacon arm to scoring position
                 .whenActive(() -> BeaconArm.toDeliveryPosition());
-        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_UP)) // move beacon arm to storage position
-                .whenActive(() -> BeaconArm.toStoragePosition());
+//        new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_UP)) // move beacon arm to storage position
+//                .whenActive(() -> BeaconArm.toStoragePosition());
     }
 
     @Override
@@ -224,6 +230,39 @@ public class Gen1_TeleOp extends CommandOpMode {
         mFR.setPower((ly - lx - rx) / normalize * powerMultiplier);
         mBR.setPower((ly + lx - rx) / normalize * powerMultiplier);
 
+
+        if(manualModeOn){
+
+            Lift.manualControl(-gamepad2.left_stick_y);
+
+            //controls gripper
+            if(gamepad2.dpad_right){
+            Gripper.increasePosition();
+
+             }
+            if(gamepad2.dpad_left){
+            Gripper.decreasePosition();
+             }
+
+            //controls wrist
+            if(gamepad2.right_bumper){
+                Wrist.increasePosition();
+
+            }
+            if(gamepad2.left_bumper){
+                Wrist.decreasePosition();
+            }
+
+            //controls arm
+            if(gamepad2.right_trigger == 1){
+                Arm.increasePosition();
+
+            }
+            if(gamepad2.left_trigger == 1){
+                Arm.decreasePosition();
+            }
+
+        }
 //        if(gamepad2.right_bumper){
 //            Gripper.close();
 //        }
@@ -272,6 +311,8 @@ public class Gen1_TeleOp extends CommandOpMode {
         telemetry.addData("right odometer", mFR.getCurrentPosition());
         telemetry.addData("back odometer", mBR.getCurrentPosition());
         telemetry.addData("left odometer", mFL.getCurrentPosition());
+
+        telemetry.addData("manual mode is", manualModeOn);
 
 //        telemetry.addLine("odometers");
 //        telemetry.addLine()

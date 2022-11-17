@@ -61,7 +61,8 @@ public class Lift extends SubsystemBase {
     }
 
     public void manualControl(double stick) {
-        if (stick < 0) stickValue = stick * 0.1;
+        controller.setP(0);
+        if (stick < 0) stickValue = stick * 0.2;
         else stickValue = stick * 0.75;
     }
 

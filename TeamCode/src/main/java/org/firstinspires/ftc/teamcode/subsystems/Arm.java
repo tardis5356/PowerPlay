@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 @Config
 public class Arm extends SubsystemBase {
@@ -19,6 +20,7 @@ public class Arm extends SubsystemBase {
 
     public static double  NEUTRAL_POSITION = 0.5, INTAKE_POSITION = 0.99, DELIVERY_POSITION = 0.01;//0.01
 
+    public double servoPosition;
     public Arm(HardwareMap hardwareMap){
         servo = hardwareMap.get(Servo.class, "sA");
 //        toNeutralPosition();
@@ -26,6 +28,21 @@ public class Arm extends SubsystemBase {
 
     @Override
     public void periodic(){
+
+    }
+
+    public void increasePosition() {
+
+        servoPosition += 0.005;
+        servoPosition = (Range.clip(servoPosition, 0,1));
+        servo.setPosition(servoPosition);
+    }
+
+    public void decreasePosition() {
+
+        servoPosition -= 0.005;
+        servoPosition = (Range.clip(servoPosition, 0,1));
+        servo.setPosition(servoPosition);
 
     }
 

@@ -4,12 +4,14 @@ import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 @Config
 public class Gripper extends SubsystemBase {
     private Servo servo;
 
     public static double OPEN_POSITION = 0.85, CLOSED_POSITION = 0.65;//0.8, 0.7
+    public double servoPosition = 0;
 
     public Gripper(HardwareMap hardwareMap) {
         servo = hardwareMap.get(Servo.class, "sG");
@@ -25,6 +27,21 @@ public class Gripper extends SubsystemBase {
 
     public void close(){
         servo.setPosition(CLOSED_POSITION);
+    }
+
+    public void increasePosition() {
+
+        servoPosition += 0.005;
+        servoPosition = (Range.clip(servoPosition, 0.7,1));
+        servo.setPosition(servoPosition);
+    }
+
+    public void decreasePosition() {
+
+        servoPosition -= 0.005;
+        servoPosition = (Range.clip(servoPosition, 0.7,1));
+        servo.setPosition(servoPosition);
+
     }
 
     public double getGripperPosition() {
