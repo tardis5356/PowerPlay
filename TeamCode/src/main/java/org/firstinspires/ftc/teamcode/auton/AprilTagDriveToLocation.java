@@ -21,10 +21,15 @@
 
 package org.firstinspires.ftc.teamcode.auton;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_MSE;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -32,8 +37,8 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@TeleOp (name = "Webcam Testing", group = "Linear Opmode")
-public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
+@Autonomous(name = "AprilTag Parking", group = "Linear Opmode")
+public class AprilTagDriveToLocation extends LinearOpMode
 {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
@@ -62,6 +67,8 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
     @Override
     public void runOpMode()
     {
+        SampleMecanumDrive_MSE drive = new SampleMecanumDrive_MSE(hardwareMap);
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
          camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
@@ -165,19 +172,43 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
             telemetry.addLine("No tag snapshot available, it was never sighted during the init loop :(");
             telemetry.update();
         }
+        Pose2d startPose = new Pose2d(-36, 66, Math.toRadians(90));
+        drive.setPoseEstimate(startPose);
+        TrajectorySequence parkTrajectory;
 
-        /* Actually do something useful */
-       if(tagOfInterest == null || tagOfInterest.id == LEFT){
+        switch (tagOfInterest.id)
+        {
+            case 1:
+                 parkTrajectory = drive.trajectorySequenceBuilder(startPose)
+                        .setReversed(true)
+                        .splineTo(new Vector2d(-12, 12), Math.toRadians(90))
+                        .build();
+                break;
+
+            case 2:
+                parkTrajectory = drive.trajectorySequenceBuilder(startPose)
+                        .setReversed(true)
+                        .splineTo(new Vector2d(-36, 12), Math.toRadians(90))
+                        .build();
+                break;
+
+            case 3:
+                parkTrajectory = drive.trajectorySequenceBuilder(startPose)
+                        .setReversed(true)
+                        .splineTo(new Vector2d(-60, 12), Math.toRadians(90))
+                        .build();
+                break;
+
+            default:
+                parkTrajectory = drive.trajectorySequenceBuilder(startPose)
+                        .setReversed(true)
+                        .splineTo(new Vector2d(-36, 66), Math.toRadians(90))
+                        .build();
+                break;
+        }
 
 
-       } else if (tagOfInterest.id == MIDDLE){
-
-
-       } else if (tagOfInterest.id == RIGHT){
-
-
-       }
-
+        drive.followTrajectorySequence(parkTrajectory);
 
         /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
         while (opModeIsActive()) {sleep(20);}
