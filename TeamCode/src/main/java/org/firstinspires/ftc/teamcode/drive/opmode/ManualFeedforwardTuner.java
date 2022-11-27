@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_MSE.MAX_ACCEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_MSE.MAX_VEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_MSE.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_MSE.kA;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_MSE.kStatic;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_MSE.kV;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.kA;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.kStatic;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.kV;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -21,7 +21,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.RobotLog;
 
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_MSE;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Barney;
+//import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_MSE;
 
 import java.util.Objects;
 
@@ -41,14 +42,13 @@ import java.util.Objects;
  * Pressing B/O (Xbox/PS4) will cede control back to the tuning process.
  */
 @Config
-@Disabled
 @Autonomous(group = "drive")
 public class ManualFeedforwardTuner extends LinearOpMode {
     public static double DISTANCE = 72; // in
 
     private FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    private SampleMecanumDrive_MSE drive;
+    private SampleMecanumDrive_Barney drive;
 
     enum Mode {
         DRIVER_MODE,
@@ -72,7 +72,7 @@ public class ManualFeedforwardTuner extends LinearOpMode {
 
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
-        drive = new SampleMecanumDrive_MSE(hardwareMap);
+        drive = new SampleMecanumDrive_Barney(hardwareMap);
 
         mode = Mode.TUNING_MODE;
 

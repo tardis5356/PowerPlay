@@ -80,6 +80,7 @@ public class TrackingWheelLateralDistanceTuner extends LinearOpMode {
                 + "located in the comments of the opmode file.");
         telemetry.addLine("Press play to begin the tuning routine.");
         telemetry.addLine("");
+
         telemetry.addLine("Press Y/△ to stop the routine.");
         telemetry.update();
 
@@ -108,9 +109,12 @@ public class TrackingWheelLateralDistanceTuner extends LinearOpMode {
             lastHeading = heading;
 
             telemetry.clearAll();
+            Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addLine("Total Heading (deg): " + Math.toDegrees(headingAccumulator));
             telemetry.addLine("Raw Heading (deg): " + Math.toDegrees(heading));
             telemetry.addLine();
+            telemetry.addData("x", poseEstimate.getX());
+            telemetry.addData("y", poseEstimate.getY());
             telemetry.addLine("Press Y/△ to conclude routine");
             telemetry.update();
 
