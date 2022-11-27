@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.Range;
 public class Gripper extends SubsystemBase {
     private Servo servo;
 
-    public static double OPEN_POSITION = 0.85, CLOSED_POSITION = 0.65;//0.8, 0.7
+    public static double OPEN_POSITION = 0.75, CLOSED_POSITION = 0.7;//0.8, 0.7
     public double servoPosition = 0;
 
     public Gripper(HardwareMap hardwareMap) {
