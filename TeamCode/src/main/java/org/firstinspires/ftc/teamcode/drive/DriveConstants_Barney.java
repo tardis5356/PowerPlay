@@ -44,7 +44,7 @@ public class DriveConstants_Barney {
      * angular distances although most angular parameters are wrapped in Math.toRadians() for
      * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
      */
-    public static double WHEEL_RADIUS = 35/25.4/2; // in
+    public static double WHEEL_RADIUS = 96/25.4/2; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
     public static double TRACK_WIDTH = 10;//10.25; // in
 
@@ -65,7 +65,7 @@ public class DriveConstants_Barney {
      * small and gradually increase them later after everything is working. All distance units are
      * inches.
      */
-    public static double MAX_VEL = 52.65;//86;
+    public static double MAX_VEL = 52.65;//86; (in/s)
     public static double MAX_ACCEL = 52.65;//120; //68.7
     public static double MAX_ANG_VEL = Math.toRadians(180);
     public static double MAX_ANG_ACCEL = Math.toRadians(180);
