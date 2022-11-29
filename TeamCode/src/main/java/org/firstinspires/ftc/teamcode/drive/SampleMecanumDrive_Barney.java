@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.drive;
 
+//make sure these reference the correct robot!! Otherwise, the bot will operate but you will have a snafu
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.MAX_ACCEL;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.MAX_ANG_ACCEL;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.MAX_ANG_VEL;
@@ -56,8 +57,9 @@ import java.util.List;
  */
 @Config
 public class SampleMecanumDrive_Barney extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(6, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(7, 0, 0);
+    //make sure these are set to 0 when doing track width tuner//
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(15,0,2);//(6, 0, 0);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(8,0,0);//(7, 0, 0);
 
     public static double LATERAL_MULTIPLIER = 1;
 
@@ -94,10 +96,10 @@ public class SampleMecanumDrive_Barney extends MecanumDrive {
         }
 
         // TODO: adjust the names of the following hardware devices to match your configuration
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
-        imu.initialize(parameters);
+//        imu = hardwareMap.get(BNO055IMU.class, "imu");
+//        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+//        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
+//        imu.initialize(parameters);
 
         // TODO: If the hub containing the IMU you are using is mounted so that the "REV" logo does
         // not face up, remap the IMU axes so that the z-axis points upward (normal to the floor.)
@@ -121,7 +123,7 @@ public class SampleMecanumDrive_Barney extends MecanumDrive {
         // For example, if +Y in this diagram faces downwards, you would use AxisDirection.NEG_Y.
 
         //we made this change its our best guess it's quite the snafu
-        BNO055IMUUtil.remapZAxis(imu, AxisDirection.POS_Y);
+//        BNO055IMUUtil.remapZAxis(imu, AxisDirection.POS_Y);
 
         leftFront = hardwareMap.get(DcMotorEx.class, "mFL");
         leftRear = hardwareMap.get(DcMotorEx.class, "mBL");
@@ -327,8 +329,8 @@ public class SampleMecanumDrive_Barney extends MecanumDrive {
 
     @Override
     public double getRawExternalHeading() {
-       // return 0;
-        return  imu.getAngularOrientation().firstAngle;
+        return 0;
+//        return  imu.getAngularOrientation().firstAngle;
     }
 
     @Override

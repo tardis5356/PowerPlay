@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_MSE;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Barney;
 
 import java.util.Objects;
 
@@ -32,7 +32,7 @@ public class MaxAngularVeloTuner extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        SampleMecanumDrive_MSE drive = new SampleMecanumDrive_MSE(hardwareMap);
+        SampleMecanumDrive_Barney drive = new SampleMecanumDrive_Barney(hardwareMap);
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 

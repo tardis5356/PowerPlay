@@ -6,7 +6,7 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_MSE;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Barney;
 
 /*
  * Op mode for preliminary tuning of the follower PID coefficients (located in the drive base
@@ -33,7 +33,7 @@ public class BackAndForth extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        SampleMecanumDrive_MSE drive = new SampleMecanumDrive_MSE(hardwareMap);
+        SampleMecanumDrive_Barney drive = new SampleMecanumDrive_Barney(hardwareMap);
 
         Trajectory trajectoryForward = drive.trajectoryBuilder(new Pose2d())
                 .forward(DISTANCE)
