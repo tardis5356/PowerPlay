@@ -5,7 +5,7 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_MSE;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Barney;
 
 /*
  * This is an example of a more complex path to really test the tuning.
@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_MSE;
 public class Auto_BlueX2 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
-        SampleMecanumDrive_MSE drive = new SampleMecanumDrive_MSE(hardwareMap);
+        SampleMecanumDrive_Barney drive = new SampleMecanumDrive_Barney(hardwareMap);
 
         waitForStart();
 
@@ -45,29 +45,29 @@ public class Auto_BlueX2 extends LinearOpMode {
                 .build();
 
 
-        drive.followTrajectory(traj1);
-
-        drive.followTrajectory(traj2);
+//        drive.followTrajectory(traj1);
+//
+//        drive.followTrajectory(traj2);
         drive.followTrajectory(traj3);
-        drive.followTrajectory(traj4);
-        drive.followTrajectory(traj5);
-
-        drive.followTrajectory(traj2);
-        drive.followTrajectory(traj3);
-        drive.followTrajectory(traj4);
-        drive.followTrajectory(traj5);
-
-        drive.followTrajectory(traj2);
-        drive.followTrajectory(traj3);
-        drive.followTrajectory(traj4);
-        drive.followTrajectory(traj5);
-
-        drive.followTrajectory(traj2);
-        drive.followTrajectory(traj3);
-        drive.followTrajectory(traj4);
-        drive.followTrajectory(traj5);
-
-        drive.followTrajectory(traj6);
+//        drive.followTrajectory(traj4);
+//        drive.followTrajectory(traj5);
+//
+//        drive.followTrajectory(traj2);
+//        drive.followTrajectory(traj3);
+//        drive.followTrajectory(traj4);
+//        drive.followTrajectory(traj5);
+//
+//        drive.followTrajectory(traj2);
+//        drive.followTrajectory(traj3);
+//        drive.followTrajectory(traj4);
+//        drive.followTrajectory(traj5);
+//
+//        drive.followTrajectory(traj2);
+//        drive.followTrajectory(traj3);
+//        drive.followTrajectory(traj4);
+//        drive.followTrajectory(traj5);
+//
+//        drive.followTrajectory(traj6);
 
 
 
