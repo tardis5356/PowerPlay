@@ -65,6 +65,7 @@ public class TrackWidthTuner extends LinearOpMode {
             double lastHeading = 0;
             headingAccumulator = 0;
             drive.turnAsync(Math.toRadians(ANGLE));
+//            drive.turn(Math.toRadians(ANGLE));// will this work better?
 
             while (!isStopRequested() && drive.isBusy()) {
                 double heading = drive.getPoseEstimate().getHeading();

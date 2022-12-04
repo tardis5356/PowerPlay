@@ -46,7 +46,7 @@ public class DriveConstants_Barney {
      */
     public static double WHEEL_RADIUS = 96/25.4/2; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 9.09;//10.25; // in
+    public static double TRACK_WIDTH = 10.022;//10.25; // in, 9.09
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -67,7 +67,7 @@ public class DriveConstants_Barney {
      */
     public static double MAX_VEL = 52.65;//86; (in/s)
     public static double MAX_ACCEL = 52.65;//120; //68.7
-    public static double MAX_ANG_VEL = Math.toRadians(365);
+    public static double MAX_ANG_VEL = Math.toRadians(180);
     public static double MAX_ANG_ACCEL = Math.toRadians(180);
 
 

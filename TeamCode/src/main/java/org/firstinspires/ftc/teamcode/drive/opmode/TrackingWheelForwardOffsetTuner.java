@@ -37,7 +37,7 @@ import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer_Barne
 @Autonomous(group="drive")
 public class TrackingWheelForwardOffsetTuner extends LinearOpMode {
     public static double ANGLE = 180; // deg
-    public static int NUM_TRIALS = 5;
+    public static int NUM_TRIALS = 6;
     public static int DELAY = 1000; // ms
 
     @Override
@@ -82,9 +82,11 @@ public class TrackingWheelForwardOffsetTuner extends LinearOpMode {
                 drive.update();
             }
 
+
             double forwardOffset = StandardTrackingWheelLocalizer_Barney.FORWARD_OFFSET +
                     drive.getPoseEstimate().getY() / headingAccumulator;
             forwardOffsetStats.add(forwardOffset);
+
 
             sleep(DELAY);
         }
@@ -94,6 +96,7 @@ public class TrackingWheelForwardOffsetTuner extends LinearOpMode {
         telemetry.addLine(Misc.formatInvariant("Effective forward offset = %.2f (SE = %.3f)",
                 forwardOffsetStats.getMean(),
                 forwardOffsetStats.getStandardDeviation() / Math.sqrt(NUM_TRIALS)));
+        telemetry.addData("angle", drive.getPoseEstimate().getHeading());
         telemetry.update();
 
         while (!isStopRequested()) {
