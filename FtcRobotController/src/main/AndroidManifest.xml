@@ -6,6 +6,8 @@
 
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+  <uses-sdk tools:overrideLibrary="com.arcrobotics.ftclib"/>
+
   <application
     android:allowBackup="true"
     android:largeHeap="true"
