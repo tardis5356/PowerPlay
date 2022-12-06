@@ -10,9 +10,9 @@ import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 
 public class LiftToIntakePositionCommand extends ParallelCommandGroup {
-    public LiftToIntakePositionCommand(Lift lift, Arm arm, Gripper gripper, Wrist wrist, Junctions junction) {
+    public LiftToIntakePositionCommand(Lift lift, Arm arm, Gripper gripper, Wrist wrist, Junctions junction, int stackIndex) {
         addCommands(
-                new LiftToPositionCommand(lift, junction.position, 5),
+                new LiftToPositionCommand(lift, junction.position - (stackIndex * 25), 5),
                 new InstantCommand(() -> {
                     wrist.toIntakePosition();
                     gripper.open();
