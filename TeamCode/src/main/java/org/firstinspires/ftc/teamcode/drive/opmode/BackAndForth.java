@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.drive.opmode;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -30,24 +31,41 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Barney;
 public class BackAndForth extends LinearOpMode {
 
     public static double DISTANCE = 50;
+    public double cycles = 0;
+    public double numberOfCycles = 5;
 
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive_Barney drive = new SampleMecanumDrive_Barney(hardwareMap);
 
         Trajectory trajectoryForward = drive.trajectoryBuilder(new Pose2d())
-                .forward(DISTANCE)
+                .lineToConstantHeading(new Vector2d(DISTANCE, 0))
+                //.forward(DISTANCE)
                 .build();
 
         Trajectory trajectoryBackward = drive.trajectoryBuilder(trajectoryForward.end())
-                .back(DISTANCE)
+                .lineToConstantHeading(new Vector2d(0, 0))
+                //.back(DISTANCE)
                 .build();
+
+        Trajectory trajectoryStrafeRight = drive.trajectoryBuilder(new Pose2d())
+                .strafeRight(DISTANCE)
+                .build();
+
+        Trajectory trajectoryStrafeLeft = drive.trajectoryBuilder(trajectoryStrafeRight.end())
+                .strafeLeft(DISTANCE)
+                .build();
+
+
 
         waitForStart();
 
-        while (opModeIsActive() && !isStopRequested()) {
+        while (opModeIsActive() && !isStopRequested() && (cycles < numberOfCycles)) {
             drive.followTrajectory(trajectoryForward);
             drive.followTrajectory(trajectoryBackward);
+//            drive.followTrajectory(trajectoryStrafeRight);
+//            drive.followTrajectory(trajectoryStrafeLeft);
+            cycles += 1;
         }
     }
 }

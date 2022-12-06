@@ -10,7 +10,7 @@ public class Primus_TeleOp extends BaseClass_PP {    // LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    double zeroPosition = 0;
+    double zeroPosition = 0;    
     boolean encoderReset = false;
     @Override
     public void runOpMode() {

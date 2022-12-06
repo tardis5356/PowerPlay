@@ -43,7 +43,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 
-@TeleOp(name = "Gen1 TeleOp")
+@TeleOp(name = "Gen1_TeleOp")
 public class Gen1_TeleOp extends CommandOpMode {
     private DcMotorEx mFR, mFL, mBR, mBL;
     private BNO055IMU imu;
