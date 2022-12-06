@@ -10,12 +10,12 @@ import com.qualcomm.robotcore.util.Range;
 public class Wrist extends SubsystemBase {
     private final Servo servo;
 
-    public static double INIT_POSITION = 0.4, INTAKE_POSITION = 0.1, DELIVER_POSITION = 0.8;//0.2
+    public static double INIT_POSITION = 0.8, INTAKE_POSITION = 0.35, DELIVER_POSITION = 0.95;//0.2
     public double servoPositionWrist = 0;
 
     public Wrist(HardwareMap hardwareMap) {
         servo = hardwareMap.get(Servo.class, "sW");
-//        toInitPosition();
+        toInitPosition();
     }
 
     @Override
@@ -24,7 +24,6 @@ public class Wrist extends SubsystemBase {
     }
 
     public void increasePosition() {
-
         servoPositionWrist += 0.005;
         servoPositionWrist = (Range.clip(servoPositionWrist, 0,1));
         servo.setPosition(servoPositionWrist);
