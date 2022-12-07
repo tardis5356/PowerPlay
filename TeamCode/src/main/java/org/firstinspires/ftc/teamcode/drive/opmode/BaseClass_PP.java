@@ -239,7 +239,7 @@ public abstract class BaseClass_PP extends LinearOpMode {
         sR = hardwareMap.servo.get("sR");
         mArm = hardwareMap.crservo.get("mArm");
 
-        armLimit = hardwareMap.get(AnalogInput.class, "armLimit");
+//        armLimit = hardwareMap.get(AnalogInput.class, "armLimit");
 
     }
 
