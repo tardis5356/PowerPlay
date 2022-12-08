@@ -1,17 +1,17 @@
 package org.firstinspires.ftc.teamcode.drive;
 
 //make sure these reference the correct robot!! Otherwise, the bot will operate but you will have a snafu
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.MAX_ACCEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.MAX_ANG_ACCEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.MAX_ANG_VEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.MAX_VEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.MOTOR_VELO_PID;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.TRACK_WIDTH;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.encoderTicksToInches;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.kA;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.kStatic;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.kV;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_R2V2.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_R2V2.MAX_ANG_ACCEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_R2V2.MAX_ANG_VEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_R2V2.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_R2V2.MOTOR_VELO_PID;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_R2V2.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_R2V2.TRACK_WIDTH;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_R2V2.encoderTicksToInches;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_R2V2.kA;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_R2V2.kStatic;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_R2V2.kV;
 
 import androidx.annotation.NonNull;
 
@@ -56,7 +56,7 @@ import java.util.List;
  * Simple mecanum drive hardware implementation for REV hardware.
  */
 @Config
-public class SampleMecanumDrive_Barney extends MecanumDrive {
+public class SampleMecanumDrive_R2V2 extends MecanumDrive {
     //make sure these are set to 0 when doing track width tuner//
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(15,0,2);//(6, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(8,0,0);//(7, 0, 0);
@@ -81,7 +81,7 @@ public class SampleMecanumDrive_Barney extends MecanumDrive {
     private BNO055IMU imu;
     private VoltageSensor batteryVoltageSensor;
 
-    public SampleMecanumDrive_Barney(HardwareMap hardwareMap) {
+    public SampleMecanumDrive_R2V2(HardwareMap hardwareMap) {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
@@ -166,7 +166,7 @@ public class SampleMecanumDrive_Barney extends MecanumDrive {
 
         // TODO: if desired, use setLocalizer() to change the localization method
         // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));
-        setLocalizer(new StandardTrackingWheelLocalizer_Barney(hardwareMap));
+        setLocalizer(new StandardTrackingWheelLocalizer_R2V2(hardwareMap));
         trajectorySequenceRunner = new TrajectorySequenceRunner(follower, HEADING_PID);
     }
 

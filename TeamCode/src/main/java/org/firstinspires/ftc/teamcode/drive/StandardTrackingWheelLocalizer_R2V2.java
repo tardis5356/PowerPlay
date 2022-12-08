@@ -27,20 +27,20 @@ import java.util.List;
  *
  */
 @Config
-public class StandardTrackingWheelLocalizer_Barney extends ThreeTrackingWheelLocalizer {
+public class StandardTrackingWheelLocalizer_R2V2 extends ThreeTrackingWheelLocalizer {
     public static double TICKS_PER_REV = 8192;
     public static double WHEEL_RADIUS = 35/25.4/2; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    public static double LATERAL_DISTANCE = 10.021; //10 // in; distance between the left and right wheels
-    public static double FORWARD_OFFSET = -1.11; // in; offset of the lateral wheel
+    public static double LATERAL_DISTANCE = 9.5; //10 // in; distance between the left and right wheels
+    public static double FORWARD_OFFSET = -1.75; // in; offset of the lateral wheel
 
     public static double X_MULTIPLIER = 1 * 1.0202 ; // Multiplier in the X direction
     public static double Y_MULTIPLIER = 1 * 1.0207; // Multiplier in the Y direction
 
     private Encoder leftEncoder, rightEncoder, frontEncoder;
 
-    public StandardTrackingWheelLocalizer_Barney(HardwareMap hardwareMap) {
+    public StandardTrackingWheelLocalizer_R2V2(HardwareMap hardwareMap) {
         super(Arrays.asList(
                 new Pose2d(0, LATERAL_DISTANCE / 2, 0), // left
                 new Pose2d(0, -LATERAL_DISTANCE / 2, 0), // right
@@ -55,6 +55,7 @@ public class StandardTrackingWheelLocalizer_Barney extends ThreeTrackingWheelLoc
         // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
         leftEncoder.setDirection(Encoder.Direction.REVERSE);
         rightEncoder.setDirection(Encoder.Direction.REVERSE);
+        frontEncoder.setDirection(Encoder.Direction.REVERSE);
 //        rightEncoder.setDirection(Encoder.Direction.REVERSE);
 
     }

@@ -192,77 +192,77 @@ public class Gen2_TeleOp extends CommandOpMode {
 //                .whenActive(() -> BeaconArm.toDeliveryPosition());
 ////        new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_UP)) // move beacon arm to storage position
 ////                .whenActive(() -> BeaconArm.toStoragePosition());
-//    }
+    }
 //
-//    @Override
-//    public void run() {
-//        super.run();
-//        //FIELDCENTRIC
-//        Orientation botOrientationRadians = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
-//
-//        //Add the angle offset to be able to reset the 0 heading, and normalize it back to -pi to pi
-//        double heading = AngleUnit.normalizeRadians(botOrientationRadians.firstAngle - offset);
-//
-//        double ly = -gamepad1.left_stick_y;
-//        double lx = gamepad1.left_stick_x;
-//        double rx = gamepad1.right_stick_x;
-//
-//        // Rotate by the heading of the robot
-//        Vector2d vector = new Vector2d(lx, ly).rotated(-heading);
-//        lx = vector.getX();
-//        ly = vector.getY();
-//
-//        double normalize = Math.max(abs(ly) + abs(lx) + abs(rx), 1.0);
-//
-//        mFL.setPower((ly + lx + rx) / normalize * powerMultiplier);
-//        mBL.setPower((ly - lx + rx) / normalize * powerMultiplier);
-//        mFR.setPower((ly - lx - rx) / normalize * powerMultiplier);
-//        mBR.setPower((ly + lx - rx) / normalize * powerMultiplier);
-//
-//
-//        if(manualModeOn){
-//
+        @Override
+        public void run() {
+            super.run();
+            //FIELDCENTRIC
+            Orientation botOrientationRadians = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+
+            //Add the angle offset to be able to reset the 0 heading, and normalize it back to -pi to pi
+            double heading = AngleUnit.normalizeRadians(botOrientationRadians.firstAngle - offset);
+
+            double ly = -gamepad1.left_stick_y;
+            double lx = gamepad1.left_stick_x;
+            double rx = gamepad1.right_stick_x;
+
+            // Rotate by the heading of the robot
+            Vector2d vector = new Vector2d(lx, ly).rotated(-heading);
+            lx = vector.getX();
+            ly = vector.getY();
+
+            double normalize = Math.max(abs(ly) + abs(lx) + abs(rx), 1.0);
+
+            mFL.setPower((ly + lx + rx) / normalize * powerMultiplier);
+            mBL.setPower((ly - lx + rx) / normalize * powerMultiplier);
+            mFR.setPower((ly - lx - rx) / normalize * powerMultiplier);
+            mBR.setPower((ly + lx - rx) / normalize * powerMultiplier);
+
+
+            if (manualModeOn) {
+
 //            Lift.manualControl(-gamepad2.left_stick_y);
-//
-//            //controls gripper
-//            if(gamepad2.dpad_right){
-//            Gripper.increasePosition();
-//
-//             }
-//            if(gamepad2.dpad_left){
-//            Gripper.decreasePosition();
-//             }
-//
-//            //controls wrist
-//            if(gamepad2.right_bumper){
-//                Wrist.increasePosition();
-//
-//            }
-//            if(gamepad2.left_bumper){
-//                Wrist.decreasePosition();
-//            }
-//
-//            //controls arm
-//            if(gamepad2.right_trigger == 1){
-//                Arm.increasePosition();
-//
-//            }
-//            if(gamepad2.left_trigger == 1){
-//                Arm.decreasePosition();
-//            }
-//
+
+                //controls gripper
+                if (gamepad2.dpad_right) {
+                    Gripper.increasePosition();
+
+                }
+                if (gamepad2.dpad_left) {
+                    Gripper.decreasePosition();
+                }
+
+                //controls wrist
+                if (gamepad2.right_bumper) {
+                    Wrist.increasePosition();
+
+                }
+                if (gamepad2.left_bumper) {
+                    Wrist.decreasePosition();
+                }
+
+                //controls arm
+                if (gamepad2.right_trigger == 1) {
+                    Arm.increasePosition();
+
+                }
+                if (gamepad2.left_trigger == 1) {
+                    Arm.decreasePosition();
+                }
+
+            }
+//        if(gamepad2.right_bumper){
+//            Gripper.close();
 //        }
-////        if(gamepad2.right_bumper){
-////            Gripper.close();
-////        }
-////        if(gamepad2.left_bumper){
-////            Gripper.open();
-////        }
-//
-////        Gripper.open();
-//
-//
-////        Lift.manualControl(-gamepad2.left_stick_y);
+//        if(gamepad2.left_bumper){
+//            Gripper.open();
+//        }
+
+//        Gripper.open();
+
+
+//        Lift.manualControl(-gamepad2.left_stick_y);
 //
 //        //ANTI-TIP
 ////        (m−rmin/rmax−rmin)×(tmax−tmin)+tmin // FORMULA
@@ -312,5 +312,5 @@ public class Gen2_TeleOp extends CommandOpMode {
 //        telemetry.update();
 //    }
 //
+        }
     }
-}

@@ -43,7 +43,7 @@ public class LocalizationTest extends LinearOpMode {
             telemetry.addData("y", poseEstimate.getY()); //
             telemetry.addData("wheel positions", drive.getWheelPositions());
             telemetry.addData("mFL", hardwareMap.get(DcMotorEx.class, "mFL").getCurrentPosition() );
-            telemetry.addData("mFR", hardwareMap.get(DcMotorEx.class, "mFR").getCurrentPosition() );
+            telemetry.addData("mFR", -hardwareMap.get(DcMotorEx.class, "mFR").getCurrentPosition() );
             telemetry.addData("mBL", hardwareMap.get(DcMotorEx.class, "mBL").getCurrentPosition() );
             telemetry.addData("mBR", hardwareMap.get(DcMotorEx.class, "mBR").getCurrentPosition() );
             telemetry.addData("heading", poseEstimate.getHeading());
