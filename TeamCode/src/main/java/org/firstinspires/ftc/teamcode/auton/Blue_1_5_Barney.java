@@ -23,7 +23,6 @@ import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Junctions;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
-import org.firstinspires.ftc.teamcode.subsystems.Camera;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.commands.auto.BarneyAutoTrajectories;
 
@@ -43,7 +42,6 @@ public class Blue_1_5_Barney extends CommandOpMode {
     private Wrist wrist;
     private Gripper gripper;
     private BeaconArm beaconArm;
-    private Camera camera;
 
     private LiftToScoringPositionCommand liftRetractCommand, liftToGroundJunctionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
     private LiftToIntakePositionCommand liftToIntakeCommand;
@@ -63,7 +61,6 @@ public class Blue_1_5_Barney extends CommandOpMode {
         arm = new Arm(hardwareMap);
         wrist = new Wrist(hardwareMap);
         beaconArm = new BeaconArm(hardwareMap);
-        camera = new Camera(hardwareMap);
 
         cycleToPoleAutoCommand = new BarneyCycleToPoleAutoCommand(drive, lift, arm, wrist, gripper);
         cycleToStackAutoCommand = new BarneyCycleToStackAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
@@ -77,19 +74,10 @@ public class Blue_1_5_Barney extends CommandOpMode {
         while (!isStarted()) {
             telemetry.addLine("Ready for start!");
             telemetry.update();
-            // call something about the camera here to see the AprilTags
         }
 
         schedule(new SequentialCommandGroup(
                 deliverPreloadAutoCommand, cycleToPoleAutoCommand,
-                new InstantCommand(() -> { stackIndex--; }),
-                cycleToStackAutoCommand, cycleToPoleAutoCommand,
-                new InstantCommand(() -> { stackIndex--; }),
-                cycleToStackAutoCommand, cycleToPoleAutoCommand,
-                new InstantCommand(() -> { stackIndex--; }),
-                cycleToStackAutoCommand, cycleToPoleAutoCommand,
-                new InstantCommand(() -> { stackIndex--; }),
-                cycleToStackAutoCommand, cycleToPoleAutoCommand,
                 new InstantCommand(() -> { stackIndex--; }),
                 cycleToStackAutoCommand, cycleToPoleAutoCommand,
                 new InstantCommand(() -> { stackIndex--; })

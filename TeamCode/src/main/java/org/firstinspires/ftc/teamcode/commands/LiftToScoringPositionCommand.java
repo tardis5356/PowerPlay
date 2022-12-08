@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Junctions;
 public class LiftToScoringPositionCommand extends ParallelCommandGroup {
     public LiftToScoringPositionCommand(Lift lift, Arm arm, Gripper gripper, Wrist wrist, Junctions junction) {
         addCommands(
-                new LiftToPositionCommand(lift, junction.position, 5),
+                new LiftToPositionCommand(lift, junction.position, 25),
                 new InstantCommand(() -> {
                     arm.toDeliverPosition();
                     wrist.toDeliverPosition();

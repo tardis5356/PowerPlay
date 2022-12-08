@@ -7,6 +7,7 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.commands.LiftToIntakePositionCommand;
+import org.firstinspires.ftc.teamcode.commands.LiftToPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.LiftToScoringPositionCommand;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Barney;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
@@ -15,27 +16,26 @@ import org.firstinspires.ftc.teamcode.subsystems.Junctions;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 
-public class BarneyCycleToPoleAutoCommand extends ParallelCommandGroup {
-
-    private SampleMecanumDrive_Barney drive;
-    private Lift Lift;
-    private Arm Arm;
-    private Wrist Wrist;
-    private Gripper Gripper;
-
-    private LiftToScoringPositionCommand liftRetractCommand, liftToGroundJunctionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
-    private LiftToIntakePositionCommand liftToIntakeCommand;
-
+public class BarneyCycleToPoleAutoCommand extends SequentialCommandGroup {
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    public BarneyCycleToPoleAutoCommand(SampleMecanumDrive_Barney drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper){
+    private Gripper gripper;
+
+    public BarneyCycleToPoleAutoCommand(SampleMecanumDrive_Barney drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper) {
+        this.gripper = gripper;
+
         addCommands(
-                new FollowTrajectoryCommand(drive, BarneyAutoTrajectories.blue_StackToMainPole),
-                new SequentialCommandGroup(
-                        new WaitCommand(500),
-                        new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.HIGH_JUNCTION),
-                        new WaitCommand(500)
-//                        new InstantCommand(Gripper::open)
+                new WaitCommand(1500),
+                new LiftToPositionCommand(lift, 400, 50),
+                new WaitCommand(1500),
+                new ParallelCommandGroup(
+                        new FollowTrajectoryCommand(drive, BarneyAutoTrajectories.blue_StackToMainPole),
+                        new SequentialCommandGroup(
+                                new WaitCommand(500),
+                                new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.HIGH_JUNCTION),
+                                new WaitCommand(500),
+                                new InstantCommand(gripper::open)
+                        )
                 )
         );
     }

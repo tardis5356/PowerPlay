@@ -16,11 +16,13 @@ import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 
 public class BarneyDeliverPreloadAutoCommand extends SequentialCommandGroup {
-    private Gripper Gripper;
+    private Gripper gripper;
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
     public BarneyDeliverPreloadAutoCommand(SampleMecanumDrive_Barney drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, int stackIndex) {
+        this.gripper = gripper;
+
         addCommands(
                 new ParallelCommandGroup(
                         new FollowTrajectoryCommand(drive, BarneyAutoTrajectories.blue_StartToPreloadPole),
@@ -28,9 +30,10 @@ public class BarneyDeliverPreloadAutoCommand extends SequentialCommandGroup {
                                 new WaitCommand(500),
                                 new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.HIGH_JUNCTION),
                                 new WaitCommand(500)
-//                                new InstantCommand(Gripper::open)
                         )
                 ),
+                new WaitCommand(1000),
+                new InstantCommand(gripper::open),
                 new ParallelCommandGroup(
                         new FollowTrajectoryCommand(drive, BarneyAutoTrajectories.blue_PreloadPoleToStack),
                         new SequentialCommandGroup(
@@ -38,8 +41,8 @@ public class BarneyDeliverPreloadAutoCommand extends SequentialCommandGroup {
                                 new LiftToIntakePositionCommand(lift, arm, gripper, wrist, Junctions.INTAKE, stackIndex)
                         )
                 ),
-                new WaitCommand(500)
-//                new InstantCommand(Gripper::close)
+                new WaitCommand(500),
+                new InstantCommand(gripper::close)
         );
     }
 
