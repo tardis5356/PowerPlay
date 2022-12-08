@@ -18,12 +18,12 @@ import com.qualcomm.robotcore.util.Range;
 public class Arm extends SubsystemBase {
     private Servo servo;
 
-    public static double  NEUTRAL_POSITION = 0.5, INTAKE_POSITION = 0.75, DELIVERY_POSITION = 0.14;//0.01
+    public static double  INIT_POSITION = 0.5, INTAKE_POSITION = 0.76, DELIVERY_POSITION = 0.4;//0.01
 
     public double servoPosition;
     public Arm(HardwareMap hardwareMap){
         servo = hardwareMap.get(Servo.class, "sA");
-//        toNeutralPosition();
+//        toInitPosition();
     }
 
     @Override
@@ -32,22 +32,19 @@ public class Arm extends SubsystemBase {
     }
 
     public void increasePosition() {
-
         servoPosition += 0.005;
         servoPosition = (Range.clip(servoPosition, 0,1));
         servo.setPosition(servoPosition);
     }
 
     public void decreasePosition() {
-
         servoPosition -= 0.005;
         servoPosition = (Range.clip(servoPosition, 0,1));
         servo.setPosition(servoPosition);
-
     }
 
-    public void toNeutralPosition(){
-        servo.setPosition(NEUTRAL_POSITION);
+    public void toInitPosition(){
+        servo.setPosition(INIT_POSITION);
     }
 
     public void toIntakePosition(){

@@ -13,7 +13,7 @@ public class Lift extends SubsystemBase {
             extendController, retractController;
     private DcMotorEx mL;
 
-    public static double pE = 0.1, pR = 0.002, i = 0, d = 0;
+    public static double pE = 0.07, pR = 0.0001, i = 0, d = 0;
 //    public static double pE = 0.05, iE = 0, dE = 0;
 //    public static double pR = 0.05, iR = 0, dR = 0;
 

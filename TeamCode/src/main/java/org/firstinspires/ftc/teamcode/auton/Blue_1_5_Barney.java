@@ -41,11 +41,6 @@ public class Blue_1_5_Barney extends CommandOpMode {
     private Arm arm;
     private Wrist wrist;
     private Gripper gripper;
-    private BeaconArm beaconArm;
-
-    private LiftToScoringPositionCommand liftRetractCommand, liftToGroundJunctionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
-    private LiftToIntakePositionCommand liftToIntakeCommand;
-    private ManualLiftCommand manualLiftCommand;
 
     private BarneyCycleToPoleAutoCommand cycleToPoleAutoCommand;
     private BarneyCycleToStackAutoCommand cycleToStackAutoCommand;
@@ -60,7 +55,6 @@ public class Blue_1_5_Barney extends CommandOpMode {
         lift = new Lift(hardwareMap);
         arm = new Arm(hardwareMap);
         wrist = new Wrist(hardwareMap);
-        beaconArm = new BeaconArm(hardwareMap);
 
         cycleToPoleAutoCommand = new BarneyCycleToPoleAutoCommand(drive, lift, arm, wrist, gripper);
         cycleToStackAutoCommand = new BarneyCycleToStackAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
