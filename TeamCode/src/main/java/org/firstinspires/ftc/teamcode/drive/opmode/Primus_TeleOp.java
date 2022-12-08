@@ -17,37 +17,37 @@ public class Primus_TeleOp extends BaseClass_PP {    // LinearOpMode {
 
         defineComponentsPrimus();
 
-        while(armLimit.getVoltage() > 3.0) {
+//        while(armLimit.getVoltage() > 3.0) {
 
-            telemetry.addData("armLimit", armLimit.getVoltage());
-            telemetry.addData("arm power", mArm.getPower());
-            telemetry.addData("arm position", mBR.getCurrentPosition());
-            telemetry.addData("zeroPosition", zeroPosition);
-            telemetry.update();
-            if (!encoderReset) {
-                if (armLimit.getVoltage() < 3.0) {
+//            telemetry.addData("armLimit", armLimit.getVoltage());
+//            telemetry.addData("arm power", mArm.getPower());
+//            telemetry.addData("arm position", mBR.getCurrentPosition());
+//            telemetry.addData("zeroPosition", zeroPosition);
+//            telemetry.update();
+////            if (!encoderReset) {
+////                if (armLimit.getVoltage() < 3.0) {
+//
+//                    //using mBR encoder port for mArm position
+//                    mArm.setPower(0);
+//                    mBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//                    encoderReset = true;
+//                    mBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-                    //using mBR encoder port for mArm position
-                    mArm.setPower(0);
-                    mBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                    encoderReset = true;
-                    mBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//                } else {
 
-                } else {
+//                    mArm.setPower(0.5);
 
-                    mArm.setPower(0.5);
+//                }
+//            }
 
-                }
-            }
-
-        }
+  //      }
 
         waitForStart();
 
         while (opModeIsActive()) {
 
 
-            telemetry.addData("armLimit", armLimit.getVoltage());
+//            telemetry.addData("armLimit", armLimit.getVoltage());
             telemetry.addData("arm power", mArm.getPower());
             telemetry.addData("arm position", mBR.getCurrentPosition());
             telemetry.addData("zeroPosition", zeroPosition);
@@ -62,12 +62,16 @@ public class Primus_TeleOp extends BaseClass_PP {    // LinearOpMode {
             double leftY2 = gamepad2.left_stick_y;
             double rightTrigger2 = gamepad2.right_trigger;
             double leftTrigger2 = gamepad2.left_trigger;
+            double rightY2 = gamepad2.right_stick_y;
+
 
             //Drivetrain controls
             mBL.setPower(leftY1 - rightX1);
             mBR.setPower(leftY1 + rightX1);
             mFL.setPower(-leftY1 + rightX1);
             mFR.setPower(leftY1 + rightX1);
+
+            mArm.setPower(rightY2);
 
             //Arm Motor Controls
 
@@ -97,19 +101,19 @@ public class Primus_TeleOp extends BaseClass_PP {    // LinearOpMode {
 //                mArm.setPower(leftY2);
 //
 //            }
-            mArm.setPower(leftY2);
+//            mArm.setPower(leftY2);
 
             if (rightTrigger2 != 0) {
                 //sL.setPosition(0.3);
-                sR.setPosition(0.8);
-            } else {
                 sR.setPosition(0.3);
+            } else {
+                sR.setPosition(0.8); //0.3
             }
             if (leftTrigger2 != 0) {
-                sL.setPosition(0.3);
+                sL.setPosition(0.7);
                 //sR.setPosition(0.3);
             } else {
-                sL.setPosition(0.8);
+                sL.setPosition(0.3); //0.3
             }
 
 
