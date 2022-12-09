@@ -14,8 +14,9 @@ import org.firstinspires.ftc.teamcode.commands.LiftToIntakePositionCommand;
 import org.firstinspires.ftc.teamcode.commands.LiftToScoringPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.ManualLiftCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.BarneyCycleToPoleAutoCommand;
-import org.firstinspires.ftc.teamcode.commands.auto.BarneyCycleToStackAutoCommand;
+import org.firstinspires.ftc.teamcode.commands.auto.BarneyCycleToStackWaypointAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.BarneyDeliverPreloadAutoCommand;
+import org.firstinspires.ftc.teamcode.commands.auto.BarneyGrabFromStackCommand;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Barney;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
@@ -43,13 +44,10 @@ public class Blue_1_5_Barney extends CommandOpMode {
     private Gripper gripper;
     private BeaconArm beaconArm;
 
-    private LiftToScoringPositionCommand liftRetractCommand, liftToGroundJunctionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
-    private LiftToIntakePositionCommand liftToIntakeCommand;
-    private ManualLiftCommand manualLiftCommand;
-
     private BarneyCycleToPoleAutoCommand cycleToPoleAutoCommand;
-    private BarneyCycleToStackAutoCommand cycleToStackAutoCommand;
+    private BarneyCycleToStackWaypointAutoCommand cycleToStackWaypointAutoCommand;
     private BarneyDeliverPreloadAutoCommand deliverPreloadAutoCommand;
+    private BarneyGrabFromStackCommand grabFromStackCommand;
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -63,8 +61,9 @@ public class Blue_1_5_Barney extends CommandOpMode {
         beaconArm = new BeaconArm(hardwareMap);
 
         cycleToPoleAutoCommand = new BarneyCycleToPoleAutoCommand(drive, lift, arm, wrist, gripper);
-        cycleToStackAutoCommand = new BarneyCycleToStackAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
+        cycleToStackWaypointAutoCommand = new BarneyCycleToStackWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
         deliverPreloadAutoCommand = new BarneyDeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
+        grabFromStackCommand = new BarneyGrabFromStackCommand(drive, lift, arm, wrist, gripper, stackIndex);
 
         drive.setPoseEstimate(BarneyAutoTrajectories.blue_StartPos);
         BarneyAutoTrajectories.generateTrajectories(drive);
@@ -77,10 +76,22 @@ public class Blue_1_5_Barney extends CommandOpMode {
         }
 
         schedule(new SequentialCommandGroup(
-                deliverPreloadAutoCommand, cycleToPoleAutoCommand,
+                deliverPreloadAutoCommand,
+                grabFromStackCommand,
                 new InstantCommand(() -> { stackIndex--; }),
-                cycleToStackAutoCommand, cycleToPoleAutoCommand,
-                new InstantCommand(() -> { stackIndex--; })
+                cycleToPoleAutoCommand,
+                cycleToStackWaypointAutoCommand, grabFromStackCommand,
+                new InstantCommand(() -> { stackIndex--; }),
+                cycleToPoleAutoCommand,
+                cycleToStackWaypointAutoCommand, grabFromStackCommand,
+                new InstantCommand(() -> { stackIndex--; }),
+                cycleToPoleAutoCommand,
+                cycleToStackWaypointAutoCommand//, grabFromStackCommand,
+//                new InstantCommand(() -> { stackIndex--; }),
+//                cycleToPoleAutoCommand,
+//                cycleToStackWaypointAutoCommand, grabFromStackCommand,
+//                new InstantCommand(() -> { stackIndex--; }),
+//                cycleToPoleAutoCommand
         ));
 
     }

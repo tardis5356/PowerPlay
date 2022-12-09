@@ -1,12 +1,21 @@
 package org.firstinspires.ftc.teamcode.commands.auto;
 
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.TRACK_WIDTH;
 import static java.lang.Math.toRadians;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
+import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationConstraint;
 
+import org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Barney;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+
+import java.util.Arrays;
 
 public class BarneyAutoTrajectories {
 
@@ -21,42 +30,56 @@ public class BarneyAutoTrajectories {
 
     public static final Pose2d blue_StartPos = new Pose2d(-36, 64, Math.toRadians(90));
 
-    public static final Pose2d blue_PreloadPolePos = new Pose2d(-32, 3, Math.toRadians(160));
+    public static final Pose2d blue_PreloadPolePos = new Pose2d(-31, 4, Math.toRadians(160));
 
-    public static final Pose2d blue_MainPolePos = new Pose2d(-8, 18, Math.toRadians(212));
+    public static final Pose2d blue_MainPolePos = new Pose2d(-8, 20, Math.toRadians(212));
 
-    public static final Pose2d blue_StackWaypointPos = new Pose2d(-50, 15, Math.toRadians(180)); // x -58
-    public static final Pose2d blue_StackPos = new Pose2d(-58, 15, Math.toRadians(180)); // x -58
+    public static final Pose2d blue_StackFarWaypointPos = new Pose2d(-38, 14, Math.toRadians(180)); // x -58
+    public static final Pose2d blue_StackCloseWaypointPos = new Pose2d(-50, 14, Math.toRadians(180)); // x -58
+    public static final Pose2d blue_StackPos = new Pose2d(-58, 14, Math.toRadians(180)); // x -58
 
-    public static TrajectorySequence blue_StartToPreloadPole, red_StartToPreloadPole, blue_PreloadPoleToStack, red_PreloadPoleToStack, blue_MainPoleToStack, red_PoleToStack, blue_StackToMainPole, red_StackToPole;
+    public static TrajectorySequence blue_StartToPreloadPole, red_StartToPreloadPole, blue_PreloadPoleToStackWaypoint, red_PreloadPoleToStack, blue_MainPoleToStackWaypoint, red_PoleToStack, blue_StackWaypointToStack, blue_StackToStackWaypoint, blue_StackWaypointToMainPole, red_StackToPole;
 
     public static void generateTrajectories(SampleMecanumDrive_Barney drive) {
         blue_StartToPreloadPole =
                 drive.trajectorySequenceBuilder(blue_StartPos)
                         .setReversed(true)
-                        .splineTo(new Vector2d(-36, 20), Math.toRadians(270))
-                        .splineToLinearHeading(blue_PreloadPolePos, Math.toRadians(340))
+//                        .splineTo(new Vector2d(-36, 20), Math.toRadians(270))
+                        .lineTo(new Vector2d(-36, 20))
+                        .splineToLinearHeading(blue_PreloadPolePos, Math.toRadians(340), SampleMecanumDrive_Barney.getVelocityConstraint(30, DriveConstants_Barney.MAX_ANG_VEL, DriveConstants_Barney.TRACK_WIDTH),
+                                SampleMecanumDrive_Barney.getAccelerationConstraint(DriveConstants_Barney.MAX_ACCEL))
                         .setReversed(false)
                         .build();
 
-        blue_PreloadPoleToStack =
+        blue_PreloadPoleToStackWaypoint =
                 drive.trajectorySequenceBuilder(blue_PreloadPolePos)
                         .back(-0.10)
-                        .splineToSplineHeading(blue_StackWaypointPos, Math.toRadians(180))
-                        .waitSeconds(0.5)
-                        .splineToSplineHeading(blue_StackPos, Math.toRadians(180))
+                        .splineToLinearHeading(blue_StackFarWaypointPos, Math.toRadians(180))
                         .build();
 
-        blue_MainPoleToStack =
+        blue_MainPoleToStackWaypoint =
                 drive.trajectorySequenceBuilder(blue_MainPolePos)
                         .back(-0.10)
-                        .splineToSplineHeading(blue_StackWaypointPos, Math.toRadians(180))
-                        .waitSeconds(0.5)
-                        .splineToSplineHeading(blue_StackPos, Math.toRadians(180))
+                        .splineToSplineHeading(blue_StackFarWaypointPos, Math.toRadians(180))
                         .build();
 
-        blue_StackToMainPole =
+        blue_StackWaypointToStack =
+                drive.trajectorySequenceBuilder(blue_StackFarWaypointPos)
+                        .back(-0.10)
+                        .lineTo(blue_StackPos.vec(), SampleMecanumDrive_Barney.getVelocityConstraint(10, DriveConstants_Barney.MAX_ANG_VEL, DriveConstants_Barney.TRACK_WIDTH),
+                                SampleMecanumDrive_Barney.getAccelerationConstraint(DriveConstants_Barney.MAX_ACCEL))
+                        .build();
+
+        blue_StackToStackWaypoint =
                 drive.trajectorySequenceBuilder(blue_StackPos)
+                        .back(-0.10)
+                        .lineTo(blue_StackCloseWaypointPos.vec(), SampleMecanumDrive_Barney.getVelocityConstraint(10, DriveConstants_Barney.MAX_ANG_VEL, DriveConstants_Barney.TRACK_WIDTH),
+                                SampleMecanumDrive_Barney.getAccelerationConstraint(DriveConstants_Barney.MAX_ACCEL))
+//                        .lineTo(blue_StackFarWaypointPos.vec())
+                        .build();
+
+        blue_StackWaypointToMainPole =
+                drive.trajectorySequenceBuilder(blue_StackCloseWaypointPos)
                         .back(0.10)
                         .splineToSplineHeading(blue_MainPolePos, Math.toRadians(32))
                         .build();

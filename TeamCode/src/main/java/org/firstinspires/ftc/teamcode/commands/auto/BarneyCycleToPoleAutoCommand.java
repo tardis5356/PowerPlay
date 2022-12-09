@@ -29,7 +29,7 @@ public class BarneyCycleToPoleAutoCommand extends SequentialCommandGroup {
                 new LiftToPositionCommand(lift, 400, 50),
                 new WaitCommand(1500),
                 new ParallelCommandGroup(
-                        new FollowTrajectoryCommand(drive, BarneyAutoTrajectories.blue_StackToMainPole),
+                        new FollowTrajectoryCommand(drive, BarneyAutoTrajectories.blue_StackWaypointToMainPole),
                         new SequentialCommandGroup(
                                 new WaitCommand(500),
                                 new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.HIGH_JUNCTION),

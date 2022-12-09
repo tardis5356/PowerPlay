@@ -11,13 +11,13 @@ public class BeaconArm extends SubsystemBase {
 
     private final double loadPosition = 0.99;
     private final double deliveryPosition = 0.43;
-    private final double storagePosition = 0.7;//guess, not tested
+    private final double storagePosition = 0.5;//guess, not tested
 
     public boolean loading = true;
 
     public BeaconArm(HardwareMap hardwareMap){
         servo = hardwareMap.get(Servo.class, "sBA");
-        toLoadingPosition();
+        toStoragePosition();
     }
 
     @Override

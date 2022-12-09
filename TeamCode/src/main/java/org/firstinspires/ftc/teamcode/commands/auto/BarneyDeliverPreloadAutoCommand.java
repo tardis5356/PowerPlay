@@ -35,14 +35,13 @@ public class BarneyDeliverPreloadAutoCommand extends SequentialCommandGroup {
                 new WaitCommand(1000),
                 new InstantCommand(gripper::open),
                 new ParallelCommandGroup(
-                        new FollowTrajectoryCommand(drive, BarneyAutoTrajectories.blue_PreloadPoleToStack),
+                        new FollowTrajectoryCommand(drive, BarneyAutoTrajectories.blue_PreloadPoleToStackWaypoint),
                         new SequentialCommandGroup(
                                 new WaitCommand(250),
                                 new LiftToIntakePositionCommand(lift, arm, gripper, wrist, Junctions.INTAKE, stackIndex)
-                        )
-                ),
-                new WaitCommand(500),
-                new InstantCommand(gripper::close)
+                        ),
+                        new InstantCommand(gripper::open)
+                )
         );
     }
 
