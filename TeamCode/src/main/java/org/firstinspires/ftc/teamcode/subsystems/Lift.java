@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.activeBot;
+
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.controller.PIDController;
@@ -11,11 +14,13 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 public class Lift extends SubsystemBase {
     private PIDController controller,
             extendController, retractController;
-    private DcMotorEx mL;
+    private DcMotorEx mL_Barney, mBL;
+    private CRServo mL_R2V2;
 
-    public static double pE = 0.07, pR = 0.0001, i = 0, d = 0;
-//    public static double pE = 0.05, iE = 0, dE = 0;
-//    public static double pR = 0.05, iR = 0, dR = 0;
+//    public String ACTIVE_BOT = activeBot;
+
+    public static double pE_Barney = BotPositions.Barney.lift.pE.position, pR_Barney = BotPositions.Barney.lift.pR.position, i_Barney = BotPositions.Barney.lift.i.position, d_Barney = BotPositions.Barney.lift.d.position;
+    public static double pE_R2V2 = BotPositions.R2V2.lift.p.position, iE_R2V2 = BotPositions.R2V2.lift.i.position, dE_R2V2 = BotPositions.R2V2.lift.d.position;
 
     public static double f = 0; // 0.2 NEEDS TESTING????
 
@@ -29,27 +34,36 @@ public class Lift extends SubsystemBase {
     public boolean retract = false;
 
     public Lift(HardwareMap hardwareMap) {
-        controller = new PIDController(pE, i, d);
 //        retractController = new PIDController(pR, iR, dR);
 //        telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry());
 
-        mL = hardwareMap.get(DcMotorEx.class, "mL");
+        if(activeBot == 0) {
+            controller = new PIDController(pE_Barney, i_Barney, d_Barney);
 
-        mL.setDirection(DcMotorEx.Direction.REVERSE);
+            mL_Barney = hardwareMap.get(DcMotorEx.class, "mL");
 
-        mL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        mL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            mL_Barney.setDirection(DcMotorEx.Direction.REVERSE);
 
+            mL_Barney.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            mL_Barney.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+        if(activeBot == 1) {
+            controller = new PIDController(pE_R2V2, iE_R2V2, dE_R2V2);
+
+            mL_R2V2 = hardwareMap.crservo.get("mL");
+            mBL = hardwareMap.get(DcMotorEx.class, "mBL");
+        }
 //        toIntakePosition();
     }
 
     public void periodic() {
-        liftPID();
+        if(activeBot == 0) liftPID_Barney();
+        if(activeBot == 1) liftPID_R2V2();
     }
 
     public void updatePIDValues() {
-        if (retract) controller.setP(pR);
-        else controller.setP(pE);
+        if (retract) controller.setP(pR_Barney);
+        else controller.setP(pE_Barney);
     }
 
     public void setTargetPosition(int targetPos) {
@@ -66,22 +80,30 @@ public class Lift extends SubsystemBase {
         else stickValue = stick * 0.75;
     }
 
-    public void liftPID() {
-        int liftPos = mL.getCurrentPosition();
+    public void liftPID_Barney() {
+        int liftPos = mL_Barney.getCurrentPosition();
         double pid = controller.calculate(liftPos, target);
         double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
 
         power = pid + ff + stickValue;
 
-//        if(BotPositions.LIFT_FULL_RETRACTION){
-//
-//        }
+        mL_Barney.setPower(power);
+    }
 
-        mL.setPower(power);
+    public void liftPID_R2V2() {
+        int liftPos = mBL.getCurrentPosition();
+        double pid = controller.calculate(liftPos, target);
+
+        power = pid + stickValue;
+
+        mL_R2V2.setPower(power);
     }
 
     public double getLiftPosition() {
-        return mL.getCurrentPosition();
+        double currentPos = 0;
+        if(activeBot == 0) currentPos = mL_Barney.getCurrentPosition();
+        if(activeBot == 1) currentPos = mBL.getCurrentPosition();
+        return currentPos;
     }
 
     public double getLiftPower() {

@@ -12,7 +12,7 @@ import java.util.Arrays;
 @Config
 public class BotPositions {
     //    public String activeBot = "Barney";
-    public String activeBot = "R2V2";
+    public static int activeBot = 1;
 
     private static <E extends Enum<E>, F extends Enum<F>>
     F mapEnum(E enum1, Class<F> enum2Class) {
@@ -180,7 +180,8 @@ public class BotPositions {
         }
     }
 
-//    if("Barney")
+    
+    if(1==1)
 
     {
         LIFT_FULL_RETRACTION = Barney.lift.FULL_RETRACTION.position;
@@ -210,7 +211,7 @@ public class BotPositions {
         BEACON_ARM_STORAGE = Barney.beacon_arm.STORAGE.position;
         BEACON_ARM_DELIVERY = Barney.beacon_arm.DELIVERY.position;
     }
-//        if(activeBot =="R2V2")
+        if(activeBot == 1)
 
     {
         LIFT_FULL_RETRACTION = R2V2.lift.FULL_RETRACTION.position;
