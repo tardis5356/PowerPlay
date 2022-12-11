@@ -17,7 +17,7 @@ public class Lift extends SubsystemBase {
 //    public static double pE = 0.05, iE = 0, dE = 0;
 //    public static double pR = 0.05, iR = 0, dR = 0;
 
-    public static double f = 0.2; // 0.2 NEEDS TESTING????
+    public static double f = 0; // 0.2 NEEDS TESTING????
 
     public static int target = 0;
 
@@ -72,6 +72,10 @@ public class Lift extends SubsystemBase {
         double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
 
         power = pid + ff + stickValue;
+
+//        if(BotPositions.LIFT_FULL_RETRACTION){
+//
+//        }
 
         mL.setPower(power);
     }
