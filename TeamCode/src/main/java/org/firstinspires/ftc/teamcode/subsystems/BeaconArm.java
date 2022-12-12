@@ -6,12 +6,12 @@ import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
+import org.firstinspires.ftc.teamcode.subsystems.BotPositions;
+
 public class BeaconArm extends SubsystemBase {
     private final Servo servo;
 
-    private final double loadPosition = 0.99;
-    private final double deliveryPosition = 0.43;
-    private final double storagePosition = 0.5; //guess, not tested
+    private final double loadPosition = BotPositions.BEACON_ARM_LOAD, deliveryPosition = BotPositions.BEACON_ARM_DELIVERY, storagePosition = BotPositions.BEACON_ARM_STORAGE; //guess, not tested
 
     public boolean loading = true;
 

@@ -14,28 +14,17 @@ public class BotPositions {
     //    public String activeBot = "Barney";
     public static int activeBot = 1;
 
-    private static <E extends Enum<E>, F extends Enum<F>>
-    F mapEnum(E enum1, Class<F> enum2Class) {
+    public static double LIFT_FULL_RETRACTION, LIFT_INTAKE, LIFT_GROUND_JUNCTION, LIFT_LOW_JUNCTION, LIFT_MEDIUM_JUNCTION, LIFT_HIGH_JUNCTION;
 
-        return Enum.valueOf(enum2Class, enum1.name());
-    }
+    public static double LIFT_pE, LIFT_pR, LIFT_iE, LIFT_dE;
 
-    public double LIFT_FULL_RETRACTION,
-            LIFT_INTAKE,
-            LIFT_GROUND_JUNCTION,
-            LIFT_LOW_JUNCTION,
-            LIFT_MEDIUM_JUNCTION,
-            LIFT_HIGH_JUNCTION;
+    public static double ARM_INIT, ARM_INTAKE, ARM_DELIVERY;
 
-    public double LIFT_pE, LIFT_pR, LIFT_iE, LIFT_dE;
+    public static double WRIST_INIT, WRIST_INTAKE, WRIST_DELIVERY;
 
-    public double ARM_INIT, ARM_INTAKE, ARM_DELIVERY;
+    public static double GRIPPER_OPEN, GRIPPER_CLOSED;
 
-    public double WRIST_INIT, WRIST_INTAKE, WRIST_DELIVERY;
-
-    public double GRIPPER_OPEN, GRIPPER_CLOSED;
-
-    public double BEACON_ARM_LOAD, BEACON_ARM_STORAGE, BEACON_ARM_DELIVERY;
+    public static double BEACON_ARM_LOAD, BEACON_ARM_STORAGE, BEACON_ARM_DELIVERY;
 
     public enum Barney {
         LIFT, ARM, WRIST, GRIPPER, BEACON_ARM;
@@ -180,67 +169,62 @@ public class BotPositions {
         }
     }
 
-    
-    if(1==1)
+    public static void setActiveBot() {
+        if (activeBot == 0) {
+            LIFT_FULL_RETRACTION = Barney.lift.FULL_RETRACTION.position;
+            LIFT_INTAKE = Barney.lift.INTAKE.position;
+            LIFT_GROUND_JUNCTION = Barney.lift.GROUND_JUNCTION.position;
+            LIFT_LOW_JUNCTION = Barney.lift.LOW_JUNCTION.position;
+            LIFT_MEDIUM_JUNCTION = Barney.lift.MEDIUM_JUNCTION.position;
+            LIFT_HIGH_JUNCTION = Barney.lift.HIGH_JUNCTION.position;
 
-    {
-        LIFT_FULL_RETRACTION = Barney.lift.FULL_RETRACTION.position;
-        LIFT_INTAKE = Barney.lift.INTAKE.position;
-        LIFT_GROUND_JUNCTION = Barney.lift.GROUND_JUNCTION.position;
-        LIFT_LOW_JUNCTION = Barney.lift.LOW_JUNCTION.position;
-        LIFT_MEDIUM_JUNCTION = Barney.lift.MEDIUM_JUNCTION.position;
-        LIFT_HIGH_JUNCTION = Barney.lift.HIGH_JUNCTION.position;
+            LIFT_pE = Barney.lift.pE.position;
+            LIFT_pR = Barney.lift.pR.position;
+            LIFT_iE = Barney.lift.i.position;
+            LIFT_dE = Barney.lift.d.position;
 
-        LIFT_pE = Barney.lift.pE.position;
-        LIFT_pR = Barney.lift.pR.position;
-        LIFT_iE = Barney.lift.i.position;
-        LIFT_dE = Barney.lift.d.position;
+            ARM_INIT = Barney.arm.INIT.position;
+            ARM_INTAKE = Barney.arm.INTAKE.position;
+            ARM_DELIVERY = Barney.arm.DELIVERY.position;
 
-        ARM_INIT = Barney.arm.INIT.position;
-        ARM_INTAKE = Barney.arm.INTAKE.position;
-        ARM_DELIVERY = Barney.arm.DELIVERY.position;
+            WRIST_INIT = Barney.wrist.INIT.position;
+            WRIST_INTAKE = Barney.wrist.INTAKE.position;
+            WRIST_DELIVERY = Barney.wrist.DELIVERY.position;
 
-        WRIST_INIT = Barney.wrist.INIT.position;
-        WRIST_INTAKE = Barney.wrist.INTAKE.position;
-        WRIST_DELIVERY = Barney.wrist.DELIVERY.position;
+            GRIPPER_OPEN = Barney.gripper.OPEN.position;
+            GRIPPER_CLOSED = Barney.gripper.CLOSED.position;
 
-        GRIPPER_OPEN = Barney.gripper.OPEN.position;
-        GRIPPER_CLOSED = Barney.gripper.CLOSED.position;
+            BEACON_ARM_LOAD = Barney.beacon_arm.LOAD.position;
+            BEACON_ARM_STORAGE = Barney.beacon_arm.STORAGE.position;
+            BEACON_ARM_DELIVERY = Barney.beacon_arm.DELIVERY.position;
+        }
+        if (activeBot == 1) {
+            LIFT_FULL_RETRACTION = R2V2.lift.FULL_RETRACTION.position;
+            LIFT_INTAKE = R2V2.lift.INTAKE.position;
+            LIFT_GROUND_JUNCTION = R2V2.lift.GROUND_JUNCTION.position;
+            LIFT_LOW_JUNCTION = R2V2.lift.LOW_JUNCTION.position;
+            LIFT_MEDIUM_JUNCTION = R2V2.lift.MEDIUM_JUNCTION.position;
+            LIFT_HIGH_JUNCTION = R2V2.lift.HIGH_JUNCTION.position;
 
-        BEACON_ARM_LOAD = Barney.beacon_arm.LOAD.position;
-        BEACON_ARM_STORAGE = Barney.beacon_arm.STORAGE.position;
-        BEACON_ARM_DELIVERY = Barney.beacon_arm.DELIVERY.position;
+            LIFT_pE = R2V2.lift.p.position;
+            LIFT_iE = R2V2.lift.i.position;
+            LIFT_dE = R2V2.lift.d.position;
+
+            ARM_INIT = R2V2.arm.INIT.position;
+            ARM_INTAKE = R2V2.arm.INTAKE.position;
+            ARM_DELIVERY = R2V2.arm.DELIVERY.position;
+
+            WRIST_INIT = R2V2.wrist.INIT.position;
+            WRIST_INTAKE = R2V2.wrist.INTAKE.position;
+            WRIST_DELIVERY = R2V2.wrist.DELIVERY.position;
+
+            GRIPPER_OPEN = R2V2.gripper.OPEN.position;
+            GRIPPER_CLOSED = R2V2.gripper.CLOSED.position;
+
+            BEACON_ARM_LOAD = R2V2.beacon_arm.LOAD.position;
+            BEACON_ARM_STORAGE = R2V2.beacon_arm.STORAGE.position;
+            BEACON_ARM_DELIVERY = R2V2.beacon_arm.DELIVERY.position;
+
+        }
     }
-        if(activeBot == 1)
-
-    {
-        LIFT_FULL_RETRACTION = R2V2.lift.FULL_RETRACTION.position;
-        LIFT_INTAKE = R2V2.lift.INTAKE.position;
-        LIFT_GROUND_JUNCTION = R2V2.lift.GROUND_JUNCTION.position;
-        LIFT_LOW_JUNCTION = R2V2.lift.LOW_JUNCTION.position;
-        LIFT_MEDIUM_JUNCTION = R2V2.lift.MEDIUM_JUNCTION.position;
-        LIFT_HIGH_JUNCTION = R2V2.lift.HIGH_JUNCTION.position;
-
-        LIFT_pE = R2V2.lift.p.position;
-        LIFT_iE = R2V2.lift.i.position;
-        LIFT_dE = R2V2.lift.d.position;
-
-        ARM_INIT = R2V2.arm.INIT.position;
-        ARM_INTAKE = R2V2.arm.INTAKE.position;
-        ARM_DELIVERY = R2V2.arm.DELIVERY.position;
-
-        WRIST_INIT = R2V2.wrist.INIT.position;
-        WRIST_INTAKE = R2V2.wrist.INTAKE.position;
-        WRIST_DELIVERY = R2V2.wrist.DELIVERY.position;
-
-        GRIPPER_OPEN = R2V2.gripper.OPEN.position;
-        GRIPPER_CLOSED = R2V2.gripper.CLOSED.position;
-
-        BEACON_ARM_LOAD = R2V2.beacon_arm.LOAD.position;
-        BEACON_ARM_STORAGE = R2V2.beacon_arm.STORAGE.position;
-        BEACON_ARM_DELIVERY = R2V2.beacon_arm.DELIVERY.position;
-
-    }
-
-
 }

@@ -14,11 +14,13 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.subsystems.BotPositions;
+
 @Config
 public class Arm extends SubsystemBase {
     private Servo servo;
 
-    public static double INIT_POSITION = 0.5, INTAKE_POSITION = 0.76, DELIVERY_POSITION = 0.4;//0.01
+    public static double INIT_POSITION = BotPositions.ARM_INIT, INTAKE_POSITION = BotPositions.ARM_INTAKE, DELIVERY_POSITION = BotPositions.ARM_DELIVERY;//0.01
 
     public double servoPosition;
 

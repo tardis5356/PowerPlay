@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.Range;
 public class Wrist extends SubsystemBase {
     private final Servo servo;
 
-    public static double INIT_POSITION = 0.8, INTAKE_POSITION = 0.3, DELIVER_POSITION = 0.9;//0.2
+    public static double INIT_POSITION = BotPositions.WRIST_INIT, INTAKE_POSITION = BotPositions.WRIST_INTAKE, DELIVER_POSITION = BotPositions.WRIST_DELIVERY;//0.2
     public double servoPositionWrist = 0;
 
     public Wrist(HardwareMap hardwareMap) {
