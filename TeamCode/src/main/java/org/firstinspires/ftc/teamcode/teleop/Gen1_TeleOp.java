@@ -41,6 +41,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
+import org.firstinspires.ftc.teamcode.subsystems.TapeMeasure;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 
 @TeleOp(name = "Gen1_TeleOp")
@@ -55,11 +56,12 @@ public class Gen1_TeleOp extends CommandOpMode {
     private boolean manualModeOn = false;
 
     private Drivetrain Drivetrain;
-    private Lift Lift;
-    private Arm Arm;
-    private Wrist Wrist;
-    private Gripper Gripper;
-    private BeaconArm BeaconArm;
+    private Lift lift;
+    private Arm arm;
+    private Wrist wrist;
+    private Gripper gripper;
+    private BeaconArm beaconArm;
+    private TapeMeasure tapeMeasure;
 
     //    private GrabStone m_grabCommand;
 //    private ReleaseStone m_releaseCommand;
@@ -102,22 +104,23 @@ public class Gen1_TeleOp extends CommandOpMode {
 
 //        Drivetrain = new Drivetrain(hardwareMap);
         //defining subsystems
-        Gripper = new Gripper(hardwareMap);
-        Lift = new Lift(hardwareMap);
-        Arm = new Arm(hardwareMap);
-        Wrist = new Wrist(hardwareMap);
-        BeaconArm = new BeaconArm(hardwareMap);
+        gripper = new Gripper(hardwareMap);
+        lift = new Lift(hardwareMap);
+        arm = new Arm(hardwareMap);
+        wrist = new Wrist(hardwareMap);
+        beaconArm = new BeaconArm(hardwareMap);
+        tapeMeasure = new TapeMeasure(hardwareMap);
 
 //        m_grabCommand = new GrabStone(m_gripper);
 //        m_releaseCommand = new ReleaseStone(m_gripper);
         //defining commands for presets for lift, arm, gripper, wrist
-        liftToIntakeCommand = new LiftToIntakePositionCommand(Lift, Arm, Gripper, Wrist, Junctions.INTAKE, 0);
-        liftRetractCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Wrist, Junctions.FULL_RETRACTION);
-        liftToGroundJunctionCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Wrist, Junctions.GROUND_JUNCTION);
-        liftToLowJunctionCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Wrist, Junctions.LOW_JUNCTION);
-        liftToMediumJunctionCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Wrist, Junctions.MEDIUM_JUNCTION);
-        liftToHighJunctionCommand = new LiftToScoringPositionCommand(Lift, Arm, Gripper, Wrist, Junctions.HIGH_JUNCTION);
-        manualLiftCommand = new ManualLiftCommand(Lift, manipulator.getLeftY());
+        liftToIntakeCommand = new LiftToIntakePositionCommand(lift, arm, gripper, wrist, Junctions.INTAKE, 0);
+        liftRetractCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.FULL_RETRACTION);
+        liftToGroundJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.GROUND_JUNCTION);
+        liftToLowJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.LOW_JUNCTION);
+        liftToMediumJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.MEDIUM_JUNCTION);
+        liftToHighJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.HIGH_JUNCTION);
+        manualLiftCommand = new ManualLiftCommand(lift, manipulator.getLeftY());
 
         // driver triggers
         //driver = gamepad 1
@@ -191,17 +194,24 @@ public class Gen1_TeleOp extends CommandOpMode {
                 .cancelWhenActive(manualLiftCommand);
 
             new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // closes gripper on left trigger
-                    .whenActive(() -> {if(!manualModeOn){ Gripper.close();} else{Arm.increasePosition();}} );
+                    .whenActive(() -> {if(!manualModeOn){ gripper.close();} else{arm.increasePosition();}} );
             new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5) // opens gripper on right trigger
-                    .whenActive(() -> { if(!manualModeOn) {Gripper.open();} else {Arm.decreasePosition();}} );
+                    .whenActive(() -> { if(!manualModeOn) {gripper.open();} else {arm.decreasePosition();}} );
 
 
         new Trigger(() -> driver.getButton(GamepadKeys.Button.LEFT_BUMPER)) // move beacon arm to loading position
-                .whenActive(() -> BeaconArm.toLoadingPosition());
+                .whenActive(() -> beaconArm.toLoadingPosition());
         new Trigger(() -> driver.getButton(GamepadKeys.Button.RIGHT_BUMPER)) // move beacon arm to scoring position
-                .whenActive(() -> BeaconArm.toDeliveryPosition());
-//        new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_UP)) // move beacon arm to storage position
-//                .whenActive(() -> BeaconArm.toStoragePosition());
+                .whenActive(() -> beaconArm.toDeliveryPosition());
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_UP)) // move beacon arm to storage position
+                .whenActive(() -> beaconArm.toStoragePosition());
+
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_LEFT))
+                .whileActiveContinuous(() -> tapeMeasure.retract());
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_RIGHT))
+                .whileActiveContinuous(() -> tapeMeasure.extend());
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_DOWN))
+                .whileActiveContinuous(() -> tapeMeasure.stop());
     }
 
     @Override
@@ -232,47 +242,47 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         if(manualModeOn){
 
-            Lift.manualControl(-gamepad2.left_stick_y);
+            lift.manualControl(-gamepad2.left_stick_y);
 
             //controls gripper
             if(gamepad2.dpad_right){
-            Gripper.increasePosition();
+            gripper.increasePosition();
 
              }
             if(gamepad2.dpad_left){
-            Gripper.decreasePosition();
+            gripper.decreasePosition();
              }
 
             //controls wrist
             if(gamepad2.right_bumper){
-                Wrist.increasePosition();
+                wrist.increasePosition();
 
             }
             if(gamepad2.left_bumper){
-                Wrist.decreasePosition();
+                wrist.decreasePosition();
             }
 
             //controls arm
             if(gamepad2.right_trigger == 1){
-                Arm.increasePosition();
+                arm.increasePosition();
 
             }
             if(gamepad2.left_trigger == 1){
-                Arm.decreasePosition();
+                arm.decreasePosition();
             }
 
         }
 //        if(gamepad2.right_bumper){
-//            Gripper.close();
+//            gripper.close();
 //        }
 //        if(gamepad2.left_bumper){
-//            Gripper.open();
+//            gripper.open();
 //        }
 
-//        Gripper.open();
+//        gripper.open();
 
 
-//        Lift.manualControl(-gamepad2.left_stick_y);
+//        lift.manualControl(-gamepad2.left_stick_y);
 
         //ANTI-TIP
 //        (m−rmin/rmax−rmin)×(tmax−tmin)+tmin // FORMULA
@@ -298,14 +308,14 @@ public class Gen1_TeleOp extends CommandOpMode {
 //
 //        telemetry.addData("weightedPowerMultiplier", weightedPowerMultiplier);
 //        telemetry.addData("powerMultiplier", powerMultiplier);
-        telemetry.addData("lift pos", Lift.getLiftPosition());
-        telemetry.addData("lift power", Lift.getLiftPower());
-        telemetry.addData("lift target", Lift.target);
+        telemetry.addData("lift pos", lift.getLiftPosition());
+        telemetry.addData("lift power", lift.getLiftPower());
+        telemetry.addData("lift target", lift.target);
 
-        telemetry.addData("arm pos", Arm.getArmPosition());
-        telemetry.addData("gripper pos", Gripper.getGripperPosition());
-        telemetry.addData("beacon pos", BeaconArm.getBeaconArmPosition());
-        telemetry.addData("wrist pos",  String.format("%.2f", Wrist.getWristPosition()));
+        telemetry.addData("arm pos", arm.getArmPosition());
+        telemetry.addData("gripper pos", gripper.getGripperPosition());
+        telemetry.addData("beacon pos", beaconArm.getBeaconArmPosition());
+        telemetry.addData("wrist pos",  String.format("%.2f", wrist.getWristPosition()));
 
         telemetry.addData("right odometer", mFR.getCurrentPosition());
         telemetry.addData("back odometer", mBR.getCurrentPosition());
