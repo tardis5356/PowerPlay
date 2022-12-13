@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.setActiveBot;
 import static java.lang.Math.abs;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -28,9 +29,9 @@ import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Junctions;
-//import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Lift2;
+import org.firstinspires.ftc.teamcode.subsystems.TapeMeasure;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 
 @TeleOp(name = "Gen2_TeleOp")
@@ -50,6 +51,7 @@ public class Gen2_TeleOp extends CommandOpMode {
     private Wrist wrist;
     private Gripper gripper;
     private BeaconArm beaconArm;
+    private TapeMeasure tapeMeasure;
 
     //    private GrabStone m_grabCommand;
 //    private ReleaseStone m_releaseCommand;
@@ -88,8 +90,10 @@ public class Gen2_TeleOp extends CommandOpMode {
 
         imu.initialize(parameters);
 
-        telemetry.addData("powerMultiplier", powerMultiplier);
+        telemetry.addData("Ready to start!", getRuntime());
         telemetry.update();
+
+        setActiveBot();
 
         Drivetrain = new Drivetrain(hardwareMap);
 //        defining subsystems
@@ -98,6 +102,7 @@ public class Gen2_TeleOp extends CommandOpMode {
         arm = new Arm(hardwareMap);
         wrist = new Wrist(hardwareMap);
         beaconArm = new BeaconArm(hardwareMap);
+        tapeMeasure = new TapeMeasure(hardwareMap);
 
 //        m_grabCommand = new GrabStone(m_gripper);
 //        m_releaseCommand = new ReleaseStone(m_gripper);
@@ -150,15 +155,15 @@ public class Gen2_TeleOp extends CommandOpMode {
 //                .cancelWhenActive(liftToIntakeCommand)
 //                .cancelWhenActive(manualLiftCommand)
 //                .cancelWhenActive(liftRetractCommand);
-//        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.Y)) // extend to medium junction and slow drive base on Y button
-//                .whenActive(liftToMediumJunctionCommand)
-//                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
-//                .cancelWhenActive(liftToHighJunctionCommand)
-//                .cancelWhenActive(liftToLowJunctionCommand)
-//                .cancelWhenActive(liftToGroundJunctionCommand)
-//                .cancelWhenActive(liftToIntakeCommand)
-//                .cancelWhenActive(manualLiftCommand)
-//                .cancelWhenActive(liftRetractCommand);
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.Y)) // extend to medium junction and slow drive base on Y button
+                .whenActive(liftToMediumJunctionCommand)
+                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
+                .cancelWhenActive(liftToHighJunctionCommand)
+                .cancelWhenActive(liftToLowJunctionCommand)
+                .cancelWhenActive(liftToGroundJunctionCommand)
+                .cancelWhenActive(liftToIntakeCommand)
+                .cancelWhenActive(manualLiftCommand)
+                .cancelWhenActive(liftRetractCommand);
 //        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.B)) // extend to high junction and slow drive base on X button
 //                .whenActive(liftToHighJunctionCommand)
 //                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
@@ -179,15 +184,15 @@ public class Gen2_TeleOp extends CommandOpMode {
 //                .cancelWhenActive(liftToIntakeCommand)
 //                .cancelWhenActive(liftRetractCommand);
 
-//        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_DOWN)) // retract to intake and speed up drive base on DOWN button
-//                .whenActive(liftToIntakeCommand)
-//                .whenActive(() -> powerMultiplier = FAST_POWER_MULTIPLIER)
-//                .cancelWhenActive(liftToHighJunctionCommand)
-//                .cancelWhenActive(liftToMediumJunctionCommand)
-//                .cancelWhenActive(liftToLowJunctionCommand)
-//                .cancelWhenActive(liftToGroundJunctionCommand)
-//                .cancelWhenActive(liftRetractCommand)
-//                .cancelWhenActive(manualLiftCommand);
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_DOWN)) // retract to intake and speed up drive base on DOWN button
+                .whenActive(liftToIntakeCommand)
+                .whenActive(() -> powerMultiplier = FAST_POWER_MULTIPLIER)
+                .cancelWhenActive(liftToHighJunctionCommand)
+                .cancelWhenActive(liftToMediumJunctionCommand)
+                .cancelWhenActive(liftToLowJunctionCommand)
+                .cancelWhenActive(liftToGroundJunctionCommand)
+                .cancelWhenActive(liftRetractCommand)
+                .cancelWhenActive(manualLiftCommand);
 
         new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // closes gripper on left trigger
                 .whenActive(() -> {
@@ -213,6 +218,13 @@ public class Gen2_TeleOp extends CommandOpMode {
                 .whenActive(() -> beaconArm.toDeliveryPosition());
 //        new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_UP)) // move beacon arm to storage position
 //                .whenActive(() -> beaconArm.toStoragePosition());
+
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_LEFT))
+                .whileActiveContinuous(() -> tapeMeasure.retract());
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_RIGHT))
+                .whileActiveContinuous(() -> tapeMeasure.extend());
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_UP))
+                .whileActiveContinuous(() -> tapeMeasure.stop());
     }
 
     @Override
@@ -282,7 +294,7 @@ public class Gen2_TeleOp extends CommandOpMode {
 //        gripper.open();
 
 
-        lift.manualControl(-gamepad2.left_stick_y);
+        lift.manualControl(gamepad2.left_stick_y);
 //
 //        //ANTI-TIP
 //        (m−rmin/rmax−rmin)×(tmax−tmin)+tmin // FORMULA
@@ -308,10 +320,9 @@ public class Gen2_TeleOp extends CommandOpMode {
 //
 //        telemetry.addData("weightedPowerMultiplier", weightedPowerMultiplier);
         telemetry.addData("powerMultiplier", powerMultiplier);
-        telemetry.addLine()
-                .addData("lift pos", lift.getLiftPosition())
-                .addData("lift power", lift.getLiftPower())
-                .addData("lift target", lift.target);
+        telemetry.addData("lift pos", lift.getLiftPosition());
+        telemetry.addData("lift power", lift.getLiftPower());
+        telemetry.addData("lift target", lift.target);
 
         telemetry.addData("arm pos", arm.getArmPosition());
         telemetry.addData("gripper pos", gripper.getGripperPosition());
@@ -321,10 +332,9 @@ public class Gen2_TeleOp extends CommandOpMode {
         telemetry.addData("manual mode is", manualModeOn);
 
         telemetry.addLine("odometers");
-        telemetry.addLine()
-                .addData("right: ", mFR.getCurrentPosition())
-                .addData("  back: ", mBR.getCurrentPosition())
-                .addData("  left: ", mFL.getCurrentPosition());
+        telemetry.addData("right: ", mFR.getCurrentPosition());
+        telemetry.addData("  back: ", mBR.getCurrentPosition());
+        telemetry.addData("  left: ", mFL.getCurrentPosition());
 
         telemetry.update();
 //    }

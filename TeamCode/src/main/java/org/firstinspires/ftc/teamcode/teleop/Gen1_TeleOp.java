@@ -70,7 +70,6 @@ public class Gen1_TeleOp extends CommandOpMode {
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
-
     @Override
     public void initialize() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());

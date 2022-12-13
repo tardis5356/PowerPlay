@@ -11,12 +11,13 @@ import com.qualcomm.robotcore.util.Range;
 public class Gripper extends SubsystemBase {
     private Servo servo;
 
-    public static double OPEN_POSITION = BotPositions.GRIPPER_OPEN, CLOSED_POSITION = BotPositions.GRIPPER_CLOSED;
+//    public static double OPEN_POSITION = BotPositions.GRIPPER_OPEN, CLOSED_POSITION = BotPositions.GRIPPER_CLOSED;
+    public static double OPEN_POSITION = BotPositions.GRIPPER_OPEN_R2V2, CLOSED_POSITION = BotPositions.GRIPPER_CLOSED_R2V2;
     public double servoPosition = 0;
 
     public Gripper(HardwareMap hardwareMap) {
         servo = hardwareMap.get(Servo.class, "sG");
-//        open();
+        open();
     }
 
     @Override
@@ -32,13 +33,13 @@ public class Gripper extends SubsystemBase {
 
     public void increasePosition() {
         servoPosition += 0.005;
-        servoPosition = (Range.clip(servoPosition, 0.7,1));
+        servoPosition = (Range.clip(servoPosition, 0,1));
         servo.setPosition(servoPosition);
     }
 
     public void decreasePosition() {
         servoPosition -= 0.005;
-        servoPosition = (Range.clip(servoPosition, 0.7,1));
+        servoPosition = (Range.clip(servoPosition, 0,1));
         servo.setPosition(servoPosition);
 
     }
