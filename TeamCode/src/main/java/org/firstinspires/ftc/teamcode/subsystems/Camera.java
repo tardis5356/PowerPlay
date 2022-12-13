@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-//import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-//import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.arcrobotics.ftclib.command.SubsystemBase;
@@ -11,7 +13,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
-
 
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -30,7 +31,6 @@ import java.util.ArrayList;
 @Config
 
 
-
 public class Camera extends SubsystemBase {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
@@ -46,26 +46,23 @@ public class Camera extends SubsystemBase {
     int MIDDLE = 2;
     int RIGHT = 3;
 
-    void tagToTelemetry(AprilTagDetection detection)
-    {
-//        telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
-//        telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x*FEET_PER_METER));
-//        telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y*FEET_PER_METER));
-//        telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z*FEET_PER_METER));
-//        telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", Math.toDegrees(detection.pose.yaw)));
-//        telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
-//        telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
+    void tagToTelemetry(AprilTagDetection detection, MultipleTelemetry telemetry) {
+        telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
+        telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x * FEET_PER_METER));
+        telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y * FEET_PER_METER));
+        telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z * FEET_PER_METER));
+        telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", Math.toDegrees(detection.pose.yaw)));
+        telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
+        telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
     }
 
 
-    public Camera(HardwareMap hardwareMap) {
+    public Camera(HardwareMap hardwareMap, MultipleTelemetry telemetry) {
+//        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        camera = OpenCvCameraFactory.getInstance().
-
-                createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        aprilTagDetectionPipeline = new
-
-                AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
 
         camera.setPipeline(aprilTagDetectionPipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -78,21 +75,18 @@ public class Camera extends SubsystemBase {
             public void onError(int errorCode) {
 
             }
-    });
+        });
 
 
+        ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
+    }
 
-
-//        telemetry.setMsTransmissionInterval(50);
-//
-//
-       ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
-//
+    public void scanSignal(ArrayList<AprilTagDetection> currentDetections, MultipleTelemetry telemetry) {
         if (currentDetections.size() != 0) {
             boolean tagFound = false;
 
             for (AprilTagDetection tag : currentDetections) {
-                //telemetry.addData("tag id", tag.id);
+                telemetry.addData("tag id", tag.id);
                 if (tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT) {
                     tagOfInterest = tag;
                     tagFound = true;
@@ -101,51 +95,33 @@ public class Camera extends SubsystemBase {
             }
 //
             if (tagFound) {
-                //telemetry.addLine("Tag of interest is in sight!\n\nLocation data:");
-                tagToTelemetry(tagOfInterest);
+                telemetry.addLine("Tag of interest is in sight!\n\nLocation data:");
+                tagToTelemetry(tagOfInterest, telemetry);
             } else {
-                //telemetry.addLine("Don't see tag of interest :(");
+                telemetry.addLine("Don't see tag of interest :(");
 
                 if (tagOfInterest == null) {
-                    //telemetry.addLine("(The tag has never been seen)");
+                    telemetry.addLine("(The tag has never been seen)");
                 } else {
-                    //telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
-                    tagToTelemetry(tagOfInterest);
+                    telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
+                    tagToTelemetry(tagOfInterest, telemetry);
                 }
             }
 
         } else {
-            //telemetry.addLine("Don't see tag of interest :(");
+            telemetry.addLine("Don't see tag of interest :(");
 
             if (tagOfInterest == null) {
-              //  telemetry.addLine("(The tag has never been seen)");
+                  telemetry.addLine("(The tag has never been seen)");
             } else {
-                //telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
-                tagToTelemetry(tagOfInterest);
+                telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
+                tagToTelemetry(tagOfInterest, telemetry);
             }
 
         }
-
-//        telemetry.update();
-//
-//        sleep(20);
-//
-//
-////        if (isStopRequested()) return;
-//        //A2 starting
-//
-//        if (tagOfInterest != null) {
-//            telemetry.addLine("Tag snapshot:\n");
-//            tagToTelemetry(tagOfInterest);
-//            telemetry.update();
-//        } else {
-//            telemetry.addLine("No tag snapshot available, it was never sighted during the init loop :(");
-//            telemetry.update();
-//
-
-        }
-
     }
+
+}
 
 
 
