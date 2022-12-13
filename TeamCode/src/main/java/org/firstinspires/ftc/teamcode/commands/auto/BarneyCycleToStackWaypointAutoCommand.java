@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Barney;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
@@ -14,11 +15,11 @@ public class BarneyCycleToStackWaypointAutoCommand extends ParallelCommandGroup 
 
     private Gripper gripper;
 
-    public BarneyCycleToStackWaypointAutoCommand(SampleMecanumDrive_Barney drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, int stackIndex) {
+    public BarneyCycleToStackWaypointAutoCommand(SampleMecanumDrive_R2V2 drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, int stackIndex) {
         this.gripper = gripper;
 
         addCommands(
-                new FollowTrajectoryCommand(drive, BarneyAutoTrajectories.blue_MainPoleToStackWaypoint)
+                new FollowTrajectoryCommand(drive, R2V2AutoTrajectories.blue_MainPoleToStackWaypoint)
         );
     }
 

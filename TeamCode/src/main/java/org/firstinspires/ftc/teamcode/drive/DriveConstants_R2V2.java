@@ -46,7 +46,7 @@ public class DriveConstants_R2V2 {
      */
     public static double WHEEL_RADIUS = 96/25.4/2; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 9.5;//10.25; // in, 9.09
+    public static double TRACK_WIDTH = 9.43;//9.43; // in, 9.09
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -54,8 +54,8 @@ public class DriveConstants_R2V2 {
      * motor encoders or have elected not to use them for velocity control, these values should be
      * empirically tuned.
      */
-    public static double kV = 1.0 / rpmToVelocity(MAX_RPM);
-    public static double kA = 0;
+    public static double kV = 0.018;//1.0 / rpmToVelocity(MAX_RPM);
+    public static double kA = 0.004;
     public static double kStatic = 0;
 
     /*

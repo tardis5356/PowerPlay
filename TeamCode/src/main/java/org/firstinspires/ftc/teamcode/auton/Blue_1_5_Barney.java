@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.commands.auto.BarneyCycleToPoleAutoCommand
 import org.firstinspires.ftc.teamcode.commands.auto.BarneyCycleToStackWaypointAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.BarneyDeliverPreloadAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.BarneyGrabFromStackCommand;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Barney;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
@@ -25,7 +25,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Junctions;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.commands.auto.BarneyAutoTrajectories;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2AutoTrajectories;
 
 @Autonomous(group = "drive", name = "Barney Blue 1+5")
 public class Blue_1_5_Barney extends CommandOpMode {
@@ -37,7 +37,7 @@ public class Blue_1_5_Barney extends CommandOpMode {
     int totalCycles = 0;
     int stackIndex = 4;
 
-    private SampleMecanumDrive_Barney drive;
+    private SampleMecanumDrive_R2V2 drive;
     private Lift lift;
     private Arm arm;
     private Wrist wrist;
@@ -53,7 +53,7 @@ public class Blue_1_5_Barney extends CommandOpMode {
 
     @Override
     public void initialize() {
-        drive = new SampleMecanumDrive_Barney(hardwareMap);
+        drive = new SampleMecanumDrive_R2V2(hardwareMap);
         gripper = new Gripper(hardwareMap);
         lift = new Lift(hardwareMap);
         arm = new Arm(hardwareMap);
@@ -65,8 +65,8 @@ public class Blue_1_5_Barney extends CommandOpMode {
         deliverPreloadAutoCommand = new BarneyDeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
         grabFromStackCommand = new BarneyGrabFromStackCommand(drive, lift, arm, wrist, gripper, stackIndex);
 
-        drive.setPoseEstimate(BarneyAutoTrajectories.blue_StartPos);
-        BarneyAutoTrajectories.generateTrajectories(drive);
+        drive.setPoseEstimate(R2V2AutoTrajectories.blue_StartPos);
+        R2V2AutoTrajectories.generateTrajectories(drive);
 
         gripper.close();
 

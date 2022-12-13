@@ -6,8 +6,9 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Barney;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 
 /*
  * Op mode for preliminary tuning of the follower PID coefficients (located in the drive base
@@ -36,7 +37,7 @@ public class BackAndForth extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        SampleMecanumDrive_Barney drive = new SampleMecanumDrive_Barney(hardwareMap);
+        SampleMecanumDrive_R2V2 drive = new SampleMecanumDrive_R2V2(hardwareMap);
 
         Trajectory trajectoryForward = drive.trajectoryBuilder(new Pose2d())
                 .lineToConstantHeading(new Vector2d(DISTANCE, 0))
@@ -60,12 +61,22 @@ public class BackAndForth extends LinearOpMode {
 
         waitForStart();
 
-        while (opModeIsActive() && !isStopRequested() && (cycles < numberOfCycles)) {
+        while (opModeIsActive() && !isStopRequested())/*&& (cycles < numberOfCycles))*/ {
             drive.followTrajectory(trajectoryForward);
             drive.followTrajectory(trajectoryBackward);
 //            drive.followTrajectory(trajectoryStrafeRight);
 //            drive.followTrajectory(trajectoryStrafeLeft);
-            cycles += 1;
+           // cycles += 1;
+            Pose2d poseEstimate = drive.getPoseEstimate();
+            telemetry.addData("x", poseEstimate.getX());
+            telemetry.addData("y", poseEstimate.getY()); //
+            telemetry.addData("wheel positions", drive.getWheelPositions());
+            telemetry.addData("mFL", hardwareMap.get(DcMotorEx.class, "mFL").getCurrentPosition() );
+            telemetry.addData("mFR", -hardwareMap.get(DcMotorEx.class, "mFR").getCurrentPosition() );
+            telemetry.addData("mBL", hardwareMap.get(DcMotorEx.class, "mBL").getCurrentPosition() );
+            telemetry.addData("mBR", hardwareMap.get(DcMotorEx.class, "mBR").getCurrentPosition() );
+            telemetry.addData("heading", poseEstimate.getHeading());
+            telemetry.update();
         }
     }
 }
