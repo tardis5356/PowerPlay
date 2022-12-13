@@ -108,7 +108,7 @@ public class BotPositions {
 
     public static double GRIPPER_OPEN_R2V2 = 0.4, GRIPPER_CLOSED_R2V2 = 0.5;
 
-    public static double BEACON_ARM_LOAD_R2V2 = 0.4, BEACON_ARM_STORAGE_R2V2 = 0.7, BEACON_ARM_DELIVERY_R2V2 = 0.5;
+    public static double BEACON_ARM_LOAD_R2V2 = 1, BEACON_ARM_STORAGE_R2V2 = 0.6, BEACON_ARM_DELIVERY_R2V2 = 0.8;
 
     public static void setActiveBot() {
         if (activeBot == 0) {
