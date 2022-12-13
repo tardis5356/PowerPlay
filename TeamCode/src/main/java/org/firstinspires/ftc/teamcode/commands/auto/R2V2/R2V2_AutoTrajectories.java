@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.commands.auto;
+package org.firstinspires.ftc.teamcode.commands.auto.R2V2;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.drive.DriveConstants_R2V2;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-public class R2V2AutoTrajectories {
+public class R2V2_AutoTrajectories {
 
     /*
         _StartToPreloadPole
@@ -73,6 +73,8 @@ public class R2V2AutoTrajectories {
                         .back(0.10)
                         .splineToSplineHeading(blue_MainPolePos, Math.toRadians(32))
                         .build();
+
+//        blue_Park
     }
 
 }

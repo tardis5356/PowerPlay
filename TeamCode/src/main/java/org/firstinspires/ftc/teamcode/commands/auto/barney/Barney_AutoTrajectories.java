@@ -1,23 +1,13 @@
-package org.firstinspires.ftc.teamcode.commands.auto;
-
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney.TRACK_WIDTH;
-import static java.lang.Math.toRadians;
+package org.firstinspires.ftc.teamcode.commands.auto.barney;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
-import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstraint;
-import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
-import com.acmerobotics.roadrunner.trajectory.constraints.MinVelocityConstraint;
-import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationConstraint;
 
 import org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Barney;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-import java.util.Arrays;
-
-public class BarneyAutoTrajectories {
+public class Barney_AutoTrajectories {
 
     /*
         _StartToPreloadPole
