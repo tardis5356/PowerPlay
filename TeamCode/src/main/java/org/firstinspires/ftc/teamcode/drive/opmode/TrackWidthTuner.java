@@ -10,9 +10,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.MovingStatistics;
 
 import org.firstinspires.ftc.robotcore.internal.system.Misc;
-import org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Barney;
-import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer_Barney;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants_R2V2;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
+import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer_R2V2;
 
 /*
  * This routine determines the effective track width. The procedure works by executing a point turn
@@ -38,11 +38,11 @@ public class TrackWidthTuner extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        //make sure that this points to the right bot - ie barney or mse
-        SampleMecanumDrive_Barney drive = new SampleMecanumDrive_Barney(hardwareMap);
+        //make sure that this points to the right bot - ie R2V2 or mse
+        SampleMecanumDrive_R2V2 drive = new SampleMecanumDrive_R2V2(hardwareMap);
         // TODO: if you haven't already, set the localizer to something that doesn't depend on
         // drive encoders for computing the heading
-//        setLocalizer(new StandardTrackingWheelLocalizer_Barney(hardwareMap));
+//        setLocalizer(new StandardTrackingWheelLocalizer_R2V2(hardwareMap));
 
 
         telemetry.addLine("Press play to begin the track width tuner routine");
@@ -75,7 +75,7 @@ public class TrackWidthTuner extends LinearOpMode {
                 drive.update();
             }
 
-            double trackWidth = DriveConstants_Barney.TRACK_WIDTH * Math.toRadians(ANGLE) / headingAccumulator;
+            double trackWidth = DriveConstants_R2V2.TRACK_WIDTH * Math.toRadians(ANGLE) / headingAccumulator;
             trackWidthStats.add(trackWidth);
 
             sleep(DELAY);

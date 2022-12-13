@@ -9,6 +9,7 @@ import com.arcrobotics.ftclib.command.WaitCommand;
 import org.firstinspires.ftc.teamcode.commands.LiftToIntakePositionCommand;
 import org.firstinspires.ftc.teamcode.commands.LiftToPositionCommand;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Barney;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Junctions;
@@ -20,20 +21,20 @@ public class BarneyGrabFromStackCommand extends SequentialCommandGroup {
 
     private Gripper gripper;
 
-    public BarneyGrabFromStackCommand(SampleMecanumDrive_Barney drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, int stackIndex) {
+    public BarneyGrabFromStackCommand(SampleMecanumDrive_R2V2 drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, int stackIndex) {
         this.gripper = gripper;
 
         addCommands(
-                new LiftToIntakePositionCommand(lift, arm, gripper, wrist, Junctions.INTAKE, stackIndex),
-//                new InstantCommand(gripper::open),
+//                new LiftToIntakePositionCommand(lift, arm, gripper, wrist, Junctions.INTAKE, stackIndex),
+////                new InstantCommand(gripper::open),
+////                new WaitCommand(250),
+                new FollowTrajectoryCommand(drive, R2V2AutoTrajectories.blue_StackWaypointToStack),
 //                new WaitCommand(250),
-                new FollowTrajectoryCommand(drive, BarneyAutoTrajectories.blue_StackWaypointToStack),
-                new WaitCommand(250),
-                new InstantCommand(gripper::close),
+//                new InstantCommand(gripper::close),
                 new WaitCommand(250),
                 new ParallelCommandGroup(
-                        new FollowTrajectoryCommand(drive, BarneyAutoTrajectories.blue_StackToStackWaypoint),
-                        new LiftToIntakePositionCommand(lift, arm, gripper, wrist, Junctions.INTAKE, 8)
+                        new FollowTrajectoryCommand(drive, R2V2AutoTrajectories.blue_StackToStackWaypoint)//,
+//                        new LiftToIntakePositionCommand(lift, arm, gripper, wrist, Junctions.INTAKE, 8)
                 )
         );
     }
