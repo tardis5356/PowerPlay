@@ -63,9 +63,6 @@ public class Gen1_TeleOp extends CommandOpMode {
     private BeaconArm beaconArm;
     private TapeMeasure tapeMeasure;
 
-    //    private GrabStone m_grabCommand;
-//    private ReleaseStone m_releaseCommand;
-    private Button m_grabButton, m_releaseButton;
     private LiftToScoringPositionCommand liftRetractCommand, liftToGroundJunctionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
     private LiftToIntakePositionCommand liftToIntakeCommand;
     private ManualLiftCommand manualLiftCommand;

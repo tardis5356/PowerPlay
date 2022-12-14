@@ -19,7 +19,7 @@ public class Lift extends SubsystemBase {
 
 //    public String ACTIVE_BOT = activeBot;
 
-    public static double pE_Barney = BotPositions.Barney.lift.pE.position, pR_Barney = BotPositions.Barney.lift.pR.position, i_Barney = BotPositions.Barney.lift.i.position, d_Barney = BotPositions.Barney.lift.d.position;
+    public static double pE_Barney = BotPositions.LIFT_pE_Barney, pR_Barney = BotPositions.LIFT_pR_Barney, i_Barney = BotPositions.LIFT_i_Barney, d_Barney = BotPositions.LIFT_d_Barney;
     public static double pE_R2V2 = BotPositions.LIFT_p_R2V2, iE_R2V2 = BotPositions.LIFT_i_R2V2, dE_R2V2 = BotPositions.LIFT_d_R2V2;
 
     public static double f = 0; // 0.2 NEEDS TESTING????
@@ -80,7 +80,7 @@ public class Lift extends SubsystemBase {
             if (stick < 0) stickValue = stick * 0.2;
             else stickValue = stick * 0.75;
         }else{
-            stickValue = stick * 0.6;
+            stickValue = stick * 1;
         }
     }
 

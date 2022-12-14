@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_CycleToPoleAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_CycleToStackWaypointAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_DeliverPreloadAutoCommand;
+import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_FollowTrajectoryCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_GrabFromStackCommand;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Barney;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
@@ -225,12 +226,12 @@ public class Blue_1_5_Barney extends CommandOpMode {
                     stackIndex--;
                 }),
                 cycleToPoleAutoCommand,
-                cycleToStackWaypointAutoCommand, grabFromStackCommand,
-                new InstantCommand(() -> {
-                    stackIndex--;
-                }),
-                cycleToPoleAutoCommand,
-                cycleToStackWaypointAutoCommand//, grabFromStackCommand,
+                cycleToStackWaypointAutoCommand, new Barney_FollowTrajectoryCommand(drive, parkTrajectory)//grabFromStackCommand,
+//                new InstantCommand(() -> {
+//                    stackIndex--;
+//                }),
+//                cycleToPoleAutoCommand,
+//                cycleToStackWaypointAutoCommand//, grabFromStackCommand,
 //                new InstantCommand(() -> { stackIndex--; }),
 //                cycleToPoleAutoCommand,
 //                cycleToStackWaypointAutoCommand, grabFromStackCommand,

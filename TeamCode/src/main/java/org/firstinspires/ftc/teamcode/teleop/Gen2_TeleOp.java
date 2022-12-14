@@ -104,9 +104,6 @@ public class Gen2_TeleOp extends CommandOpMode {
         beaconArm = new BeaconArm(hardwareMap);
         tapeMeasure = new TapeMeasure(hardwareMap);
 
-//        m_grabCommand = new GrabStone(m_gripper);
-//        m_releaseCommand = new ReleaseStone(m_gripper);
-        //defining commands for presets for lift, arm, gripper, wrist
         liftToIntakeCommand = new LiftToIntakePositionCommand(lift, arm, gripper, wrist, Junctions.INTAKE, 0);
         liftRetractCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.FULL_RETRACTION);
         liftToGroundJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.GROUND_JUNCTION);

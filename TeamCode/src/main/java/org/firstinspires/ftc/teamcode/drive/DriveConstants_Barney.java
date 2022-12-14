@@ -65,10 +65,10 @@ public class DriveConstants_Barney {
      * small and gradually increase them later after everything is working. All distance units are
      * inches.
      */
-    public static double MAX_VEL = 52.65;//86; (in/s)
-    public static double MAX_ACCEL = 52.65;//120; //68.7
-    public static double MAX_ANG_VEL = Math.toRadians(180);
-    public static double MAX_ANG_ACCEL = Math.toRadians(180);
+    public static double MAX_VEL = 32.65;//86; (in/s)   //2022-12-13 52.65
+    public static double MAX_ACCEL = 32.65;//120; //68.7   //2022-12-13 52.65
+    public static double MAX_ANG_VEL = Math.toRadians(90);  //2022-12-13 180
+    public static double MAX_ANG_ACCEL = Math.toRadians(90);  //2022-12-13 180
 
 
     public static double encoderTicksToInches(double ticks) {

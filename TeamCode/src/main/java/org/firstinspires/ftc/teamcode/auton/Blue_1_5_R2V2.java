@@ -226,12 +226,12 @@ public class Blue_1_5_R2V2 extends CommandOpMode {
                     stackIndex--;
                 }),
                 cycleToPoleAutoCommand,
-                cycleToStackWaypointAutoCommand, grabFromStackCommand,
-                new InstantCommand(() -> {
-                    stackIndex--;
-                }),
-                cycleToPoleAutoCommand,
                 cycleToStackWaypointAutoCommand, new R2V2_FollowTrajectoryCommand(drive, parkTrajectory)//, grabFromStackCommand,
+//                new InstantCommand(() -> {
+//                    stackIndex--;
+//                }),
+//                cycleToPoleAutoCommand,
+//                cycleToStackWaypointAutoCommand, new R2V2_FollowTrajectoryCommand(drive, parkTrajectory)//, grabFromStackCommand,
 //                new InstantCommand(() -> { stackIndex--; }),
 //                cycleToPoleAutoCommand,
 //                cycleToStackWaypointAutoCommand, grabFromStackCommand,
