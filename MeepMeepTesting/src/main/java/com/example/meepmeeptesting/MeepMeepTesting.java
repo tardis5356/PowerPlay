@@ -18,69 +18,72 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(526), Math.toRadians(180), 12.13)
                 .setDimensions(10.6, 11.3)
                 .followTrajectorySequence(drive ->
-                                drive.trajectorySequenceBuilder(new Pose2d(-36, 66, Math.toRadians(90)))
-                                        //deliver preload
-                                        .setReversed(true)
-                                        .splineTo(new Vector2d(-36, 20), Math.toRadians(270))
-                                        .splineToLinearHeading(new Pose2d(-30, 4, Math.toRadians(145)), Math.toRadians(340))
-                                        .setReversed(false)
+                              drive.trajectorySequenceBuilder(new Pose2d(-36, 66, Math.toRadians(90)))
+                                      .lineToConstantHeading(new Vector2d(-36, 18))
+                                      .lineToConstantHeading(new Vector2d(-60, 18))
+//                                        //deliver preload
+//                                        .setReversed(true)
+//                                        .splineTo(new Vector2d(-36, 20), Math.toRadians(270))
+//                                        .splineToLinearHeading(new Pose2d(-30, 4, Math.toRadians(145)), Math.toRadians(340))
+//                                        .setReversed(false)
+//
+//                                        //pick up first from stack
+//                                        .back(-0.10)
+//                                        .splineToSplineHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
+//
+//
+////                            .strafeTo(new Vector2d(-60.35, 21.44))
+////                            .splineToSplineHeading(new Pose2d(-8.11, 26.89, Math.toRadians(150.26)), Math.toRadians(337.52))
+////                            .back(-0.10)
+////                            .splineToSplineHeading(new Pose2d(-62.78, 21.05, Math.toRadians(-125.61)), Math.toRadians(244.69))
+//                                        //cycle
+//                                        .back(0.10)
+//                                        .splineToSplineHeading(new Pose2d(-6, 20, Math.toRadians(212)), Math.toRadians(32))
+//                                        .waitSeconds(0.2)
+//                                        .back(-0.10)
+//                                        .splineToSplineHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
+//                                        .waitSeconds(0.2)
+//
+//                                        //cycle
+//                                        .back(0.10)
+//                                        .splineToSplineHeading(new Pose2d(-6, 20, Math.toRadians(212)), Math.toRadians(32))
+//                                        .waitSeconds(0.2)
+//                                        .back(-0.10)
+//                                        .splineToSplineHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
+//                                        .waitSeconds(0.2)
+//
+//                                        //cycle
+//                                        .back(0.10)
+//                                        .splineToSplineHeading(new Pose2d(-6, 20, Math.toRadians(212)), Math.toRadians(32))
+//                                        .waitSeconds(0.2)
+//                                        .back(-0.10)
+//                                        .splineToSplineHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
+//                                        .waitSeconds(0.2)
+//
+//                                        //cycle
+//                                        .back(0.10)
+//                                        .splineToSplineHeading(new Pose2d(-6, 20, Math.toRadians(212)), Math.toRadians(32))
+//                                        .waitSeconds(0.2)
+//                                        .back(-0.10)
+//                                        .splineToSplineHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
+//                                        .waitSeconds(0.2)
+//
+//                                        //cycle
+//                                        .back(0.10)
+//                                        .splineToSplineHeading(new Pose2d(-6, 20, Math.toRadians(212)), Math.toRadians(32))
+//                                        .waitSeconds(0.2)
+//                                        .back(-0.10)
+//                                        .splineToSplineHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
+//                                        .waitSeconds(0.2)
+//
+//                                        //cycle
+//                                        .back(0.10)
+//                                        .splineToSplineHeading(new Pose2d(-6, 20, Math.toRadians(212)), Math.toRadians(32))
+//                                        .waitSeconds(0.2)
+//                                        .back(-0.10)
+//                                        .splineToSplineHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
+//                                        .waitSeconds(0.2)
 
-                                        //pick up first from stack
-                                        .back(-0.10)
-                                        .splineToSplineHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
-
-
-//                            .strafeTo(new Vector2d(-60.35, 21.44))
-//                            .splineToSplineHeading(new Pose2d(-8.11, 26.89, Math.toRadians(150.26)), Math.toRadians(337.52))
-//                            .back(-0.10)
-//                            .splineToSplineHeading(new Pose2d(-62.78, 21.05, Math.toRadians(-125.61)), Math.toRadians(244.69))
-                                        //cycle
-                                        .back(0.10)
-                                        .splineToSplineHeading(new Pose2d(-6, 20, Math.toRadians(212)), Math.toRadians(32))
-                                        .waitSeconds(0.2)
-                                        .back(-0.10)
-                                        .splineToSplineHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
-                                        .waitSeconds(0.2)
-
-                                        //cycle
-                                        .back(0.10)
-                                        .splineToSplineHeading(new Pose2d(-6, 20, Math.toRadians(212)), Math.toRadians(32))
-                                        .waitSeconds(0.2)
-                                        .back(-0.10)
-                                        .splineToSplineHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
-                                        .waitSeconds(0.2)
-
-                                        //cycle
-                                        .back(0.10)
-                                        .splineToSplineHeading(new Pose2d(-6, 20, Math.toRadians(212)), Math.toRadians(32))
-                                        .waitSeconds(0.2)
-                                        .back(-0.10)
-                                        .splineToSplineHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
-                                        .waitSeconds(0.2)
-
-                                        //cycle
-                                        .back(0.10)
-                                        .splineToSplineHeading(new Pose2d(-6, 20, Math.toRadians(212)), Math.toRadians(32))
-                                        .waitSeconds(0.2)
-                                        .back(-0.10)
-                                        .splineToSplineHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
-                                        .waitSeconds(0.2)
-
-                                        //cycle
-                                        .back(0.10)
-                                        .splineToSplineHeading(new Pose2d(-6, 20, Math.toRadians(212)), Math.toRadians(32))
-                                        .waitSeconds(0.2)
-                                        .back(-0.10)
-                                        .splineToSplineHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
-                                        .waitSeconds(0.2)
-
-                                        //cycle
-                                        .back(0.10)
-                                        .splineToSplineHeading(new Pose2d(-6, 20, Math.toRadians(212)), Math.toRadians(32))
-                                        .waitSeconds(0.2)
-                                        .back(-0.10)
-                                        .splineToSplineHeading(new Pose2d(-60, 12, Math.toRadians(180)), Math.toRadians(180))
-                                        .waitSeconds(0.2)
 
                                         .build()
                 );

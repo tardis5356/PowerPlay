@@ -30,8 +30,8 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@Autonomous(group = "drive", name = "R2V2 Blue Auto")
-public class Blue_1_5_R2V2 extends CommandOpMode {
+@Autonomous(group = "drive", name = "R2V2 Red2 Auto")
+public class Red_Right_1_5_R2V2 extends CommandOpMode {
     ElapsedTime runtime = new ElapsedTime();
 
     final static double fullAutoTime = 30, cycleTime = 5, parkTime = 2;

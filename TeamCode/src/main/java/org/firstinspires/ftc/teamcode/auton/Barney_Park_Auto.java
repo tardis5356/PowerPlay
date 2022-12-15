@@ -4,12 +4,12 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_AutoTrajectories;
 import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_CycleToPoleAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_CycleToStackWaypointAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_DeliverPreloadAutoCommand;
@@ -22,7 +22,6 @@ import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_AutoTrajectories;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -30,8 +29,8 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@Autonomous(group = "drive", name = "Barney Blue Auto")
-public class Blue_1_5_Barney extends CommandOpMode {
+@Autonomous(group = "drive", name = "Barney Park Auto")
+public class Barney_Park_Auto extends CommandOpMode {
     ElapsedTime runtime = new ElapsedTime();
 
     final static double fullAutoTime = 30, cycleTime = 5, parkTime = 2;
@@ -186,11 +185,11 @@ public class Blue_1_5_Barney extends CommandOpMode {
 
         switch (tagOfInterest.id) {
             case 1:
-                parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StackFarWaypointPos)
+                parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StartPos)
                         .setReversed(true)
 //                        .splineTo(new Vector2d(-12, 12), Math.toRadians(90))
                         .lineToConstantHeading(new Vector2d(-36, 18))
-                        .lineToConstantHeading(new Vector2d(-12, 24))
+                        .lineToConstantHeading(new Vector2d(-12, 18))
 //                        .splineToConstantHeading(new Vector2d(-12, 12), Math.toRadians(180))
                         .build();
 
@@ -201,18 +200,18 @@ public class Blue_1_5_Barney extends CommandOpMode {
 //                        .setReversed(true)
 //                        .splineTo(new Vector2d(-36, 12), Math.toRadians(90))
 //                        .build();
-                parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StackFarWaypointPos)
+                parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StartPos)
                         .setReversed(true)
-                        .lineToConstantHeading(new Vector2d(-36, 22))
+                        .lineToConstantHeading(new Vector2d(-36, 18))
                         .build();
                 break;
 
             case 3:
-                parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StackFarWaypointPos)
+                parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StartPos)
                         .setReversed(true)
 //                        .splineTo(new Vector2d(-60, 12), Math.toRadians(90))
-                        .lineToConstantHeading(new Vector2d(-36, 22))
-                        .strafeLeft(24)
+                        .lineToConstantHeading(new Vector2d(-36, 18))
+                        .lineToConstantHeading(new Vector2d(-55, 15))
                         .build();
                 break;
 

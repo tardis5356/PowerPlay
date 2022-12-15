@@ -19,6 +19,8 @@ public class Barney_AutoTrajectories {
     */
 
     public static final Pose2d blue_StartPos = new Pose2d(-36, 64, Math.toRadians(90));
+    public static final Pose2d blue_StartPos2 = new Pose2d(36, 64, Math.toRadians(90));
+
 
     public static final Pose2d blue_PreloadPolePos = new Pose2d(-31, 4, Math.toRadians(160));
 

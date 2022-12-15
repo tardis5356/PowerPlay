@@ -50,7 +50,10 @@ public class Lift extends SubsystemBase {
         if(activeBot == 1) {
             controller = new PIDController(pE_R2V2, iE_R2V2, dE_R2V2);
 
-            mL_R2V2 = hardwareMap.crservo.get("mL");
+//            mL_R2V2 = hardwareMap.crservo.get("mL");
+            mL_Barney = hardwareMap.get(DcMotorEx.class, "mL");
+
+
             mBL = hardwareMap.get(DcMotorEx.class, "mBL");
         }
 //        toIntakePosition();
@@ -58,7 +61,7 @@ public class Lift extends SubsystemBase {
 
     public void periodic() {
         if(activeBot == 0) liftPID_Barney();
-        if(activeBot == 1) liftPID_R2V2();
+//        if(activeBot == 1) liftPID_R2V2();
     }
 
     public void updatePIDValues() {
