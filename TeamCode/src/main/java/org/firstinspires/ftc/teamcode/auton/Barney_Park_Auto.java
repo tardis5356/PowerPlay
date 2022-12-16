@@ -120,6 +120,10 @@ public class Barney_Park_Auto extends CommandOpMode {
         telemetry.setMsTransmissionInterval(50);
 
         while (!isStarted() && !isStopRequested()) {
+
+
+            gripper.close();
+            arm.toInitPosition();
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
             if (currentDetections.size() != 0) {
@@ -181,7 +185,7 @@ public class Barney_Park_Auto extends CommandOpMode {
         Pose2d startPose = new Pose2d(-36, 66, Math.toRadians(90));
         drive.setPoseEstimate(startPose);
         TrajectorySequence parkTrajectory;
-        TrajectorySequence parkTrajectory2;
+//        TrajectorySequence parkTrajectory2;
 
         switch (tagOfInterest.id) {
             case 1:
@@ -216,7 +220,7 @@ public class Barney_Park_Auto extends CommandOpMode {
                 break;
 
             default:
-                parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StackFarWaypointPos)
+                parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StartPos)
                         .setReversed(true)
                         .splineTo(new Vector2d(-36, 66), Math.toRadians(90))
 
@@ -225,6 +229,8 @@ public class Barney_Park_Auto extends CommandOpMode {
         }
 
 
+        tagToTelemetry(tagOfInterest);
+        telemetry.update();
         schedule(new SequentialCommandGroup(
 //                deliverPreloadAutoCommand,
 //                grabFromStackCommand,

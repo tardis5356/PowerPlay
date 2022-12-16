@@ -18,7 +18,8 @@ public class Gripper extends SubsystemBase {
 
     public Gripper(HardwareMap hardwareMap) {
         servo = hardwareMap.get(Servo.class, "sG");
-        open();
+        close();
+        //it was originally open()
     }
 
     @Override
