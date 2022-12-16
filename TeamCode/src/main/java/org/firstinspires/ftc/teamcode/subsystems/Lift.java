@@ -50,18 +50,22 @@ public class Lift extends SubsystemBase {
         if(activeBot == 1) {
             controller = new PIDController(pE_R2V2, iE_R2V2, dE_R2V2);
 
-//            mL_R2V2 = hardwareMap.crservo.get("mL");
-            mL_Barney = hardwareMap.get(DcMotorEx.class, "mL");
-
+            mL_R2V2 = hardwareMap.crservo.get("mL");
+//            mL_Barney = hardwareMap.get(DcMotorEx.class, "mL");
 
             mBL = hardwareMap.get(DcMotorEx.class, "mBL");
+
+//            mBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            mBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+//            mL_R2V2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
 //        toIntakePosition();
     }
 
     public void periodic() {
         if(activeBot == 0) liftPID_Barney();
-//        if(activeBot == 1) liftPID_R2V2();
+        if(activeBot == 1) liftPID_R2V2();
     }
 
     public void updatePIDValues() {
@@ -103,7 +107,7 @@ public class Lift extends SubsystemBase {
 
         power = pid + stickValue;
 
-        mL_R2V2.setPower(power);
+        mBL.setPower(power);
     }
 
     public double getLiftPosition() {

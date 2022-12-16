@@ -197,9 +197,9 @@ public class Gen1_TeleOp extends CommandOpMode {
 
 
         new Trigger(() -> driver.getButton(GamepadKeys.Button.LEFT_BUMPER)) // move beacon arm to loading position
-                .whenActive(() -> beaconArm.toLoadingPosition());
+                .toggleWhenActive(() -> beaconArm.toLoadingPosition(),  () -> beaconArm.toDeliveryPosition());
         new Trigger(() -> driver.getButton(GamepadKeys.Button.RIGHT_BUMPER)) // move beacon arm to scoring position
-                .whenActive(() -> beaconArm.toDeliveryPosition());
+                .whenActive(() -> beaconArm.toTravelPosition());
         new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_UP)) // move beacon arm to storage position
                 .whenActive(() -> beaconArm.toStoragePosition());
 

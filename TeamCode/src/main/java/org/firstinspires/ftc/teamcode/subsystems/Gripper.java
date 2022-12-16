@@ -12,7 +12,8 @@ public class Gripper extends SubsystemBase {
     private Servo servo;
 
 //    public static double OPEN_POSITION = BotPositions.GRIPPER_OPEN, CLOSED_POSITION = BotPositions.GRIPPER_CLOSED;
-    public static double OPEN_POSITION = BotPositions.GRIPPER_OPEN_R2V2, CLOSED_POSITION = BotPositions.GRIPPER_CLOSED_R2V2;
+//    public static double OPEN_POSITION = BotPositions.GRIPPER_OPEN_R2V2, CLOSED_POSITION = BotPositions.GRIPPER_CLOSED_R2V2;
+    public static double OPEN_POSITION = BotPositions.GRIPPER_OPEN_Barney, CLOSED_POSITION = BotPositions.GRIPPER_CLOSED_Barney;
     public double servoPosition = 0;
 
     public Gripper(HardwareMap hardwareMap) {

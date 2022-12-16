@@ -26,7 +26,7 @@ public class BotPositions {
     public static double BEACON_ARM_LOAD, BEACON_ARM_STORAGE, BEACON_ARM_DELIVERY;
 
 
-    public static double LIFT_FULL_RETRACTION_Barney = 0, LIFT_INTAKE_Barney = 30, LIFT_GROUND_JUNCTION_Barney = 100, LIFT_LOW_JUNCTION_Barney = 350, LIFT_MEDIUM_JUNCTION_Barney = 670, LIFT_HIGH_JUNCTION_Barney = 800;
+    public static double LIFT_FULL_RETRACTION_Barney = 0, LIFT_INTAKE_Barney = 40, LIFT_GROUND_JUNCTION_Barney = 100, LIFT_LOW_JUNCTION_Barney = 275, LIFT_MEDIUM_JUNCTION_Barney = 550, LIFT_HIGH_JUNCTION_Barney = 800;
 
     public static double LIFT_pE_Barney = 0.07, LIFT_pR_Barney = 0.0001, LIFT_i_Barney = 0, LIFT_d_Barney = 0;
 
@@ -34,9 +34,9 @@ public class BotPositions {
 
     public static double WRIST_INIT_Barney = 0.8, WRIST_INTAKE_Barney = 0.3, WRIST_DELIVERY_Barney = 0.9;
 
-    public static double GRIPPER_OPEN_Barney = 0.52, GRIPPER_CLOSED_Barney = 0.3;
+    public static double GRIPPER_OPEN_Barney = 0.55, GRIPPER_CLOSED_Barney = 0.3;
 
-    public static double BEACON_ARM_LOAD_Barney = 0.99, BEACON_ARM_STORAGE_Barney = 0.5, BEACON_ARM_DELIVERY_Barney = 0.43;
+    public static double BEACON_ARM_LOAD_Barney = 0.99, BEACON_ARM_STORAGE_Barney = 0.5, BEACON_ARM_DELIVERY_Barney = 0.75, BEACON_ARM_TRAVEL_Barney = 0.55;
 
 
     public static double LIFT_FULL_RETRACTION_R2V2 = 0, LIFT_INTAKE_R2V2 = 0, LIFT_GROUND_JUNCTION_R2V2 = 0, LIFT_LOW_JUNCTION_R2V2 = 0, LIFT_MEDIUM_JUNCTION_R2V2 = 0, LIFT_HIGH_JUNCTION_R2V2 = 0;
@@ -54,7 +54,7 @@ public class BotPositions {
     public static void setActiveBot() {
         if (activeBot == 0) {
             LIFT_FULL_RETRACTION = LIFT_FULL_RETRACTION_Barney;
-            LIFT_INTAKE = LIFT_INTAKE_R2V2;
+            LIFT_INTAKE = LIFT_INTAKE_Barney;
             LIFT_GROUND_JUNCTION = LIFT_GROUND_JUNCTION_Barney;
             LIFT_LOW_JUNCTION = LIFT_LOW_JUNCTION_Barney;
             LIFT_MEDIUM_JUNCTION = LIFT_MEDIUM_JUNCTION_Barney;
