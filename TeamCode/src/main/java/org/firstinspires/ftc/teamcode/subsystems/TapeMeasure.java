@@ -4,8 +4,6 @@ import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
 @Config
 public class TapeMeasure extends SubsystemBase {
@@ -30,5 +28,9 @@ public class TapeMeasure extends SubsystemBase {
 
     public void stop() {
         servo.setPower(0);
+    }
+
+    public double getTapeMeasurePower() {
+        return servo.getPower();
     }
 }

@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -38,6 +39,8 @@ public class Barney_Park_Auto extends CommandOpMode {
     boolean finalCycle = false;
     int totalCycles = 0;
     int stackIndex = 4;
+
+    public static double endHeading = 0;
 
     private SampleMecanumDrive_Barney drive;
     private Lift lift;
@@ -244,7 +247,7 @@ public class Barney_Park_Auto extends CommandOpMode {
 //                }),
 //                cycleToPoleAutoCommand,
 //                cycleToStackWaypointAutoCommand,
-                new Barney_FollowTrajectoryCommand(drive, parkTrajectory)//grabFromStackCommand,
+                new Barney_FollowTrajectoryCommand(drive, parkTrajectory), //grabFromStackCommand,
 
 //                new InstantCommand(() -> {
 //                    stackIndex--;
@@ -256,6 +259,7 @@ public class Barney_Park_Auto extends CommandOpMode {
 //                cycleToStackWaypointAutoCommand, grabFromStackCommand,
 //                new InstantCommand(() -> { stackIndex--; }),
 //                cycleToPoleAutoCommand
+                new InstantCommand(() -> endHeading = parkTrajectory.end().getHeading())
         ));
 
     }

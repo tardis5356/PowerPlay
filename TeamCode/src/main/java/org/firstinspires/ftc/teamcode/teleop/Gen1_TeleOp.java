@@ -32,6 +32,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teamcode.auton.Barney_Park_Auto;
 import org.firstinspires.ftc.teamcode.commands.LiftToIntakePositionCommand;
 import org.firstinspires.ftc.teamcode.commands.LiftToScoringPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.ManualLiftCommand;
@@ -52,7 +53,7 @@ public class Gen1_TeleOp extends CommandOpMode {
     private double offset = 0.0;
     private double powerMultiplier = 1.0;
     private double SLOW_POWER_MULTIPLIER = 0.5;
-    private double FAST_POWER_MULTIPLIER = 1.0;
+    private double FAST_POWER_MULTIPLIER = 0.85;
     private boolean manualModeOn = false;
 
     private Drivetrain Drivetrain;
@@ -123,13 +124,21 @@ public class Gen1_TeleOp extends CommandOpMode {
         //driver = gamepad 1
 
         new Trigger(() -> driver.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5)
-                .whenActive(() -> { powerMultiplier = SLOW_POWER_MULTIPLIER; });
+                .whenActive(() -> {
+                    powerMultiplier = SLOW_POWER_MULTIPLIER;
+                });
         new Trigger(() -> driver.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5)
-                .whenActive(() -> { powerMultiplier = FAST_POWER_MULTIPLIER; });
+                .whenActive(() -> {
+                    powerMultiplier = FAST_POWER_MULTIPLIER;
+                });
 
         //teleOp manual mode
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_UP))
-                .toggleWhenActive(() -> {manualModeOn = true; }, () -> {manualModeOn = false;});
+                .toggleWhenActive(() -> {
+                    manualModeOn = true;
+                }, () -> {
+                    manualModeOn = false;
+                });
 
         // manipulator triggers
         //manipulator = gamepad 2
@@ -190,14 +199,26 @@ public class Gen1_TeleOp extends CommandOpMode {
                 .cancelWhenActive(liftRetractCommand)
                 .cancelWhenActive(manualLiftCommand);
 
-            new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // closes gripper on left trigger
-                    .whenActive(() -> {if(!manualModeOn){ gripper.close();} else{arm.increasePosition();}} );
-            new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5) // opens gripper on right trigger
-                    .whenActive(() -> { if(!manualModeOn) {gripper.open();} else {arm.decreasePosition();}} );
+        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // closes gripper on left trigger
+                .whenActive(() -> {
+                    if (!manualModeOn) {
+                        gripper.close();
+                    } else {
+                        arm.increasePosition();
+                    }
+                });
+        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5) // opens gripper on right trigger
+                .whenActive(() -> {
+                    if (!manualModeOn) {
+                        gripper.open();
+                    } else {
+                        arm.decreasePosition();
+                    }
+                });
 
 
         new Trigger(() -> driver.getButton(GamepadKeys.Button.LEFT_BUMPER)) // move beacon arm to loading position
-                .toggleWhenActive(() -> beaconArm.toLoadingPosition(),  () -> beaconArm.toDeliveryPosition());
+                .toggleWhenActive(() -> beaconArm.toLoadingPosition(), () -> beaconArm.toDeliveryPosition());
         new Trigger(() -> driver.getButton(GamepadKeys.Button.RIGHT_BUMPER)) // move beacon arm to scoring position
                 .whenActive(() -> beaconArm.toTravelPosition());
         new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_UP)) // move beacon arm to storage position
@@ -209,6 +230,11 @@ public class Gen1_TeleOp extends CommandOpMode {
                 .whileActiveContinuous(() -> tapeMeasure.extend());
         new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_DOWN))
                 .whileActiveContinuous(() -> tapeMeasure.stop());
+
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.A))
+                .whenActive(() -> {
+                    offset = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle;
+                });
     }
 
     @Override
@@ -218,7 +244,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         Orientation botOrientationRadians = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
 
         //Add the angle offset to be able to reset the 0 heading, and normalize it back to -pi to pi
-        double heading = AngleUnit.normalizeRadians(botOrientationRadians.firstAngle - offset);
+        double heading = AngleUnit.normalizeRadians(botOrientationRadians.firstAngle - offset - Barney_Park_Auto.endHeading);
 
         double ly = -gamepad1.left_stick_y;
         double lx = gamepad1.left_stick_x;
@@ -237,34 +263,34 @@ public class Gen1_TeleOp extends CommandOpMode {
         mBR.setPower((ly + lx - rx) / normalize * powerMultiplier);
 
 
-        if(manualModeOn){
+        if (manualModeOn) {
 
             lift.manualControl(-gamepad2.left_stick_y);
 
             //controls gripper
-            if(gamepad2.dpad_right){
-            gripper.increasePosition();
+            if (gamepad2.dpad_right) {
+                gripper.increasePosition();
 
-             }
-            if(gamepad2.dpad_left){
-            gripper.decreasePosition();
-             }
+            }
+            if (gamepad2.dpad_left) {
+                gripper.decreasePosition();
+            }
 
             //controls wrist
-            if(gamepad2.right_bumper){
+            if (gamepad2.right_bumper) {
                 wrist.increasePosition();
 
             }
-            if(gamepad2.left_bumper){
+            if (gamepad2.left_bumper) {
                 wrist.decreasePosition();
             }
 
             //controls arm
-            if(gamepad2.right_trigger == 1){
+            if (gamepad2.right_trigger == 1) {
                 arm.increasePosition();
 
             }
-            if(gamepad2.left_trigger == 1){
+            if (gamepad2.left_trigger == 1) {
                 arm.decreasePosition();
             }
 
@@ -312,7 +338,9 @@ public class Gen1_TeleOp extends CommandOpMode {
         telemetry.addData("arm pos", arm.getArmPosition());
         telemetry.addData("gripper pos", gripper.getGripperPosition());
         telemetry.addData("beacon pos", beaconArm.getBeaconArmPosition());
-        telemetry.addData("wrist pos",  String.format("%.2f", wrist.getWristPosition()));
+        telemetry.addData("wrist pos", String.format("%.2f", wrist.getWristPosition()));
+
+        telemetry.addData("tape measure power", tapeMeasure.getTapeMeasurePower());
 
         telemetry.addData("right odometer", mFR.getCurrentPosition());
         telemetry.addData("back odometer", mBR.getCurrentPosition());
