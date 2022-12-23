@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 @Config
 public class BotPositions {
-    public static int activeBot = 0;
+    public static int activeBot = 1;
 
     public static double LIFT_FULL_RETRACTION, LIFT_INTAKE, LIFT_GROUND_JUNCTION, LIFT_LOW_JUNCTION, LIFT_MEDIUM_JUNCTION, LIFT_HIGH_JUNCTION;
 

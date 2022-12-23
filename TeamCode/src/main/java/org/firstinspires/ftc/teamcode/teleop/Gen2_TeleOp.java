@@ -53,15 +53,11 @@ public class Gen2_TeleOp extends CommandOpMode {
     private BeaconArm beaconArm;
     private TapeMeasure tapeMeasure;
 
-    //    private GrabStone m_grabCommand;
-//    private ReleaseStone m_releaseCommand;
-    private Button m_grabButton, m_releaseButton;
     private LiftToScoringPositionCommand liftRetractCommand, liftToGroundJunctionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
     private LiftToIntakePositionCommand liftToIntakeCommand;
     private ManualLiftCommand manualLiftCommand;
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
-
 
     @Override
     public void initialize() {
@@ -104,12 +100,12 @@ public class Gen2_TeleOp extends CommandOpMode {
         beaconArm = new BeaconArm(hardwareMap);
         tapeMeasure = new TapeMeasure(hardwareMap);
 
-        liftToIntakeCommand = new LiftToIntakePositionCommand(lift, arm, gripper, wrist, Junctions.INTAKE, 0);
-        liftRetractCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.FULL_RETRACTION);
-        liftToGroundJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.GROUND_JUNCTION);
-        liftToLowJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.LOW_JUNCTION);
-        liftToMediumJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.MEDIUM_JUNCTION);
-        liftToHighJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.HIGH_JUNCTION);
+        liftToIntakeCommand = new LiftToIntakePositionCommand(lift, arm, gripper, wrist, Junctions.INTAKE_R2V2, 0);
+        liftRetractCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.FULL_RETRACTION_R2V2);
+        liftToGroundJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.GROUND_JUNCTION_R2V2);
+        liftToLowJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.LOW_JUNCTION_R2V2);
+        liftToMediumJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.MEDIUM_JUNCTION_R2V2);
+        liftToHighJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.HIGH_JUNCTION_R2V2);
         manualLiftCommand = new ManualLiftCommand(lift, manipulator.getLeftY());
 
         // driver triggers
@@ -134,24 +130,24 @@ public class Gen2_TeleOp extends CommandOpMode {
 
         // manipulator triggers
         //manipulator = gamepad 2
-//        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.A)) // extend to ground junction and slow drive base on A button
-//                .whenActive(liftToGroundJunctionCommand)
-//                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
-//                .cancelWhenActive(liftToHighJunctionCommand)
-//                .cancelWhenActive(liftToMediumJunctionCommand)
-//                .cancelWhenActive(liftToLowJunctionCommand)
-//                .cancelWhenActive(liftToIntakeCommand)
-//                .cancelWhenActive(manualLiftCommand)
-//                .cancelWhenActive(liftRetractCommand);
-//        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.X)) // extend to low junction and slow drive base on B button
-//                .whenActive(liftToLowJunctionCommand)
-//                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
-//                .cancelWhenActive(liftToHighJunctionCommand)
-//                .cancelWhenActive(liftToMediumJunctionCommand)
-//                .cancelWhenActive(liftToGroundJunctionCommand)
-//                .cancelWhenActive(liftToIntakeCommand)
-//                .cancelWhenActive(manualLiftCommand)
-//                .cancelWhenActive(liftRetractCommand);
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.A)) // extend to ground junction and slow drive base on A button
+                .whenActive(liftToGroundJunctionCommand)
+                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
+                .cancelWhenActive(liftToHighJunctionCommand)
+                .cancelWhenActive(liftToMediumJunctionCommand)
+                .cancelWhenActive(liftToLowJunctionCommand)
+                .cancelWhenActive(liftToIntakeCommand)
+                .cancelWhenActive(manualLiftCommand)
+                .cancelWhenActive(liftRetractCommand);
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.X)) // extend to low junction and slow drive base on B button
+                .whenActive(liftToLowJunctionCommand)
+                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
+                .cancelWhenActive(liftToHighJunctionCommand)
+                .cancelWhenActive(liftToMediumJunctionCommand)
+                .cancelWhenActive(liftToGroundJunctionCommand)
+                .cancelWhenActive(liftToIntakeCommand)
+                .cancelWhenActive(manualLiftCommand)
+                .cancelWhenActive(liftRetractCommand);
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.Y)) // extend to medium junction and slow drive base on Y button
                 .whenActive(liftToMediumJunctionCommand)
                 .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
@@ -161,15 +157,15 @@ public class Gen2_TeleOp extends CommandOpMode {
                 .cancelWhenActive(liftToIntakeCommand)
                 .cancelWhenActive(manualLiftCommand)
                 .cancelWhenActive(liftRetractCommand);
-//        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.B)) // extend to high junction and slow drive base on X button
-//                .whenActive(liftToHighJunctionCommand)
-//                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
-//                .cancelWhenActive(liftToMediumJunctionCommand)
-//                .cancelWhenActive(liftToLowJunctionCommand)
-//                .cancelWhenActive(liftToGroundJunctionCommand)
-//                .cancelWhenActive(liftToIntakeCommand)
-//                .cancelWhenActive(manualLiftCommand)
-//                .cancelWhenActive(liftRetractCommand);
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.B)) // extend to high junction and slow drive base on X button
+                .whenActive(liftToHighJunctionCommand)
+                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
+                .cancelWhenActive(liftToMediumJunctionCommand)
+                .cancelWhenActive(liftToLowJunctionCommand)
+                .cancelWhenActive(liftToGroundJunctionCommand)
+                .cancelWhenActive(liftToIntakeCommand)
+                .cancelWhenActive(manualLiftCommand)
+                .cancelWhenActive(liftRetractCommand);
 
 //        new Trigger(() -> manipulator.getLeftY() > 0.2) // override all other commands and give manual control of lift
 //                .whenActive(manualLiftCommand)
@@ -251,7 +247,7 @@ public class Gen2_TeleOp extends CommandOpMode {
 
         if (manualModeOn) {
 
-            lift.manualControl(-gamepad2.left_stick_y);
+            lift.manualControl(gamepad2.left_stick_y);
 
             //controls gripper
             if (gamepad2.dpad_right) {
@@ -316,22 +312,25 @@ public class Gen2_TeleOp extends CommandOpMode {
 //        telemetry.addData("measuredMaxRoll", measuredMaxRoll);
 //
 //        telemetry.addData("weightedPowerMultiplier", weightedPowerMultiplier);
-        telemetry.addData("powerMultiplier", powerMultiplier);
+//        telemetry.addData("powerMultiplier", powerMultiplier);
         telemetry.addData("lift pos", lift.getLiftPosition());
         telemetry.addData("lift power", lift.getLiftPower());
         telemetry.addData("lift target", lift.target);
+        telemetry.addData("lift pid", lift.getLiftPID());
+        telemetry.addData("lift ff", lift.getLiftFF());
 
-        telemetry.addData("arm pos", arm.getArmPosition());
-        telemetry.addData("gripper pos", gripper.getGripperPosition());
-        telemetry.addData("beacon pos", beaconArm.getBeaconArmPosition());
-        telemetry.addData("wrist pos", String.format("%.2f", wrist.getWristPosition()));
 
-        telemetry.addData("manual mode is", manualModeOn);
+//        telemetry.addData("arm pos", arm.getArmPosition());
+//        telemetry.addData("gripper pos", gripper.getGripperPosition());
+//        telemetry.addData("beacon pos", beaconArm.getBeaconArmPosition());
+//        telemetry.addData("wrist pos", String.format("%.2f", wrist.getWristPosition()));
 
-        telemetry.addLine("odometers");
-        telemetry.addData("right: ", mFR.getCurrentPosition());
-        telemetry.addData("  back: ", mBR.getCurrentPosition());
-        telemetry.addData("  left: ", mFL.getCurrentPosition());
+//        telemetry.addData("manual mode is", manualModeOn);
+//
+//        telemetry.addLine("odometers");
+//        telemetry.addData("right: ", mFR.getCurrentPosition());
+//        telemetry.addData("  back: ", mBR.getCurrentPosition());
+//        telemetry.addData("  left: ", mFL.getCurrentPosition());
 
         telemetry.update();
 //    }

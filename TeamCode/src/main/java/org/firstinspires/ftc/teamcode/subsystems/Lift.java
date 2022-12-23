@@ -9,6 +9,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 @Config
 public class Lift extends SubsystemBase {
@@ -17,12 +18,13 @@ public class Lift extends SubsystemBase {
     private DcMotorEx mL_Barney, mBL;
     private CRServo mL_R2V2;
 
-//    public String ACTIVE_BOT = activeBot;
+    private TouchSensor liftBase;
 
     public static double pE_Barney = BotPositions.LIFT_pE_Barney, pR_Barney = BotPositions.LIFT_pR_Barney, i_Barney = BotPositions.LIFT_i_Barney, d_Barney = BotPositions.LIFT_d_Barney;
-    public static double pE_R2V2 = BotPositions.LIFT_p_R2V2, iE_R2V2 = BotPositions.LIFT_i_R2V2, dE_R2V2 = BotPositions.LIFT_d_R2V2;
+    public static double pE_R2V2 = BotPositions.LIFT_p_R2V2, i_R2V2 = BotPositions.LIFT_i_R2V2, d_R2V2 = BotPositions.LIFT_d_R2V2;
 
-    public static double f = 0.2; // 0.2 NEEDS TESTING????
+    public static double f_Barney = 0.2;
+    public static double f_R2V2 = -0.14;
 
     public static int target = 0;
 
@@ -30,6 +32,9 @@ public class Lift extends SubsystemBase {
 
     public double power = 0;
     public double stickValue = 0;
+    public double pid_R2V2 = 0;
+    public double ff_R2V2 = 0;
+    public boolean manualActive = false;
 
     public boolean retract = false;
 
@@ -48,24 +53,28 @@ public class Lift extends SubsystemBase {
             mL_Barney.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
         if(activeBot == 1) {
-            controller = new PIDController(pE_R2V2, iE_R2V2, dE_R2V2);
+            controller = new PIDController(pE_R2V2, i_R2V2, d_R2V2);
+
+            liftBase = hardwareMap.get(TouchSensor.class, "liftBase");
 
             mL_R2V2 = hardwareMap.crservo.get("mL");
-//            mL_Barney = hardwareMap.get(DcMotorEx.class, "mL");
 
             mBL = hardwareMap.get(DcMotorEx.class, "mBL");
 
-//            mBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//            mBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-//            mL_R2V2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            mBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            mBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 //        toIntakePosition();
     }
 
     public void periodic() {
         if(activeBot == 0) liftPID_Barney();
-        if(activeBot == 1) liftPID_R2V2();
+        if(activeBot == 1) {
+            liftPID_R2V2();
+            if(liftBase.isPressed()){
+                mBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            }
+        }
     }
 
     public void updatePIDValues() {
@@ -79,10 +88,11 @@ public class Lift extends SubsystemBase {
         if (targetPos < oldTargetPos) retract = true; // set retraction to true
         else retract = false; // set retraction to false
         updatePIDValues();
+        manualActive = false;
     }
 
     public void manualControl(double stick) {
-        controller.setP(0);
+//        controller.setP(0);
         if(activeBot == 0) {
             if (stick < 0) stickValue = stick * 0.2;
             else stickValue = stick * 0.75;
@@ -94,7 +104,7 @@ public class Lift extends SubsystemBase {
     public void liftPID_Barney() {
         int liftPos = mL_Barney.getCurrentPosition();
         double pid = controller.calculate(liftPos, target);
-        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
+        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f_Barney;
 
         power = pid + ff + stickValue;
 
@@ -102,23 +112,54 @@ public class Lift extends SubsystemBase {
     }
 
     public void liftPID_R2V2() {
-        int liftPos = mBL.getCurrentPosition();
-        double pid = controller.calculate(liftPos, target);
+        int liftPos = -mBL.getCurrentPosition();
+        double pid = -controller.calculate(liftPos, target);
+//        double ff = -Math.cos(Math.toRadians(target / ticks_in_degree)) * f_R2V2;
+        double ff = f_R2V2;
 
-        power = pid + stickValue;
+//        power = pid + stickValue;
+        pid_R2V2 = pid;
+        ff_R2V2 = ff;
 
-        mBL.setPower(power);
+        if(!manualActive) {
+            if (Math.abs(target - liftPos) > 25) {
+                if (liftPos < target) {
+                    power = -1;
+                }
+                if (liftPos > target) {
+                    power = 0.7;
+                }
+                mL_R2V2.setPower(power + stickValue);
+            } else {
+                mL_R2V2.setPower(ff + stickValue);
+            }
+
+            if(Math.abs(stickValue) > 0.05){
+                manualActive = true;
+            }
+        }
+        if(manualActive) {
+            power = ff + stickValue;
+            mL_R2V2.setPower(power);
+        }
+
     }
 
     public double getLiftPosition() {
         double currentPos = 0;
         if(activeBot == 0) currentPos = mL_Barney.getCurrentPosition();
-        if(activeBot == 1) currentPos = mBL.getCurrentPosition();
+        if(activeBot == 1) currentPos = -mBL.getCurrentPosition();
         return currentPos;
     }
 
     public double getLiftPower() {
         return power;
+    }
+    public double getLiftPID() {
+        return pid_R2V2;
+    }
+    public double getLiftFF() {
+        return ff_R2V2;
     }
 
     public double getLiftTargetPosition() {
