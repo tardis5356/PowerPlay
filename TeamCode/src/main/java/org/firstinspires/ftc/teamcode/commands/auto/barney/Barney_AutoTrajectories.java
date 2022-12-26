@@ -22,7 +22,8 @@ public class Barney_AutoTrajectories {
     public static final Pose2d blue_StartPos2 = new Pose2d(36, 64, Math.toRadians(90));
 
 
-    public static final Pose2d blue_PreloadPolePos = new Pose2d(-31, 4, Math.toRadians(160));
+    public static final Pose2d blue_PreloadPolePos = new Pose2d(-33, 8, Math.toRadians(160));
+    public static final Pose2d red_PreloadPolePos = new Pose2d(-41, 4, Math.toRadians(20));
 
     public static final Pose2d blue_MainPolePos = new Pose2d(-8, 20, Math.toRadians(212));
 
@@ -39,6 +40,15 @@ public class Barney_AutoTrajectories {
 //                        .splineTo(new Vector2d(-36, 20), Math.toRadians(270))
                         .lineTo(new Vector2d(-36, 20))
                         .splineToLinearHeading(blue_PreloadPolePos, Math.toRadians(340), SampleMecanumDrive_Barney.getVelocityConstraint(30, DriveConstants_Barney.MAX_ANG_VEL, DriveConstants_Barney.TRACK_WIDTH),
+                                SampleMecanumDrive_Barney.getAccelerationConstraint(DriveConstants_Barney.MAX_ACCEL))
+                        .setReversed(false)
+                        .build();
+        red_StartToPreloadPole =
+                drive.trajectorySequenceBuilder(blue_StartPos)
+                        .setReversed(true)
+//                        .splineTo(new Vector2d(-36, 20), Math.toRadians(270))
+                        .lineTo(new Vector2d(-36, 20))
+                        .splineToLinearHeading(red_PreloadPolePos, Math.toRadians(340), SampleMecanumDrive_Barney.getVelocityConstraint(30, DriveConstants_Barney.MAX_ANG_VEL, DriveConstants_Barney.TRACK_WIDTH),
                                 SampleMecanumDrive_Barney.getAccelerationConstraint(DriveConstants_Barney.MAX_ACCEL))
                         .setReversed(false)
                         .build();

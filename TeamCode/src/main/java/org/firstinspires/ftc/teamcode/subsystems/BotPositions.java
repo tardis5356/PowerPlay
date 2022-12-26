@@ -11,7 +11,9 @@ import java.util.Arrays;
 
 @Config
 public class BotPositions {
-    public static int activeBot = 1;
+    public static int activeBot = 0;
+    //0 = Barney
+    //1 = R2V2
 
     public static double LIFT_FULL_RETRACTION, LIFT_INTAKE, LIFT_GROUND_JUNCTION, LIFT_LOW_JUNCTION, LIFT_MEDIUM_JUNCTION, LIFT_HIGH_JUNCTION;
 
@@ -32,9 +34,9 @@ public class BotPositions {
 
     public static double ARM_INIT_Barney = 0.5, ARM_INTAKE_Barney = 0.76, ARM_DELIVERY_Barney = 0.4;
 
-    public static double WRIST_INIT_Barney = 0.8, WRIST_INTAKE_Barney = 0.3, WRIST_DELIVERY_Barney = 0.9;
+    public static double WRIST_INIT_Barney = 0.8, WRIST_INTAKE_Barney = 0.25, WRIST_DELIVERY_Barney = 0.9;
 
-    public static double GRIPPER_OPEN_Barney = 0.62, GRIPPER_CLOSED_Barney = 0.73; // 0.55, 0.3
+    public static double GRIPPER_OPEN_Barney = 0.5, GRIPPER_CLOSED_Barney = 0.25; // 0.55, 0.3 // 0.62, 0.73
 
     public static double BEACON_ARM_LOAD_Barney = 0.99, BEACON_ARM_STORAGE_Barney = 0.5, BEACON_ARM_DELIVERY_Barney = 0.75, BEACON_ARM_TRAVEL_Barney = 0.55;
 

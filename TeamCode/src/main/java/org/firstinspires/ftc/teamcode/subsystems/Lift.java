@@ -64,7 +64,7 @@ public class Lift extends SubsystemBase {
             mBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             mBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
-//        toIntakePosition();
+        target = 30;
     }
 
     public void periodic() {

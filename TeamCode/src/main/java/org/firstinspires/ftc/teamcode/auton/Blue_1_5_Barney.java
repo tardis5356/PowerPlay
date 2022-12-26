@@ -52,6 +52,11 @@ public class Blue_1_5_Barney extends CommandOpMode {
     private Barney_CycleToStackWaypointAutoCommand cycleToStackWaypointAutoCommand;
     private Barney_DeliverPreloadAutoCommand deliverPreloadAutoCommand;
     private Barney_GrabFromStackCommand grabFromStackCommand;
+    private Barney_FollowTrajectoryCommand parkTrajectoryCommand;
+
+    TrajectorySequence parkTrajectory;
+
+
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -95,7 +100,7 @@ public class Blue_1_5_Barney extends CommandOpMode {
         cycleToStackWaypointAutoCommand = new Barney_CycleToStackWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
         deliverPreloadAutoCommand = new Barney_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
         grabFromStackCommand = new Barney_GrabFromStackCommand(drive, lift, arm, wrist, gripper, stackIndex);
-
+        parkTrajectoryCommand = new Barney_FollowTrajectoryCommand(drive, parkTrajectory);
         drive.setPoseEstimate(Barney_AutoTrajectories.blue_StartPos);
         Barney_AutoTrajectories.generateTrajectories(drive);
 
@@ -181,7 +186,6 @@ public class Blue_1_5_Barney extends CommandOpMode {
         }
         Pose2d startPose = new Pose2d(-36, 66, Math.toRadians(90));
         drive.setPoseEstimate(startPose);
-        TrajectorySequence parkTrajectory;
         TrajectorySequence parkTrajectory2;
 
         switch (tagOfInterest.id) {
@@ -189,8 +193,8 @@ public class Blue_1_5_Barney extends CommandOpMode {
                 parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StackFarWaypointPos)
                         .setReversed(true)
 //                        .splineTo(new Vector2d(-12, 12), Math.toRadians(90))
-                        .lineToConstantHeading(new Vector2d(-36, 18))
-                        .lineToConstantHeading(new Vector2d(-12, 24))
+                        //.lineToConstantHeading(new Vector2d(-36, 18))
+                        .lineToConstantHeading(new Vector2d(-12, 18))
 //                        .splineToConstantHeading(new Vector2d(-12, 12), Math.toRadians(180))
                         .build();
 
@@ -203,7 +207,7 @@ public class Blue_1_5_Barney extends CommandOpMode {
 //                        .build();
                 parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StackFarWaypointPos)
                         .setReversed(true)
-                        .lineToConstantHeading(new Vector2d(-36, 22))
+                        .lineToConstantHeading(new Vector2d(-36, 18))
                         .build();
                 break;
 
@@ -211,23 +215,27 @@ public class Blue_1_5_Barney extends CommandOpMode {
                 parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StackFarWaypointPos)
                         .setReversed(true)
 //                        .splineTo(new Vector2d(-60, 12), Math.toRadians(90))
-                        .lineToConstantHeading(new Vector2d(-36, 22))
-                        .strafeLeft(24)
+                        .lineToConstantHeading(new Vector2d(-55, 15))
                         .build();
                 break;
 
             default:
                 parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StackFarWaypointPos)
                         .setReversed(true)
-                        .splineTo(new Vector2d(-36, 66), Math.toRadians(90))
+                        .lineToConstantHeading(new Vector2d(-36, 18))
 
                         .build();
                 break;
         }
 
+//    }
+    //end of init
 
+
+//    @Override
+//    public void run() {
         schedule(new SequentialCommandGroup(
-//                deliverPreloadAutoCommand,
+                deliverPreloadAutoCommand,
 //                grabFromStackCommand,
 //                new InstantCommand(() -> {
 //                    stackIndex--;
@@ -239,7 +247,8 @@ public class Blue_1_5_Barney extends CommandOpMode {
 //                }),
 //                cycleToPoleAutoCommand,
 //                cycleToStackWaypointAutoCommand,
-                new Barney_FollowTrajectoryCommand(drive, parkTrajectory)//grabFromStackCommand,
+
+                parkTrajectoryCommand//grabFromStackCommand,
 
 //                new InstantCommand(() -> {
 //                    stackIndex--;
@@ -254,6 +263,7 @@ public class Blue_1_5_Barney extends CommandOpMode {
         ));
 
     }
+
 
     void tagToTelemetry(AprilTagDetection detection) {
         telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
