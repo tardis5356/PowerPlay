@@ -32,7 +32,7 @@ public class BotPositions {
 
     public static double LIFT_pE_Barney = 0.07, LIFT_pR_Barney = 0.0001, LIFT_i_Barney = 0, LIFT_d_Barney = 0;
 
-    public static double ARM_INIT_Barney = 0.5, ARM_INTAKE_Barney = 0.76, ARM_DELIVERY_Barney = 0.4;
+    public static double ARM_INIT_Barney = 0.6, ARM_INTAKE_Barney = 0.76, ARM_DELIVERY_Barney = 0.4;
 
     public static double WRIST_INIT_Barney = 0.8, WRIST_INTAKE_Barney = 0.25, WRIST_DELIVERY_Barney = 0.9;
 

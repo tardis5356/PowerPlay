@@ -39,8 +39,8 @@ public class Barney_DeliverPreloadAutoCommand extends SequentialCommandGroup {
                         new SequentialCommandGroup(
                                 new WaitCommand(250),
                                 new LiftToIntakePositionCommand(lift, arm, gripper, wrist, Junctions.INTAKE, stackIndex)
-                        ),
-                        new InstantCommand(gripper::open)
+                        )
+                        //new InstantCommand(gripper::open)
                 )
         );
     }

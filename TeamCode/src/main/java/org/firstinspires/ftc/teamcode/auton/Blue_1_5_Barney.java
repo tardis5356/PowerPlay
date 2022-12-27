@@ -88,6 +88,7 @@ public class Blue_1_5_Barney extends CommandOpMode {
     public void initialize() {
 //        MultipleTelemetry telemetry2 = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
+        // declare subsystems
         drive = new SampleMecanumDrive_Barney(hardwareMap);
         gripper = new Gripper(hardwareMap);
         lift = new Lift(hardwareMap);
@@ -96,11 +97,13 @@ public class Blue_1_5_Barney extends CommandOpMode {
         beaconArm = new BeaconArm(hardwareMap);
 //        camera = new Camera(hardwareMap, telemetry2);
 
+        // declare commands
         cycleToPoleAutoCommand = new Barney_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper);
         cycleToStackWaypointAutoCommand = new Barney_CycleToStackWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
         deliverPreloadAutoCommand = new Barney_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
         grabFromStackCommand = new Barney_GrabFromStackCommand(drive, lift, arm, wrist, gripper, stackIndex);
-        parkTrajectoryCommand = new Barney_FollowTrajectoryCommand(drive, parkTrajectory);
+
+        // declare trajectories
         drive.setPoseEstimate(Barney_AutoTrajectories.blue_StartPos);
         Barney_AutoTrajectories.generateTrajectories(drive);
 
@@ -215,7 +218,7 @@ public class Blue_1_5_Barney extends CommandOpMode {
                 parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StackFarWaypointPos)
                         .setReversed(true)
 //                        .splineTo(new Vector2d(-60, 12), Math.toRadians(90))
-                        .lineToConstantHeading(new Vector2d(-55, 15))
+                        .lineToConstantHeading(new Vector2d(-58, 15))
                         .build();
                 break;
 
@@ -228,27 +231,31 @@ public class Blue_1_5_Barney extends CommandOpMode {
                 break;
         }
 
-//    }
-    //end of init
-
+        parkTrajectoryCommand = new Barney_FollowTrajectoryCommand(drive, parkTrajectory);
 
 //    @Override
 //    public void run() {
         schedule(new SequentialCommandGroup(
                 deliverPreloadAutoCommand,
+                grabFromStackCommand,
+
+                new InstantCommand(() -> {
+                    stackIndex--;
+               }),
+                cycleToPoleAutoCommand,
+                cycleToStackWaypointAutoCommand,
 //                grabFromStackCommand,
-//                new InstantCommand(() -> {
-//                    stackIndex--;
-//                }),
-//                cycleToPoleAutoCommand,
-//                cycleToStackWaypointAutoCommand, grabFromStackCommand,
 //                new InstantCommand(() -> {
 //                    stackIndex--;
 //                }),
 //                cycleToPoleAutoCommand,
 //                cycleToStackWaypointAutoCommand,
 
-                parkTrajectoryCommand//grabFromStackCommand,
+                new InstantCommand(() -> {
+                    arm.toInitPosition();
+                }),
+                parkTrajectoryCommand
+                //grabFromStackCommand,
 
 //                new InstantCommand(() -> {
 //                    stackIndex--;
