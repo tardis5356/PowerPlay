@@ -43,7 +43,7 @@ public class Barney_Park_Auto extends CommandOpMode {
     public static double endHeading = 0;
 
     private SampleMecanumDrive_Barney drive;
-    private Lift lift;
+//    private Lift lift;
     private Arm arm;
     private Wrist wrist;
     private Gripper gripper;
@@ -87,16 +87,16 @@ public class Barney_Park_Auto extends CommandOpMode {
 
         drive = new SampleMecanumDrive_Barney(hardwareMap);
         gripper = new Gripper(hardwareMap);
-        lift = new Lift(hardwareMap);
+//        lift = new Lift(hardwareMap);
         arm = new Arm(hardwareMap);
         wrist = new Wrist(hardwareMap);
         beaconArm = new BeaconArm(hardwareMap);
 //        camera = new Camera(hardwareMap, telemetry2);
 
-        cycleToPoleAutoCommand = new Barney_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper);
-        cycleToStackWaypointAutoCommand = new Barney_CycleToStackWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
-        deliverPreloadAutoCommand = new Barney_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
-        grabFromStackCommand = new Barney_GrabFromStackCommand(drive, lift, arm, wrist, gripper, stackIndex);
+//        cycleToPoleAutoCommand = new Barney_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper);
+//        cycleToStackWaypointAutoCommand = new Barney_CycleToStackWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
+//        deliverPreloadAutoCommand = new Barney_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
+//        grabFromStackCommand = new Barney_GrabFromStackCommand(drive, lift, arm, wrist, gripper, stackIndex);
 
         drive.setPoseEstimate(Barney_AutoTrajectories.blue_StartPos);
         Barney_AutoTrajectories.generateTrajectories(drive);
@@ -247,7 +247,7 @@ public class Barney_Park_Auto extends CommandOpMode {
 //                }),
 //                cycleToPoleAutoCommand,
 //                cycleToStackWaypointAutoCommand,
-                new Barney_FollowTrajectoryCommand(drive, parkTrajectory), //grabFromStackCommand,
+                new Barney_FollowTrajectoryCommand(drive, parkTrajectory) //grabFromStackCommand,
 
 //                new InstantCommand(() -> {
 //                    stackIndex--;
@@ -259,7 +259,7 @@ public class Barney_Park_Auto extends CommandOpMode {
 //                cycleToStackWaypointAutoCommand, grabFromStackCommand,
 //                new InstantCommand(() -> { stackIndex--; }),
 //                cycleToPoleAutoCommand
-                new InstantCommand(() -> endHeading = parkTrajectory.end().getHeading())
+                //new InstantCommand(() -> endHeading = parkTrajectory.end().getHeading())
         ));
 
     }

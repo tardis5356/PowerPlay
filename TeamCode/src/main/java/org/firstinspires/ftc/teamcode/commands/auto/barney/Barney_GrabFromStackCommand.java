@@ -24,11 +24,14 @@ public class Barney_GrabFromStackCommand extends SequentialCommandGroup {
 
         addCommands(
                 new LiftToIntakePositionCommand(lift, arm, gripper, wrist, Junctions.INTAKE, stackIndex),
-                new InstantCommand(gripper::open),
+                //new InstantCommand(gripper::open),
                 new WaitCommand(250),
                 new Barney_FollowTrajectoryCommand(drive, Barney_AutoTrajectories.blue_StackWaypointToStack),
                 new WaitCommand(250),
-                new InstantCommand(gripper::close),
+                new InstantCommand(() -> {
+                    gripper.close();
+                }),
+               // new InstantCommand(gripper::close),
                 new WaitCommand(250),
                 new ParallelCommandGroup(
                         new Barney_FollowTrajectoryCommand(drive, Barney_AutoTrajectories.blue_StackToStackWaypoint),
