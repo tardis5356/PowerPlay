@@ -11,6 +11,14 @@ import java.util.Vector;
 public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(750);
+        final Pose2d red_StartPos = new Pose2d(36, 64, Math.toRadians(90));
+        final Pose2d red_PreloadPolePos = new Pose2d(32, 6, Math.toRadians(20));
+
+        final Pose2d red_MainPolePos = new Pose2d(8, 22, Math.toRadians(-32));
+
+        final Pose2d red_StackFarWaypointPos = new Pose2d(38, 14, Math.toRadians(0)); // x -58
+        final Pose2d red_StackCloseWaypointPos = new Pose2d(50, 14, Math.toRadians(0)); // x -58
+        final Pose2d red_StackPos = new Pose2d(57, 15, Math.toRadians(0)); //
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
 //        RoadRunnerBotEntity myBot = new customBotBuilder(meepMeep)
@@ -18,9 +26,26 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(526), Math.toRadians(180), 12.13)
                 .setDimensions(10.6, 11.3)
                 .followTrajectorySequence(drive ->
-                              drive.trajectorySequenceBuilder(new Pose2d(-36, 66, Math.toRadians(90)))
-                                      .lineToConstantHeading(new Vector2d(-36, 18))
-                                      .lineToConstantHeading(new Vector2d(-60, 18))
+                              drive.trajectorySequenceBuilder(red_StartPos)
+                                      .lineToConstantHeading(new Vector2d(36, 7))
+                                      .lineToConstantHeading(new Vector2d(36, 20))
+                                      .splineToLinearHeading(red_PreloadPolePos, Math.toRadians(250))
+
+                                      .back(-0.10)
+                                      .splineToSplineHeading(red_StackFarWaypointPos, Math.toRadians(90))//180
+
+                                      .back(-0.10)
+                                      .splineToSplineHeading(red_StackFarWaypointPos, Math.toRadians(180))//180
+
+                                      .back(-0.10)
+                                      .lineTo(red_StackPos.vec())
+
+                                      .back(-0.10)
+                                      .lineTo(red_StackCloseWaypointPos.vec())
+
+                                      .back(0.10)
+                                      .splineToSplineHeading(red_MainPolePos, Math.toRadians(122))//32
+
 //                                        //deliver preload
 //                                        .setReversed(true)
 //                                        .splineTo(new Vector2d(-36, 20), Math.toRadians(270))

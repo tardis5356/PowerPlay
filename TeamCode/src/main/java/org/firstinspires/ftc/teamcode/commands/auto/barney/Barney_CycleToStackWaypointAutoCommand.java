@@ -14,11 +14,11 @@ public class Barney_CycleToStackWaypointAutoCommand extends ParallelCommandGroup
 
     private Gripper gripper;
 
-    public Barney_CycleToStackWaypointAutoCommand(SampleMecanumDrive_Barney drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, int stackIndex) {
+    public Barney_CycleToStackWaypointAutoCommand(SampleMecanumDrive_Barney drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, int stackIndex, boolean isBlue) {
         this.gripper = gripper;
 
         addCommands(
-                new Barney_FollowTrajectoryCommand(drive, Barney_AutoTrajectories.blue_MainPoleToStackWaypoint)
+                new Barney_FollowTrajectoryCommand(drive, isBlue ? Barney_AutoTrajectories.blue_MainPoleToStackWaypoint : Barney_AutoTrajectories.red_MainPoleToStackWaypoint)
         );
     }
 

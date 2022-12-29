@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.commands.LiftToPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_CycleToPoleAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_CycleToStackWaypointAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_DeliverPreloadAutoCommand;
@@ -53,9 +54,9 @@ public class Blue_1_5_Barney extends CommandOpMode {
     private Barney_DeliverPreloadAutoCommand deliverPreloadAutoCommand;
     private Barney_GrabFromStackCommand grabFromStackCommand;
     private Barney_FollowTrajectoryCommand parkTrajectoryCommand;
+    private LiftToPositionCommand liftToPositionCommand;
 
     TrajectorySequence parkTrajectory;
-
 
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -98,10 +99,11 @@ public class Blue_1_5_Barney extends CommandOpMode {
 //        camera = new Camera(hardwareMap, telemetry2);
 
         // declare commands
-        cycleToPoleAutoCommand = new Barney_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper);
-        cycleToStackWaypointAutoCommand = new Barney_CycleToStackWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
-        deliverPreloadAutoCommand = new Barney_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
-        grabFromStackCommand = new Barney_GrabFromStackCommand(drive, lift, arm, wrist, gripper, stackIndex);
+        cycleToPoleAutoCommand = new Barney_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper, true);
+        cycleToStackWaypointAutoCommand = new Barney_CycleToStackWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex, true);
+        deliverPreloadAutoCommand = new Barney_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, stackIndex, true);
+        grabFromStackCommand = new Barney_GrabFromStackCommand(drive, lift, arm, wrist, gripper, stackIndex, true);
+        liftToPositionCommand = new LiftToPositionCommand(lift, 50, 25);
 
         // declare trajectories
         drive.setPoseEstimate(Barney_AutoTrajectories.blue_StartPos);
@@ -241,7 +243,7 @@ public class Blue_1_5_Barney extends CommandOpMode {
 
                 new InstantCommand(() -> {
                     stackIndex--;
-               }),
+                }),
                 cycleToPoleAutoCommand,
                 cycleToStackWaypointAutoCommand,
 //                grabFromStackCommand,
@@ -253,8 +255,11 @@ public class Blue_1_5_Barney extends CommandOpMode {
 
                 new InstantCommand(() -> {
                     arm.toInitPosition();
+//                    lift.setTargetPosition(50);
                 }),
+                liftToPositionCommand,
                 parkTrajectoryCommand
+
                 //grabFromStackCommand,
 
 //                new InstantCommand(() -> {
@@ -282,6 +287,5 @@ public class Blue_1_5_Barney extends CommandOpMode {
         telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
     }
 }
-
 
 

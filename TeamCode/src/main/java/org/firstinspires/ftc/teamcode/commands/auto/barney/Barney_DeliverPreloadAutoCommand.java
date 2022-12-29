@@ -20,12 +20,12 @@ public class Barney_DeliverPreloadAutoCommand extends SequentialCommandGroup {
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    public Barney_DeliverPreloadAutoCommand(SampleMecanumDrive_Barney drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, int stackIndex) {
+    public Barney_DeliverPreloadAutoCommand(SampleMecanumDrive_Barney drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, int stackIndex, boolean isBlue) {
         this.gripper = gripper;
 
         addCommands(
                 new ParallelCommandGroup(
-                        new Barney_FollowTrajectoryCommand(drive, Barney_AutoTrajectories.blue_StartToPreloadPole),
+                        new Barney_FollowTrajectoryCommand(drive, isBlue ? Barney_AutoTrajectories.blue_StartToPreloadPole : Barney_AutoTrajectories.red_StartToPreloadPole),
                         new SequentialCommandGroup(
                                 new WaitCommand(500),
                                 new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.HIGH_JUNCTION),
@@ -35,7 +35,7 @@ public class Barney_DeliverPreloadAutoCommand extends SequentialCommandGroup {
                 new WaitCommand(1000),
                 new InstantCommand(gripper::open),
                 new ParallelCommandGroup(
-                        new Barney_FollowTrajectoryCommand(drive, Barney_AutoTrajectories.blue_PreloadPoleToStackWaypoint),
+                        new Barney_FollowTrajectoryCommand(drive, isBlue ? Barney_AutoTrajectories.blue_PreloadPoleToStackWaypoint: Barney_AutoTrajectories.red_PreloadPoleToStackWaypoint),
                         new SequentialCommandGroup(
                                 new WaitCommand(250),
                                 new LiftToIntakePositionCommand(lift, arm, gripper, wrist, Junctions.INTAKE, stackIndex)

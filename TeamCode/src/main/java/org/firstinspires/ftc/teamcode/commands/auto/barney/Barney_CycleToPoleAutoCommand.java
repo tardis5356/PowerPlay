@@ -19,7 +19,7 @@ public class Barney_CycleToPoleAutoCommand extends SequentialCommandGroup {
 
     private Gripper gripper;
 
-    public Barney_CycleToPoleAutoCommand(SampleMecanumDrive_Barney drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper) {
+    public Barney_CycleToPoleAutoCommand(SampleMecanumDrive_Barney drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, boolean isBlue) {
         this.gripper = gripper;
 
         addCommands(
@@ -27,7 +27,7 @@ public class Barney_CycleToPoleAutoCommand extends SequentialCommandGroup {
 //                new LiftToPositionCommand(lift, 400, 50),
                 new WaitCommand(250),
                 new ParallelCommandGroup(
-                        new Barney_FollowTrajectoryCommand(drive, Barney_AutoTrajectories.blue_StackWaypointToMainPole),
+                        new Barney_FollowTrajectoryCommand(drive, isBlue ? Barney_AutoTrajectories.blue_StackWaypointToMainPole: Barney_AutoTrajectories.red_StackWaypointToMainPole),
                         new SequentialCommandGroup(
                                 new WaitCommand(500),
                                 new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.HIGH_JUNCTION),

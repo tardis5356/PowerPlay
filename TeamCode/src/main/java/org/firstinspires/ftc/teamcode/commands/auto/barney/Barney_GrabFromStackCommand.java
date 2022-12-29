@@ -19,14 +19,14 @@ public class Barney_GrabFromStackCommand extends SequentialCommandGroup {
 
     private Gripper gripper;
 
-    public Barney_GrabFromStackCommand(SampleMecanumDrive_Barney drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, int stackIndex) {
+    public Barney_GrabFromStackCommand(SampleMecanumDrive_Barney drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, int stackIndex, boolean isBlue) {
         this.gripper = gripper;
 
         addCommands(
                 new LiftToIntakePositionCommand(lift, arm, gripper, wrist, Junctions.INTAKE, stackIndex),
                 //new InstantCommand(gripper::open),
                 new WaitCommand(250),
-                new Barney_FollowTrajectoryCommand(drive, Barney_AutoTrajectories.blue_StackWaypointToStack),
+                new Barney_FollowTrajectoryCommand(drive, isBlue ? Barney_AutoTrajectories.blue_StackWaypointToStack : Barney_AutoTrajectories.red_StackWaypointToStack),
                 new WaitCommand(250),
                 new InstantCommand(() -> {
                     gripper.close();
@@ -34,7 +34,7 @@ public class Barney_GrabFromStackCommand extends SequentialCommandGroup {
                // new InstantCommand(gripper::close),
                 new WaitCommand(250),
                 new ParallelCommandGroup(
-                        new Barney_FollowTrajectoryCommand(drive, Barney_AutoTrajectories.blue_StackToStackWaypoint),
+                        new Barney_FollowTrajectoryCommand(drive, isBlue ? Barney_AutoTrajectories.blue_StackToStackWaypoint : Barney_AutoTrajectories.red_StackToStackWaypoint),
                         new LiftToIntakePositionCommand(lift, arm, gripper, wrist, Junctions.INTAKE, 8)
                 )
         );

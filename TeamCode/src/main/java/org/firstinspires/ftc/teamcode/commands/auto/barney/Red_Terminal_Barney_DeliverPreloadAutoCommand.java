@@ -20,7 +20,7 @@ public class Red_Terminal_Barney_DeliverPreloadAutoCommand extends SequentialCom
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    public Red_Terminal_Barney_DeliverPreloadAutoCommand(SampleMecanumDrive_Barney drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, int stackIndex) {
+    public Red_Terminal_Barney_DeliverPreloadAutoCommand(SampleMecanumDrive_Barney drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, int stackIndex, boolean isBlue) {
         this.gripper = gripper;
 
         addCommands(
