@@ -21,8 +21,8 @@ public class Arm extends SubsystemBase {
     private Servo servo;
 
 //    public static double INIT_POSITION = BotPositions.ARM_INIT, INTAKE_POSITION = BotPositions.ARM_INTAKE, DELIVERY_POSITION = BotPositions.ARM_DELIVERY;//0.01
-//    public static double INIT_POSITION = BotPositions.ARM_INIT_R2V2, INTAKE_POSITION = BotPositions.ARM_INTAKE_R2V2, DELIVERY_POSITION = BotPositions.ARM_DELIVERY_R2V2;//0.01
-    public static double INIT_POSITION = BotPositions.ARM_INIT_Barney, INTAKE_POSITION = BotPositions.ARM_INTAKE_Barney, DELIVERY_POSITION = BotPositions.ARM_DELIVERY_Barney;//0.01
+    public static double INIT_POSITION = BotPositions.ARM_INIT_R2V2, INTAKE_POSITION = BotPositions.ARM_INTAKE_R2V2, DELIVERY_POSITION = BotPositions.ARM_DELIVERY_R2V2;//0.01
+//    public static double INIT_POSITION = BotPositions.ARM_INIT_Barney, INTAKE_POSITION = BotPositions.ARM_INTAKE_Barney, DELIVERY_POSITION = BotPositions.ARM_DELIVERY_Barney;//0.01
 
     public double servoPosition;
 
