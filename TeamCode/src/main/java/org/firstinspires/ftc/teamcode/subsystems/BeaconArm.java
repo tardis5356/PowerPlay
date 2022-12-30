@@ -14,8 +14,8 @@ public class BeaconArm extends SubsystemBase {
     private final Servo servo;
 
 //    private final double loadPosition = BotPositions.BEACON_ARM_LOAD, deliveryPosition = BotPositions.BEACON_ARM_DELIVERY, storagePosition = BotPositions.BEACON_ARM_STORAGE; //guess, not tested
-//    private final double loadPosition = BotPositions.BEACON_ARM_LOAD_R2V2, deliveryPosition = BotPositions.BEACON_ARM_DELIVERY_R2V2, storagePosition = BotPositions.BEACON_ARM_STORAGE_R2V2; //guess, not tested
-    private final double loadPosition = BotPositions.BEACON_ARM_LOAD_Barney, deliveryPosition = BotPositions.BEACON_ARM_DELIVERY_Barney, storagePosition = BotPositions.BEACON_ARM_STORAGE_Barney, travelPosition = BotPositions.BEACON_ARM_TRAVEL_Barney; //guess, not tested
+    private final double loadPosition = BotPositions.BEACON_ARM_LOAD_R2V2, deliveryPosition = BotPositions.BEACON_ARM_DELIVERY_R2V2, storagePosition = BotPositions.BEACON_ARM_STORAGE_R2V2; //travelPosition = BotPositions.BEACON_ARM_TRAVEL_R2V2; //guess, not tested
+//    private final double loadPosition = BotPositions.BEACON_ARM_LOAD_Barney, deliveryPosition = BotPositions.BEACON_ARM_DELIVERY_Barney, storagePosition = BotPositions.BEACON_ARM_STORAGE_Barney, travelPosition = BotPositions.BEACON_ARM_TRAVEL_Barney; //guess, not tested
 
     public boolean loading = true;
 
@@ -45,10 +45,10 @@ public class BeaconArm extends SubsystemBase {
         loading = false;
     }
 
-    public void toTravelPosition(){
-        servo.setPosition(travelPosition);
-        loading = false;
-    }
+//    public void toTravelPosition(){
+//        servo.setPosition(travelPosition);
+//        loading = false;
+//    }
 
     public void setPosition(double position){
         servo.setPosition(position);

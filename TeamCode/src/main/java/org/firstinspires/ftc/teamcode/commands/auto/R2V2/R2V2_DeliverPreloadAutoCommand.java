@@ -27,23 +27,22 @@ public class R2V2_DeliverPreloadAutoCommand extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                         new R2V2_FollowTrajectoryCommand(drive, R2V2_AutoTrajectories.blue_StartToPreloadPole),
                         new SequentialCommandGroup(
-//                                new WaitCommand(500),
-//                                new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.HIGH_JUNCTION),
-//                                new WaitCommand(500)
-//                        )
+                                new WaitCommand(500),
+                                new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.HIGH_JUNCTION_R2V2),
+                                new WaitCommand(500)
+                        )
                 ),
                 new WaitCommand(1000),
-               // new InstantCommand(gripper::open),
+                new InstantCommand(gripper::open),
                 new ParallelCommandGroup(
-                        new R2V2_FollowTrajectoryCommand(drive, R2V2_AutoTrajectories.blue_PreloadPoleToStackWaypoint)
-//                        new SequentialCommandGroup(
-//                                new WaitCommand(250),
-//                                new LiftToIntakePositionCommand(lift, arm, gripper, wrist, Junctions.INTAKE, stackIndex)
+                        new R2V2_FollowTrajectoryCommand(drive, R2V2_AutoTrajectories.blue_PreloadPoleToStackWaypoint),
+                        new SequentialCommandGroup(
+                                new WaitCommand(250),
+                                new LiftToIntakePositionCommand(lift, arm, gripper, wrist, Junctions.INTAKE_R2V2, stackIndex)
                         )
-
-       )
+                        //new InstantCommand(gripper::open)
+                )
         );
-
     }
 
     @Override

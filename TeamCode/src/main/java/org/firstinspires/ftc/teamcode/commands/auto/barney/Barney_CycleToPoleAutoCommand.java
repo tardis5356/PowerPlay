@@ -33,6 +33,8 @@ public class Barney_CycleToPoleAutoCommand extends SequentialCommandGroup {
                                 new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.HIGH_JUNCTION),
                                 new WaitCommand(1500),
                                 new InstantCommand(gripper::open)
+
+
                         )
                 )
         );

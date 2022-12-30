@@ -39,11 +39,11 @@ public class Barney_AutoTrajectories {
 
     public static final Pose2d red_PreloadPolePos = new Pose2d(31, 4, Math.toRadians(20));
 
-    public static final Pose2d red_MainPolePos = new Pose2d(7, 23, Math.toRadians(-32));
+    public static final Pose2d red_MainPolePos = new Pose2d(4, 21, Math.toRadians(-32));
 
     public static final Pose2d red_StackFarWaypointPos = new Pose2d(38, 14, Math.toRadians(0)); // x -58
     public static final Pose2d red_StackCloseWaypointPos = new Pose2d(50, 14, Math.toRadians(0)); // x -58
-    public static final Pose2d red_StackPos = new Pose2d(57, 15, Math.toRadians(0)); // x -58
+    public static final Pose2d red_StackPos = new Pose2d(56, 14, Math.toRadians(0)); // x -58
 
 
     public static TrajectorySequence blue_StartToPreloadPole, blue_PreloadPoleToStackWaypoint, blue_MainPoleToStackWaypoint, blue_StackWaypointToStack, blue_StackToStackWaypoint, blue_StackWaypointToMainPole,

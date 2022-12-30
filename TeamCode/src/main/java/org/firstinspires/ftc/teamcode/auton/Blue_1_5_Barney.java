@@ -245,6 +245,7 @@ public class Blue_1_5_Barney extends CommandOpMode {
                     stackIndex--;
                 }),
                 cycleToPoleAutoCommand,
+                liftToPositionCommand,
                 cycleToStackWaypointAutoCommand,
 //                grabFromStackCommand,
 //                new InstantCommand(() -> {
@@ -257,7 +258,6 @@ public class Blue_1_5_Barney extends CommandOpMode {
                     arm.toInitPosition();
 //                    lift.setTargetPosition(50);
                 }),
-                liftToPositionCommand,
                 parkTrajectoryCommand
 
                 //grabFromStackCommand,

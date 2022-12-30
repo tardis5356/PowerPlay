@@ -218,6 +218,12 @@ public class Gen2_TeleOp extends CommandOpMode {
                 .whileActiveContinuous(() -> tapeMeasure.extend());
         new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_DOWN))
                 .whileActiveContinuous(() -> tapeMeasure.stop());
+
+
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.A))
+                .whenActive(() -> {
+                    offset = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle;
+                });
     }
 
     @Override
@@ -288,8 +294,8 @@ public class Gen2_TeleOp extends CommandOpMode {
 
 
         lift.manualControl(gamepad2.left_stick_y);
-//
-//        //ANTI-TIP
+
+        //ANTI-TIP
 //        (m−rmin/rmax−rmin)×(tmax−tmin)+tmin // FORMULA
 //        if(rollOffset == 0) rollOffset = botOrientationDegs.thirdAngle;
 //

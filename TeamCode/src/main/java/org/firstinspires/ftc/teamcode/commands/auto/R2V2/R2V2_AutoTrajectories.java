@@ -20,13 +20,13 @@ public class R2V2_AutoTrajectories {
 
     public static final Pose2d blue_StartPos = new Pose2d(-36, 64, Math.toRadians(90));
 
-    public static final Pose2d blue_PreloadPolePos = new Pose2d(-31, 4, Math.toRadians(160));
+    public static final Pose2d blue_PreloadPolePos = new Pose2d(-30, 4, Math.toRadians(160));
 
-    public static final Pose2d blue_MainPolePos = new Pose2d(-8, 20, Math.toRadians(212));
+    public static final Pose2d blue_MainPolePos = new Pose2d(-5, 20, Math.toRadians(212));
 
     public static final Pose2d blue_StackFarWaypointPos = new Pose2d(-38, 14, Math.toRadians(180)); // x -58
     public static final Pose2d blue_StackCloseWaypointPos = new Pose2d(-50, 14, Math.toRadians(180)); // x -58
-    public static final Pose2d blue_StackPos = new Pose2d(-58, 14, Math.toRadians(180)); // x -58
+    public static final Pose2d blue_StackPos = new Pose2d(-59, 14, Math.toRadians(180)); // x -58
 
     public static TrajectorySequence blue_StartToPreloadPole, red_StartToPreloadPole, blue_PreloadPoleToStackWaypoint, red_PreloadPoleToStack, blue_MainPoleToStackWaypoint, red_PoleToStack, blue_StackWaypointToStack, blue_StackToStackWaypoint, blue_StackWaypointToMainPole, red_StackToPole;
 

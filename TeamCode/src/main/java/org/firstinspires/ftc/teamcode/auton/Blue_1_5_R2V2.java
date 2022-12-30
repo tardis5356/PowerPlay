@@ -110,8 +110,6 @@ public class Blue_1_5_R2V2 extends CommandOpMode {
         R2V2_AutoTrajectories.generateTrajectories(drive);
 
         gripper.close();
-        wrist.toIntakePosition();
-        arm.toInitPosition();
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
@@ -240,27 +238,27 @@ public class Blue_1_5_R2V2 extends CommandOpMode {
 //    @Override
 //    public void run() {
         schedule(new SequentialCommandGroup(
-                deliverPreloadAutoCommand
- //               grabFromStackCommand
-//
-//                new InstantCommand(() -> {
-//                    stackIndex--;
-//                }),
-//                cycleToPoleAutoCommand,
-//                cycleToStackWaypointAutoCommand,
-////                grabFromStackCommand,
-////                new InstantCommand(() -> {
-////                    stackIndex--;
-////                }),
-////                cycleToPoleAutoCommand,
-////                cycleToStackWaypointAutoCommand,
-//
-//                new InstantCommand(() -> {
-//                    arm.toInitPosition();
-////                    lift.setTargetPosition(50);
-//                }),
-//                liftToPositionCommand,
-//                parkTrajectoryCommand
+                deliverPreloadAutoCommand,
+                grabFromStackCommand,
+
+                new InstantCommand(() -> {
+                    stackIndex--;
+                }),
+                cycleToPoleAutoCommand,
+                liftToPositionCommand,
+                cycleToStackWaypointAutoCommand,
+                grabFromStackCommand,
+                new InstantCommand(() -> {
+                    stackIndex--;
+                }),
+                cycleToPoleAutoCommand,
+                cycleToStackWaypointAutoCommand,
+
+                new InstantCommand(() -> {
+                    arm.toInitPosition();
+//                    lift.setTargetPosition(50);
+                }),
+                parkTrajectoryCommand
 
                 //grabFromStackCommand,
 
