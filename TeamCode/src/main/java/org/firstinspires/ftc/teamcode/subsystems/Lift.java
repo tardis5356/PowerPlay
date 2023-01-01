@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.activeBot;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.isBarney;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -42,7 +42,7 @@ public class Lift extends SubsystemBase {
 //        retractController = new PIDController(pR, iR, dR);
 //        telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry());
 
-        if(activeBot == 0) {
+        if(isBarney) {
             controller = new PIDController(pE_Barney, i_Barney, d_Barney);
 
             mL_Barney = hardwareMap.get(DcMotorEx.class, "mL");
@@ -51,8 +51,9 @@ public class Lift extends SubsystemBase {
 
             mL_Barney.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             mL_Barney.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            target = 70;
         }
-        if(activeBot == 1) {
+        if(!isBarney) {
             controller = new PIDController(pE_R2V2, i_R2V2, d_R2V2);
 
             liftBase = hardwareMap.get(TouchSensor.class, "liftBase");
@@ -63,13 +64,13 @@ public class Lift extends SubsystemBase {
 
             mBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             mBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            target = 30;
         }
-        target = 30;
     }
 
     public void periodic() {
-        if(activeBot == 0) liftPID_Barney();
-        if(activeBot == 1) {
+        if(isBarney) liftPID_Barney();
+        if(!isBarney) {
             liftPID_R2V2();
             if(liftBase.isPressed()){
                 mBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -93,9 +94,9 @@ public class Lift extends SubsystemBase {
 
     public void manualControl(double stick) {
 //        controller.setP(0);
-        if(activeBot == 0) {
+        if(isBarney) {
             if (stick < 0) stickValue = stick * 0.2;
-            else stickValue = stick * 0.75;
+            else stickValue = stick * 1;
         }else{
             stickValue = stick * 1;
         }
@@ -147,8 +148,8 @@ public class Lift extends SubsystemBase {
 
     public double getLiftPosition() {
         double currentPos = 0;
-        if(activeBot == 0) currentPos = mL_Barney.getCurrentPosition();
-        if(activeBot == 1) currentPos = -mBL.getCurrentPosition();
+        if(isBarney) currentPos = mL_Barney.getCurrentPosition();
+        if(!isBarney) currentPos = -mBL.getCurrentPosition();
         return currentPos;
     }
 

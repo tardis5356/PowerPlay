@@ -89,11 +89,11 @@ public class R2V2_Park_Auto extends CommandOpMode {
         wrist = new Wrist(hardwareMap);
         beaconArm = new BeaconArm(hardwareMap);
 //        camera = new Camera(hardwareMap, telemetry2);
-
-        cycleToPoleAutoCommand = new R2V2_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper);
-        cycleToStackWaypointAutoCommand = new R2V2_CycleToStackWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
-        deliverPreloadAutoCommand = new R2V2_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
-        grabFromStackCommand = new R2V2_GrabFromStackCommand(drive, lift, arm, wrist, gripper, stackIndex);
+//
+//        cycleToPoleAutoCommand = new R2V2_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper);
+//        cycleToStackWaypointAutoCommand = new R2V2_CycleToStackWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
+//        deliverPreloadAutoCommand = new R2V2_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
+//        grabFromStackCommand = new R2V2_GrabFromStackCommand(drive, lift, arm, wrist, gripper, stackIndex);
 
         drive.setPoseEstimate(R2V2_AutoTrajectories.blue_StartPos);
         R2V2_AutoTrajectories.generateTrajectories(drive);

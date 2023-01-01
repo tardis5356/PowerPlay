@@ -1,13 +1,17 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.setActiveBot;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_FULL_RETRACTION_R2V2;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_HIGH_JUNCTION_R2V2;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_INTAKE_R2V2;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_LOW_JUNCTION_R2V2;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_MEDIUM_JUNCTION_R2V2;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_TRAVEL_R2V2;
 import static java.lang.Math.abs;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.button.Button;
 import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -21,16 +25,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.commands.LiftToIntakePositionCommand;
-import org.firstinspires.ftc.teamcode.commands.LiftToScoringPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.ManualLiftCommand;
+import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
+import org.firstinspires.ftc.teamcode.subsystems.Coffin;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
-import org.firstinspires.ftc.teamcode.subsystems.Junctions;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
-import org.firstinspires.ftc.teamcode.subsystems.Lift2;
 import org.firstinspires.ftc.teamcode.subsystems.TapeMeasure;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 
@@ -52,9 +54,10 @@ public class Gen2_TeleOp extends CommandOpMode {
     private Gripper gripper;
     private BeaconArm beaconArm;
     private TapeMeasure tapeMeasure;
+    private Coffin coffin;
 
-    private LiftToScoringPositionCommand liftRetractCommand, liftToGroundJunctionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
-    private LiftToIntakePositionCommand liftToIntakeCommand;
+    private RobotToStateCommand liftRetractCommand, liftToTravelPositionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
+    private RobotToStateCommand liftToIntakeCommand;
     private ManualLiftCommand manualLiftCommand;
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -89,8 +92,6 @@ public class Gen2_TeleOp extends CommandOpMode {
         telemetry.addData("Ready to start!", getRuntime());
         telemetry.update();
 
-        setActiveBot();
-
         Drivetrain = new Drivetrain(hardwareMap);
 //        defining subsystems
         gripper = new Gripper(hardwareMap);
@@ -98,14 +99,15 @@ public class Gen2_TeleOp extends CommandOpMode {
         arm = new Arm(hardwareMap);
         wrist = new Wrist(hardwareMap);
         beaconArm = new BeaconArm(hardwareMap);
-        tapeMeasure = new TapeMeasure(hardwareMap, false);
+        tapeMeasure = new TapeMeasure(hardwareMap);
+        coffin = new Coffin(hardwareMap);
 
-        liftToIntakeCommand = new LiftToIntakePositionCommand(lift, arm, gripper, wrist, Junctions.INTAKE_R2V2, 0);
-        liftRetractCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.FULL_RETRACTION_R2V2);
-        liftToGroundJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.GROUND_JUNCTION_R2V2);
-        liftToLowJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.LOW_JUNCTION_R2V2);
-        liftToMediumJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.MEDIUM_JUNCTION_R2V2);
-        liftToHighJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.HIGH_JUNCTION_R2V2);
+        liftToIntakeCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_INTAKE_R2V2, 0, "intake");
+        liftRetractCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_FULL_RETRACTION_R2V2, 0, "delivery");
+        liftToTravelPositionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_TRAVEL_R2V2, 0, "travel");
+        liftToLowJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_LOW_JUNCTION_R2V2, 0, "delivery");
+        liftToMediumJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_MEDIUM_JUNCTION_R2V2, 0, "delivery");
+        liftToHighJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_HIGH_JUNCTION_R2V2, 0, "delivery");
         manualLiftCommand = new ManualLiftCommand(lift, manipulator.getLeftY());
 
         // driver triggers
@@ -131,7 +133,7 @@ public class Gen2_TeleOp extends CommandOpMode {
         // manipulator triggers
         //manipulator = gamepad 2
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.A)) // extend to ground junction and slow drive base on A button
-                .whenActive(liftToGroundJunctionCommand)
+                .whenActive(liftToTravelPositionCommand)
                 .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
@@ -144,7 +146,7 @@ public class Gen2_TeleOp extends CommandOpMode {
                 .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
-                .cancelWhenActive(liftToGroundJunctionCommand)
+                .cancelWhenActive(liftToTravelPositionCommand)
                 .cancelWhenActive(liftToIntakeCommand)
                 .cancelWhenActive(manualLiftCommand)
                 .cancelWhenActive(liftRetractCommand);
@@ -153,7 +155,7 @@ public class Gen2_TeleOp extends CommandOpMode {
                 .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
-                .cancelWhenActive(liftToGroundJunctionCommand)
+                .cancelWhenActive(liftToTravelPositionCommand)
                 .cancelWhenActive(liftToIntakeCommand)
                 .cancelWhenActive(manualLiftCommand)
                 .cancelWhenActive(liftRetractCommand);
@@ -162,7 +164,7 @@ public class Gen2_TeleOp extends CommandOpMode {
                 .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
-                .cancelWhenActive(liftToGroundJunctionCommand)
+                .cancelWhenActive(liftToTravelPositionCommand)
                 .cancelWhenActive(liftToIntakeCommand)
                 .cancelWhenActive(manualLiftCommand)
                 .cancelWhenActive(liftRetractCommand);
@@ -183,7 +185,7 @@ public class Gen2_TeleOp extends CommandOpMode {
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
-                .cancelWhenActive(liftToGroundJunctionCommand)
+                .cancelWhenActive(liftToTravelPositionCommand)
                 .cancelWhenActive(liftRetractCommand)
                 .cancelWhenActive(manualLiftCommand);
 

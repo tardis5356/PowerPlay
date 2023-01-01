@@ -20,6 +20,7 @@ import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_GrabFromStackComma
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
+import org.firstinspires.ftc.teamcode.subsystems.Coffin;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
@@ -47,6 +48,7 @@ public class Blue_1_5_R2V2 extends CommandOpMode {
     private Wrist wrist;
     private Gripper gripper;
     private BeaconArm beaconArm;
+    private Coffin coffin;
 //    private Camera camera;
 
     private R2V2_CycleToPoleAutoCommand cycleToPoleAutoCommand;
@@ -96,13 +98,14 @@ public class Blue_1_5_R2V2 extends CommandOpMode {
         arm = new Arm(hardwareMap);
         wrist = new Wrist(hardwareMap);
         beaconArm = new BeaconArm(hardwareMap);
+        coffin = new Coffin(hardwareMap);
 //        camera = new Camera(hardwareMap, telemetry2);
 
         // declare commands
-        cycleToPoleAutoCommand = new R2V2_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper);
+        cycleToPoleAutoCommand = new R2V2_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper, coffin);
         cycleToStackWaypointAutoCommand = new R2V2_CycleToStackWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
-        deliverPreloadAutoCommand = new R2V2_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
-        grabFromStackCommand = new R2V2_GrabFromStackCommand(drive, lift, arm, wrist, gripper, stackIndex);
+        deliverPreloadAutoCommand = new R2V2_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex);
+        grabFromStackCommand = new R2V2_GrabFromStackCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex);
         liftToPositionCommand = new LiftToPositionCommand(lift, 50, 25);
 
         // declare trajectories

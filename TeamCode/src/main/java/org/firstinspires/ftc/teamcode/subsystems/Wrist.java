@@ -1,5 +1,20 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_DELIVERY_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_DELIVERY_R2V2;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_INTAKE_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_INTAKE_R2V2;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_TRAVEL_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_TRAVEL_R2V2;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_DELIVERY_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_DELIVERY_R2V2;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_INIT_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_INIT_R2V2;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_INTAKE_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_TRAVEL_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_TRAVEL_R2V2;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.isBarney;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -10,9 +25,6 @@ import com.qualcomm.robotcore.util.Range;
 public class Wrist extends SubsystemBase {
     private final Servo servo;
 
-//    public static double INIT_POSITION = BotPositions.WRIST_INIT, INTAKE_POSITION = BotPositions.WRIST_INTAKE, DELIVER_POSITION = BotPositions.WRIST_DELIVERY;//0.2
-    public static double INIT_POSITION = BotPositions.WRIST_INIT_R2V2, INTAKE_POSITION = BotPositions.WRIST_INTAKE_R2V2, DELIVER_POSITION = BotPositions.WRIST_DELIVERY_R2V2;//0.2
-//    public static double INIT_POSITION = BotPositions.WRIST_INIT_Barney, INTAKE_POSITION = BotPositions.WRIST_INTAKE_Barney, DELIVER_POSITION = BotPositions.WRIST_DELIVERY_Barney;//0.2
     public double servoPositionWrist = 0;
 
     public Wrist(HardwareMap hardwareMap) {
@@ -27,27 +39,37 @@ public class Wrist extends SubsystemBase {
 
     public void increasePosition() {
         servoPositionWrist += 0.005;
-        servoPositionWrist = (Range.clip(servoPositionWrist, 0,1));
+        servoPositionWrist = (Range.clip(servoPositionWrist, 0, 1));
         servo.setPosition(servoPositionWrist);
     }
 
     public void decreasePosition() {
 
         servoPositionWrist -= 0.005;
-        servoPositionWrist = (Range.clip(servoPositionWrist, 0,1));
+        servoPositionWrist = (Range.clip(servoPositionWrist, 0, 1));
         servo.setPosition(servoPositionWrist);
 
     }
 
-    public void toInitPosition(){
-        servo.setPosition(INIT_POSITION);
+    public void toInitPosition() {
+        servo.setPosition(isBarney ? WRIST_INIT_Barney : WRIST_INIT_R2V2);
+        servoPositionWrist = isBarney ? WRIST_INIT_Barney : WRIST_INIT_R2V2;
     }
 
-    public void toIntakePosition(){
-        servo.setPosition(INTAKE_POSITION);
+    public void toIntakePosition() {
+        servo.setPosition(isBarney ? WRIST_INTAKE_Barney : WRIST_INTAKE_Barney);
+        servoPositionWrist = isBarney ? WRIST_INTAKE_Barney : WRIST_INTAKE_Barney;
     }
 
-    public void toDeliverPosition(){ servo.setPosition(DELIVER_POSITION); }
+    public void toDeliverPosition() {
+        servo.setPosition(isBarney ? WRIST_DELIVERY_Barney : WRIST_DELIVERY_R2V2);
+        servoPositionWrist = isBarney ? WRIST_DELIVERY_Barney : WRIST_DELIVERY_R2V2;
+    }
+
+    public void toTravelPosition() {
+        servo.setPosition(isBarney ? WRIST_TRAVEL_Barney : WRIST_TRAVEL_R2V2);
+        servoPositionWrist = isBarney ? WRIST_TRAVEL_Barney : WRIST_TRAVEL_R2V2;
+    }
 
     public double getWristPosition() {
         return servo.getPosition();

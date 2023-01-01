@@ -1,16 +1,19 @@
 package org.firstinspires.ftc.teamcode.commands.auto.R2V2;
 
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_HIGH_JUNCTION_R2V2;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
+import com.arcrobotics.ftclib.command.Robot;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
-import org.firstinspires.ftc.teamcode.commands.LiftToScoringPositionCommand;
+import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
+import org.firstinspires.ftc.teamcode.subsystems.Coffin;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
-import org.firstinspires.ftc.teamcode.subsystems.Junctions;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 
@@ -19,7 +22,7 @@ public class R2V2_CycleToPoleAutoCommand extends SequentialCommandGroup {
 
     private Gripper gripper;
 
-    public R2V2_CycleToPoleAutoCommand(SampleMecanumDrive_R2V2 drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper) {
+    public R2V2_CycleToPoleAutoCommand(SampleMecanumDrive_R2V2 drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, Coffin coffin) {
         this.gripper = gripper;
 
         addCommands(
@@ -30,7 +33,7 @@ public class R2V2_CycleToPoleAutoCommand extends SequentialCommandGroup {
                         new R2V2_FollowTrajectoryCommand(drive, R2V2_AutoTrajectories.blue_StackWaypointToMainPole),
                         new SequentialCommandGroup(
                                 new WaitCommand(500),
-                                new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.HIGH_JUNCTION_R2V2),
+                                new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_HIGH_JUNCTION_R2V2, 0, "delivery"),
                                 new WaitCommand(1000),
                                 new InstantCommand(gripper::open)
                         )

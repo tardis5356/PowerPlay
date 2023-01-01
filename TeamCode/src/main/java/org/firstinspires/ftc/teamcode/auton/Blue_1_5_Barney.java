@@ -19,6 +19,7 @@ import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_GrabFromStackC
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Barney;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
+import org.firstinspires.ftc.teamcode.subsystems.Coffin;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
@@ -47,6 +48,7 @@ public class Blue_1_5_Barney extends CommandOpMode {
     private Wrist wrist;
     private Gripper gripper;
     private BeaconArm beaconArm;
+    private Coffin coffin;
 //    private Camera camera;
 
     private Barney_CycleToPoleAutoCommand cycleToPoleAutoCommand;
@@ -96,18 +98,19 @@ public class Blue_1_5_Barney extends CommandOpMode {
         arm = new Arm(hardwareMap);
         wrist = new Wrist(hardwareMap);
         beaconArm = new BeaconArm(hardwareMap);
+        coffin = new Coffin(hardwareMap);
 //        camera = new Camera(hardwareMap, telemetry2);
-
-        // declare commands
-        cycleToPoleAutoCommand = new Barney_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper, true);
-        cycleToStackWaypointAutoCommand = new Barney_CycleToStackWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex, true);
-        deliverPreloadAutoCommand = new Barney_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, stackIndex, true);
-        grabFromStackCommand = new Barney_GrabFromStackCommand(drive, lift, arm, wrist, gripper, stackIndex, true);
-        liftToPositionCommand = new LiftToPositionCommand(lift, 50, 25);
 
         // declare trajectories
         drive.setPoseEstimate(Barney_AutoTrajectories.blue_StartPos);
         Barney_AutoTrajectories.generateTrajectories(drive);
+
+        // declare commands
+        cycleToPoleAutoCommand = new Barney_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper, coffin,true);
+        cycleToStackWaypointAutoCommand = new Barney_CycleToStackWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex, true);
+        deliverPreloadAutoCommand = new Barney_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, true);
+        grabFromStackCommand = new Barney_GrabFromStackCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, true);
+        liftToPositionCommand = new LiftToPositionCommand(lift, 50, 25);
 
         gripper.close();
 

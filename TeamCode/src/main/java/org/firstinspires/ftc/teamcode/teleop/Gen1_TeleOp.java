@@ -1,14 +1,16 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_FULL_RETRACTION_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_HIGH_JUNCTION_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_INTAKE_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_LOW_JUNCTION_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_MEDIUM_JUNCTION_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_TRAVEL_Barney;
 import static java.lang.Math.abs;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.button.Button;
-import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import com.arcrobotics.ftclib.hardware.motors.MotorEx;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 
@@ -20,24 +22,16 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.PerpetualCommand;
 import com.arcrobotics.ftclib.command.button.Trigger;
-import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.teamcode.auton.Barney_Park_Auto;
-import org.firstinspires.ftc.teamcode.commands.LiftToIntakePositionCommand;
-import org.firstinspires.ftc.teamcode.commands.LiftToScoringPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.ManualLiftCommand;
+import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
+import org.firstinspires.ftc.teamcode.subsystems.Coffin;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
-import org.firstinspires.ftc.teamcode.subsystems.Junctions;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
@@ -63,9 +57,10 @@ public class Gen1_TeleOp extends CommandOpMode {
     private Gripper gripper;
     private BeaconArm beaconArm;
     private TapeMeasure tapeMeasure;
+    private Coffin coffin;
 
-    private LiftToScoringPositionCommand liftRetractCommand, liftToGroundJunctionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
-    private LiftToIntakePositionCommand liftToIntakeCommand;
+    private RobotToStateCommand liftToTravelPositionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
+    private RobotToStateCommand liftToIntakeCommand;
     private ManualLiftCommand manualLiftCommand;
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -107,17 +102,17 @@ public class Gen1_TeleOp extends CommandOpMode {
         arm = new Arm(hardwareMap);
         wrist = new Wrist(hardwareMap);
         beaconArm = new BeaconArm(hardwareMap);
-        tapeMeasure = new TapeMeasure(hardwareMap, true);
+        tapeMeasure = new TapeMeasure(hardwareMap);
+        coffin = new Coffin(hardwareMap);
 
 //        m_grabCommand = new GrabStone(m_gripper);
 //        m_releaseCommand = new ReleaseStone(m_gripper);
         //defining commands for presets for lift, arm, gripper, wrist
-        liftToIntakeCommand = new LiftToIntakePositionCommand(lift, arm, gripper, wrist, Junctions.INTAKE, 0);
-        liftRetractCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.FULL_RETRACTION);
-        liftToGroundJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.GROUND_JUNCTION);
-        liftToLowJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.LOW_JUNCTION);
-        liftToMediumJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.MEDIUM_JUNCTION);
-        liftToHighJunctionCommand = new LiftToScoringPositionCommand(lift, arm, gripper, wrist, Junctions.HIGH_JUNCTION);
+        liftToIntakeCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_INTAKE_Barney, 0, "intake");
+        liftToTravelPositionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_TRAVEL_Barney, 0, "travel");
+        liftToLowJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_LOW_JUNCTION_Barney, 0, "delivery");
+        liftToMediumJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_MEDIUM_JUNCTION_Barney, 0, "delivery");
+        liftToHighJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_HIGH_JUNCTION_Barney, 0, "delivery");
         manualLiftCommand = new ManualLiftCommand(lift, manipulator.getLeftY());
 
         // driver triggers
@@ -142,42 +137,38 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         // manipulator triggers
         //manipulator = gamepad 2
-        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.A)) // extend to ground junction and slow drive base on A button
-                .whenActive(liftToGroundJunctionCommand)
-                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.A)) // move cone to a storage position for travel at fast speed on A button
+                .whenActive(liftToTravelPositionCommand)
+                .whenActive(() -> powerMultiplier = FAST_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
                 .cancelWhenActive(liftToIntakeCommand)
-                .cancelWhenActive(manualLiftCommand)
-                .cancelWhenActive(liftRetractCommand);
+                .cancelWhenActive(manualLiftCommand);
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.X)) // extend to low junction and slow drive base on B button
                 .whenActive(liftToLowJunctionCommand)
                 .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
-                .cancelWhenActive(liftToGroundJunctionCommand)
+                .cancelWhenActive(liftToTravelPositionCommand)
                 .cancelWhenActive(liftToIntakeCommand)
-                .cancelWhenActive(manualLiftCommand)
-                .cancelWhenActive(liftRetractCommand);
+                .cancelWhenActive(manualLiftCommand);
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.Y)) // extend to medium junction and slow drive base on Y button
                 .whenActive(liftToMediumJunctionCommand)
                 .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
-                .cancelWhenActive(liftToGroundJunctionCommand)
+                .cancelWhenActive(liftToTravelPositionCommand)
                 .cancelWhenActive(liftToIntakeCommand)
-                .cancelWhenActive(manualLiftCommand)
-                .cancelWhenActive(liftRetractCommand);
+                .cancelWhenActive(manualLiftCommand);
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.B)) // extend to high junction and slow drive base on X button
                 .whenActive(liftToHighJunctionCommand)
                 .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
-                .cancelWhenActive(liftToGroundJunctionCommand)
+                .cancelWhenActive(liftToTravelPositionCommand)
                 .cancelWhenActive(liftToIntakeCommand)
-                .cancelWhenActive(manualLiftCommand)
-                .cancelWhenActive(liftRetractCommand);
+                .cancelWhenActive(manualLiftCommand);
 
 //        new Trigger(() -> manipulator.getLeftY() > 0.2) // override all other commands and give manual control of lift
 //                .whenActive(manualLiftCommand)
@@ -195,25 +186,20 @@ public class Gen1_TeleOp extends CommandOpMode {
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
-                .cancelWhenActive(liftToGroundJunctionCommand)
-                .cancelWhenActive(liftRetractCommand)
+                .cancelWhenActive(liftToTravelPositionCommand)
                 .cancelWhenActive(manualLiftCommand);
 
         new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // closes gripper on left trigger
                 .whenActive(() -> {
-                    if (!manualModeOn) {
+//                    if (!manualModeOn) {
                         gripper.close();
-                    } else {
-                        arm.increasePosition();
-                    }
+//                    }
                 });
         new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5) // opens gripper on right trigger
                 .whenActive(() -> {
-                    if (!manualModeOn) {
+//                    if (!manualModeOn) {
                         gripper.open();
-                    } else {
-                        arm.decreasePosition();
-                    }
+//                    }
                 });
 
 
@@ -268,13 +254,13 @@ public class Gen1_TeleOp extends CommandOpMode {
             lift.manualControl(-gamepad2.left_stick_y);
 
             //controls gripper
-            if (gamepad2.dpad_right) {
-                gripper.increasePosition();
-
-            }
-            if (gamepad2.dpad_left) {
-                gripper.decreasePosition();
-            }
+//            if (gamepad2.) {
+//                gripper.increasePosition();
+//
+//            }
+//            if (gamepad2.dpad_left) {
+//                gripper.decreasePosition();
+//            }
 
             //controls wrist
             if (gamepad2.right_bumper) {
@@ -286,11 +272,11 @@ public class Gen1_TeleOp extends CommandOpMode {
             }
 
             //controls arm
-            if (gamepad2.right_trigger == 1) {
+            if (gamepad2.dpad_left) {
                 arm.increasePosition();
 
             }
-            if (gamepad2.left_trigger == 1) {
+            if (gamepad2.dpad_right) {
                 arm.decreasePosition();
             }
 
@@ -309,28 +295,31 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         //ANTI-TIP
 //        (m−rmin/rmax−rmin)×(tmax−tmin)+tmin // FORMULA
-//        if(rollOffset == 0) rollOffset = botOrientationDegs.thirdAngle;
-//
-//        roll = Math.abs(botOrientationDegs.thirdAngle) - Math.abs(rollOffset);
-//
-//        if(roll > measuredMaxRoll) measuredMaxRoll = roll;
-//
-//        float weightedPowerMultiplier = roll/measuredMaxRoll;
-//
-////        if(Math.abs(roll) > 5) {
-//        powerMultiplier = POWER_MULTIPLIER-weightedPowerMultiplier;
-////        }
-////        else { powerMultiplier = POWER_MULTIPLIER; }
-//
-//        if (powerMultiplier > 1) powerMultiplier = 1;
-//
-//        telemetry.addData("heading", heading);
-//        telemetry.addData("roll", roll);
-//        telemetry.addData("rollOffset", rollOffset);
-//        telemetry.addData("measuredMaxRoll", measuredMaxRoll);
-//
-//        telemetry.addData("weightedPowerMultiplier", weightedPowerMultiplier);
-//        telemetry.addData("powerMultiplier", powerMultiplier);
+        Orientation botOrientationDegs = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+        float rollOffset = 0, roll = 0, measuredMaxRoll = 0;
+
+        if(rollOffset == 0) rollOffset = botOrientationDegs.thirdAngle;
+
+        roll = abs(botOrientationDegs.thirdAngle) - abs(rollOffset);
+
+        if(roll > measuredMaxRoll) measuredMaxRoll = roll;
+
+        float weightedPowerMultiplier = roll/measuredMaxRoll;
+
+//        if(Math.abs(roll) > 5) {
+        powerMultiplier = powerMultiplier-weightedPowerMultiplier;
+//        }
+//        else { powerMultiplier = POWER_MULTIPLIER; }
+
+        if (powerMultiplier > 1) powerMultiplier = 1;
+
+        telemetry.addData("heading", heading);
+        telemetry.addData("roll", roll);
+        telemetry.addData("rollOffset", rollOffset);
+        telemetry.addData("measuredMaxRoll", measuredMaxRoll);
+
+        telemetry.addData("weightedPowerMultiplier", weightedPowerMultiplier);
+        telemetry.addData("powerMultiplier", powerMultiplier);
         telemetry.addData("lift pos", lift.getLiftPosition());
         telemetry.addData("lift power", lift.getLiftPower());
         telemetry.addData("lift target", lift.target);

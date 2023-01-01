@@ -1,5 +1,13 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_DELIVERY_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BEACON_ARM_DELIVERY_R2V2;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BEACON_ARM_LOAD_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BEACON_ARM_LOAD_R2V2;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BEACON_ARM_STORAGE_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BEACON_ARM_STORAGE_R2V2;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.isBarney;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -12,10 +20,6 @@ import org.firstinspires.ftc.teamcode.subsystems.BotPositions;
 @Config
 public class BeaconArm extends SubsystemBase {
     private final Servo servo;
-
-//    private final double loadPosition = BotPositions.BEACON_ARM_LOAD, deliveryPosition = BotPositions.BEACON_ARM_DELIVERY, storagePosition = BotPositions.BEACON_ARM_STORAGE; //guess, not tested
-    private final double loadPosition = BotPositions.BEACON_ARM_LOAD_R2V2, deliveryPosition = BotPositions.BEACON_ARM_DELIVERY_R2V2, storagePosition = BotPositions.BEACON_ARM_STORAGE_R2V2; //travelPosition = BotPositions.BEACON_ARM_TRAVEL_R2V2; //guess, not tested
-//    private final double loadPosition = BotPositions.BEACON_ARM_LOAD_Barney, deliveryPosition = BotPositions.BEACON_ARM_DELIVERY_Barney, storagePosition = BotPositions.BEACON_ARM_STORAGE_Barney, travelPosition = BotPositions.BEACON_ARM_TRAVEL_Barney; //guess, not tested
 
     public boolean loading = true;
 
@@ -31,17 +35,17 @@ public class BeaconArm extends SubsystemBase {
 
 
     public void toLoadingPosition(){
-        servo.setPosition(loadPosition);
+        servo.setPosition(isBarney ? BEACON_ARM_LOAD_Barney : BEACON_ARM_LOAD_R2V2);
         loading = true;
     }
 
     public void toDeliveryPosition(){
-        servo.setPosition(deliveryPosition);
+        servo.setPosition(isBarney ? ARM_DELIVERY_Barney : BEACON_ARM_DELIVERY_R2V2);
         loading = false;
     }
 
     public void toStoragePosition(){
-        servo.setPosition(storagePosition);
+        servo.setPosition(isBarney ? BEACON_ARM_STORAGE_Barney : BEACON_ARM_STORAGE_R2V2);
         loading = false;
     }
 

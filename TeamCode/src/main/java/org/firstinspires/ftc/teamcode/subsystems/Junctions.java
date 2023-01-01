@@ -5,7 +5,7 @@ import com.acmerobotics.dashboard.config.Config;
 @Config
 public enum Junctions {
     FULL_RETRACTION(0), // 0
-    INTAKE(30), // 100
+    INTAKE(50), // 100
     GROUND_JUNCTION(100),
     LOW_JUNCTION(275), // 200
     MEDIUM_JUNCTION(550), // 450
