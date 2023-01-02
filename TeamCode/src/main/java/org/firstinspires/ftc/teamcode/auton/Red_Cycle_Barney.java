@@ -9,7 +9,6 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.checkerframework.checker.units.qual.C;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.commands.LiftToPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_AutoTrajectories;
@@ -33,8 +32,8 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-    @Autonomous(group = "drive", name = "Barney Red Auto")
-    public class Red_1_5_Barney extends CommandOpMode {
+    @Autonomous(group = "drive", name = "Barney Red Cycle")
+    public class Red_Cycle_Barney extends CommandOpMode {
         ElapsedTime runtime = new ElapsedTime();
 
         final static double fullAutoTime = 30, cycleTime = 5, parkTime = 2;

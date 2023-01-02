@@ -32,8 +32,8 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@Autonomous(group = "drive", name = "Barney Blue Auto")
-public class Blue_1_5_Barney extends CommandOpMode {
+@Autonomous(group = "drive", name = "Barney Blue Cycle")
+public class Blue_Cycle_Barney extends CommandOpMode {
     ElapsedTime runtime = new ElapsedTime();
 
     final static double fullAutoTime = 30, cycleTime = 5, parkTime = 2;
