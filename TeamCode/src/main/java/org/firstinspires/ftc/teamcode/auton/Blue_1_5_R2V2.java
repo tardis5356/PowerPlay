@@ -248,19 +248,19 @@ public class Blue_1_5_R2V2 extends CommandOpMode {
                     stackIndex--;
                 }),
                 cycleToPoleAutoCommand,
-                liftToPositionCommand,
                 cycleToStackWaypointAutoCommand,
-                grabFromStackCommand,
-                new InstantCommand(() -> {
-                    stackIndex--;
-                }),
-                cycleToPoleAutoCommand,
-                cycleToStackWaypointAutoCommand,
+//                grabFromStackCommand,
+//                new InstantCommand(() -> {
+//                    stackIndex--;
+//                }),
+//                cycleToPoleAutoCommand,
+//                cycleToStackWaypointAutoCommand,
 
                 new InstantCommand(() -> {
                     arm.toInitPosition();
 //                    lift.setTargetPosition(50);
                 }),
+                liftToPositionCommand,
                 parkTrajectoryCommand
 
                 //grabFromStackCommand,

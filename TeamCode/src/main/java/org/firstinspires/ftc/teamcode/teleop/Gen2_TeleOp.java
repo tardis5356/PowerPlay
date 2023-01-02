@@ -255,7 +255,7 @@ public class Gen2_TeleOp extends CommandOpMode {
 
         if (manualModeOn) {
 
-            lift.manualControl(gamepad2.left_stick_y);
+//            lift.manualControl(gamepad2.left_stick_y);
 
             //controls gripper
             if (gamepad2.dpad_right) {

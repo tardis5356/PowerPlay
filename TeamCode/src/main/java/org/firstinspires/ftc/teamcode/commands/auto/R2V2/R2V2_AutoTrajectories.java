@@ -20,9 +20,9 @@ public class R2V2_AutoTrajectories {
 
     public static final Pose2d blue_StartPos = new Pose2d(-36, 64, Math.toRadians(90));
 
-    public static final Pose2d blue_PreloadPolePos = new Pose2d(-30, 4, Math.toRadians(160));
+    public static final Pose2d blue_PreloadPolePos = new Pose2d(-29, 4, Math.toRadians(180));
 
-    public static final Pose2d blue_MainPolePos = new Pose2d(-5, 20, Math.toRadians(212));
+    public static final Pose2d blue_MainPolePos = new Pose2d(-5, 23, Math.toRadians(212));
 
     public static final Pose2d blue_StackFarWaypointPos = new Pose2d(-38, 14, Math.toRadians(180)); // x -58
     public static final Pose2d blue_StackCloseWaypointPos = new Pose2d(-50, 14, Math.toRadians(180)); // x -58

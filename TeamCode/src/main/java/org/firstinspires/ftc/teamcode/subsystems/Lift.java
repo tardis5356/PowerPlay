@@ -42,7 +42,7 @@ public class Lift extends SubsystemBase {
 //        retractController = new PIDController(pR, iR, dR);
 //        telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry());
 
-        if(isBarney) {
+        if (isBarney) {
             controller = new PIDController(pE_Barney, i_Barney, d_Barney);
 
             mL_Barney = hardwareMap.get(DcMotorEx.class, "mL");
@@ -53,7 +53,7 @@ public class Lift extends SubsystemBase {
             mL_Barney.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             target = 70;
         }
-        if(!isBarney) {
+        if (!isBarney) {
             controller = new PIDController(pE_R2V2, i_R2V2, d_R2V2);
 
             liftBase = hardwareMap.get(TouchSensor.class, "liftBase");
@@ -69,10 +69,10 @@ public class Lift extends SubsystemBase {
     }
 
     public void periodic() {
-        if(isBarney) liftPID_Barney();
-        if(!isBarney) {
+        if (isBarney) liftPID_Barney();
+        if (!isBarney) {
             liftPID_R2V2();
-            if(liftBase.isPressed()){
+            if (liftBase.isPressed()) {
                 mBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             }
         }
@@ -94,10 +94,10 @@ public class Lift extends SubsystemBase {
 
     public void manualControl(double stick) {
 //        controller.setP(0);
-        if(isBarney) {
+        if (isBarney) {
             if (stick < 0) stickValue = stick * 0.2;
             else stickValue = stick * 1;
-        }else{
+        } else {
             stickValue = stick * 1;
         }
     }
@@ -107,7 +107,16 @@ public class Lift extends SubsystemBase {
         double pid = controller.calculate(liftPos, target);
         double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f_Barney;
 
-        power = pid + ff + stickValue;
+//        if (!manualActive) {
+            power = pid + ff + stickValue;
+//
+//            if (Math.abs(stickValue) > 0.05) {
+//                manualActive = true;
+//            }
+//        } else {
+//            power = ff + stickValue;
+//        }
+
 
         mL_Barney.setPower(power);
     }
@@ -120,9 +129,9 @@ public class Lift extends SubsystemBase {
 
 //        power = pid + stickValue;
         pid_R2V2 = pid;
-        ff_R2V2 = ff - (liftPos/7000);
+        ff_R2V2 = ff - (liftPos / 7000);
 
-        if(!manualActive) {
+        if (!manualActive) {
             if (Math.abs(target - liftPos) > 25) {
                 if (liftPos < target) {
                     power = -1;
@@ -135,11 +144,11 @@ public class Lift extends SubsystemBase {
                 mL_R2V2.setPower(ff + stickValue);
             }
 
-            if(Math.abs(stickValue) > 0.05){
+            if (Math.abs(stickValue) > 0.05) {
                 manualActive = true;
             }
         }
-        if(manualActive) {
+        if (manualActive) {
             power = ff + stickValue;
             mL_R2V2.setPower(power);
         }
@@ -148,17 +157,19 @@ public class Lift extends SubsystemBase {
 
     public double getLiftPosition() {
         double currentPos = 0;
-        if(isBarney) currentPos = mL_Barney.getCurrentPosition();
-        if(!isBarney) currentPos = -mBL.getCurrentPosition();
+        if (isBarney) currentPos = mL_Barney.getCurrentPosition();
+        if (!isBarney) currentPos = -mBL.getCurrentPosition();
         return currentPos;
     }
 
     public double getLiftPower() {
         return power;
     }
+
     public double getLiftPID() {
         return pid_R2V2;
     }
+
     public double getLiftFF() {
         return ff_R2V2;
     }

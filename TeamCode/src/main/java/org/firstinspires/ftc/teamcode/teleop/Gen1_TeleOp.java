@@ -251,7 +251,7 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         if (manualModeOn) {
 
-            lift.manualControl(-gamepad2.left_stick_y);
+//            lift.manualControl(-gamepad2.left_stick_y);
 
             //controls gripper
 //            if (gamepad2.) {
@@ -291,34 +291,34 @@ public class Gen1_TeleOp extends CommandOpMode {
 //        gripper.open();
 
 
-//        lift.manualControl(-gamepad2.left_stick_y);
+        lift.manualControl(-gamepad2.left_stick_y);
 
         //ANTI-TIP
 //        (m−rmin/rmax−rmin)×(tmax−tmin)+tmin // FORMULA
-        Orientation botOrientationDegs = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
-        float rollOffset = 0, roll = 0, measuredMaxRoll = 0;
-
-        if(rollOffset == 0) rollOffset = botOrientationDegs.thirdAngle;
-
-        roll = abs(botOrientationDegs.thirdAngle) - abs(rollOffset);
-
-        if(roll > measuredMaxRoll) measuredMaxRoll = roll;
-
-        float weightedPowerMultiplier = roll/measuredMaxRoll;
-
-//        if(Math.abs(roll) > 5) {
-        powerMultiplier = powerMultiplier-weightedPowerMultiplier;
-//        }
-//        else { powerMultiplier = POWER_MULTIPLIER; }
-
-        if (powerMultiplier > 1) powerMultiplier = 1;
-
-        telemetry.addData("heading", heading);
-        telemetry.addData("roll", roll);
-        telemetry.addData("rollOffset", rollOffset);
-        telemetry.addData("measuredMaxRoll", measuredMaxRoll);
-
-        telemetry.addData("weightedPowerMultiplier", weightedPowerMultiplier);
+//        Orientation botOrientationDegs = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+//        float rollOffset = 0, roll = 0, measuredMaxRoll = 0;
+//
+//        if(rollOffset == 0) rollOffset = botOrientationDegs.thirdAngle;
+//
+//        roll = abs(botOrientationDegs.thirdAngle) - abs(rollOffset);
+//
+//        if(roll > measuredMaxRoll) measuredMaxRoll = roll;
+//
+//        float weightedPowerMultiplier = roll/measuredMaxRoll;
+//
+////        if(Math.abs(roll) > 5) {
+//        powerMultiplier = powerMultiplier-weightedPowerMultiplier;
+////        }
+////        else { powerMultiplier = POWER_MULTIPLIER; }
+//
+//        if (powerMultiplier > 1) powerMultiplier = 1;
+//
+//        telemetry.addData("heading", heading);
+//        telemetry.addData("roll", roll);
+//        telemetry.addData("rollOffset", rollOffset);
+//        telemetry.addData("measuredMaxRoll", measuredMaxRoll);
+//
+//        telemetry.addData("weightedPowerMultiplier", weightedPowerMultiplier);
         telemetry.addData("powerMultiplier", powerMultiplier);
         telemetry.addData("lift pos", lift.getLiftPosition());
         telemetry.addData("lift power", lift.getLiftPower());

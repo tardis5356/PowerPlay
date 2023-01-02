@@ -34,7 +34,7 @@ public class R2V2_GrabFromStackCommand extends SequentialCommandGroup {
                 new InstantCommand(() -> {
                     gripper.close();
                 }),
-                new WaitCommand(250),
+                new WaitCommand(500),
                 new ParallelCommandGroup(
                         new R2V2_FollowTrajectoryCommand(drive, R2V2_AutoTrajectories.blue_StackToStackWaypoint),
                         new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_INTAKE_R2V2, 8, "intake")
