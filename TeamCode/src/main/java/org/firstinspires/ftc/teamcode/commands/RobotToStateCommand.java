@@ -14,7 +14,7 @@ public class RobotToStateCommand extends ParallelCommandGroup {
         switch(state){
             case "intake":
                 addCommands(
-                        new LiftToPositionCommand(lift, height + (stackIndex * 50), 15),
+                        new LiftToPositionCommand(lift, height + (stackIndex * 48), 15),
                         new InstantCommand(() -> {
                             arm.toIntakePosition();
                             wrist.toIntakePosition();

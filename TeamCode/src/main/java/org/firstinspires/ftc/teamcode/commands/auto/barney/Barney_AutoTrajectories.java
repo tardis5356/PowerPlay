@@ -22,10 +22,10 @@ public class Barney_AutoTrajectories {
     public static final Pose2d blue_StartPos2 = new Pose2d(36, 64, Math.toRadians(90));
 
 
-    public static final Pose2d blue_PreloadPolePos = new Pose2d(-32, 6, Math.toRadians(160));
+    public static final Pose2d blue_PreloadPolePos = new Pose2d(-31, 6, Math.toRadians(160));
 //    public static final Pose2d red_PreloadPolePos = new Pose2d(-41, 4, Math.toRadians(20));
 
-    public static final Pose2d blue_MainPolePos = new Pose2d(-8, 22, Math.toRadians(212));
+    public static final Pose2d blue_MainPolePos = new Pose2d(-9, 21, Math.toRadians(212));
 
     public static final Pose2d blue_StackFarWaypointPos = new Pose2d(-38, 14, Math.toRadians(180)); // x -58
     public static final Pose2d blue_StackCloseWaypointPos = new Pose2d(-50, 14, Math.toRadians(180)); // x -58

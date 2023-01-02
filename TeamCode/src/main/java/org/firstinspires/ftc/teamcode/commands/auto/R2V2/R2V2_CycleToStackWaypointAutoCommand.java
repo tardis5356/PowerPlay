@@ -17,11 +17,11 @@ public class R2V2_CycleToStackWaypointAutoCommand extends ParallelCommandGroup {
 
     private Gripper gripper;
 
-    public R2V2_CycleToStackWaypointAutoCommand(SampleMecanumDrive_R2V2 drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, int stackIndex) {
+    public R2V2_CycleToStackWaypointAutoCommand(SampleMecanumDrive_R2V2 drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, int stackIndex, boolean isBlue) {
         this.gripper = gripper;
 
         addCommands(
-                new R2V2_FollowTrajectoryCommand(drive, R2V2_AutoTrajectories.blue_MainPoleToStackWaypoint),
+                new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_MainPoleToStackWaypoint : R2V2_AutoTrajectories.red_MainPoleToStackWaypoint),
                 new SequentialCommandGroup(
                     new WaitCommand(500),
                     new LiftToPositionCommand(lift, 50, 25))

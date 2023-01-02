@@ -20,10 +20,10 @@ import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_GrabFromStackComma
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
-import org.firstinspires.ftc.teamcode.subsystems.Coffin;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
+import org.firstinspires.ftc.teamcode.subsystems.Coffin;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -102,10 +102,10 @@ public class Blue_1_5_R2V2 extends CommandOpMode {
 //        camera = new Camera(hardwareMap, telemetry2);
 
         // declare commands
-        cycleToPoleAutoCommand = new R2V2_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper, coffin);
-        cycleToStackWaypointAutoCommand = new R2V2_CycleToStackWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
-        deliverPreloadAutoCommand = new R2V2_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex);
-        grabFromStackCommand = new R2V2_GrabFromStackCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex);
+        cycleToPoleAutoCommand = new R2V2_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper, coffin, true);
+        cycleToStackWaypointAutoCommand = new R2V2_CycleToStackWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex, true);
+        deliverPreloadAutoCommand = new R2V2_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, true);
+        grabFromStackCommand = new R2V2_GrabFromStackCommand(drive, lift, arm, wrist, gripper, coffin,  stackIndex, true);
         liftToPositionCommand = new LiftToPositionCommand(lift, 50, 25);
 
         // declare trajectories
@@ -248,20 +248,22 @@ public class Blue_1_5_R2V2 extends CommandOpMode {
                     stackIndex--;
                 }),
                 cycleToPoleAutoCommand,
+//                liftToPositionCommand,
                 cycleToStackWaypointAutoCommand,
-//                grabFromStackCommand,
-//                new InstantCommand(() -> {
-//                    stackIndex--;
-//                }),
-//                cycleToPoleAutoCommand,
-//                cycleToStackWaypointAutoCommand,
+                grabFromStackCommand,
+                new InstantCommand(() -> {
+                    stackIndex--;
+                }),
+                cycleToPoleAutoCommand,
+                cycleToStackWaypointAutoCommand,
 
                 new InstantCommand(() -> {
                     arm.toInitPosition();
 //                    lift.setTargetPosition(50);
                 }),
-                liftToPositionCommand,
                 parkTrajectoryCommand
+//                liftToPositionCommand
+
 
                 //grabFromStackCommand,
 
