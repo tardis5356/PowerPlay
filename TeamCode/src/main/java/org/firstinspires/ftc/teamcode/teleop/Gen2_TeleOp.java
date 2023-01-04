@@ -192,17 +192,17 @@ public class Gen2_TeleOp extends CommandOpMode {
         new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // closes gripper on left trigger
                 .whenActive(() -> {
                     if (!manualModeOn) {
-                        gripper.close();
+                        gripper.open();
                     } else {
-                        arm.increasePosition();
+//                        arm.increasePosition();
                     }
                 });
         new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5) // opens gripper on right trigger
                 .whenActive(() -> {
                     if (!manualModeOn) {
-                        gripper.open();
+                        gripper.close();
                     } else {
-                        arm.decreasePosition();
+//                        arm.decreasePosition();
                     }
                 });
 
