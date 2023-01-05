@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.commands.auto.R2V2;
 
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_INTAKE_AUTO_R2V2;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_INTAKE_R2V2;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -27,7 +28,7 @@ public class R2V2_GrabFromStackCommand extends SequentialCommandGroup {
         this.gripper = gripper;
 
         addCommands(
-                new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_INTAKE_R2V2, stackIndex, "intake"),
+                new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_INTAKE_AUTO_R2V2, stackIndex, "intake"),
                 new InstantCommand(gripper::open),
                 new WaitCommand(250),
                 new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StackWaypointToStack : R2V2_AutoTrajectories.red_StackWaypointToStack),
@@ -39,8 +40,8 @@ public class R2V2_GrabFromStackCommand extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                         new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StackToStackWaypoint : R2V2_AutoTrajectories.red_StackToStackWaypoint),
                         new SequentialCommandGroup(
-                                new WaitCommand(700),
-                                new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_INTAKE_R2V2, 9, "intake"))
+//                                new WaitCommand(700),
+                                new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_INTAKE_AUTO_R2V2, 0, "travel"))
 
                 )
         );

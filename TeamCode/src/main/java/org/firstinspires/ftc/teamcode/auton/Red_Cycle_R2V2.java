@@ -193,9 +193,6 @@ public class Red_Cycle_R2V2 extends CommandOpMode {
             telemetry.addLine("No tag snapshot available, it was never sighted during the init loop :(");
             telemetry.update();
         }
-        Pose2d startPose = new Pose2d(36, 66, Math.toRadians(90));
-        drive.setPoseEstimate(startPose);
-        TrajectorySequence parkTrajectory2;
 
         switch (tagOfInterest.id) {
             case 1:
@@ -243,39 +240,16 @@ public class Red_Cycle_R2V2 extends CommandOpMode {
 //    public void run() {
         schedule(new SequentialCommandGroup(
                 deliverPreloadAutoCommand,
-                grabFromStackCommand,
-
-                new InstantCommand(() -> {
-                    stackIndex--;
-               }),
+                new R2V2_GrabFromStackCommand(drive, lift, arm, wrist, gripper, coffin, 4, false),
+                new InstantCommand(() -> { stackIndex--; }),
                 cycleToPoleAutoCommand,
                 cycleToStackWaypointAutoCommand,
-//                grabFromStackCommand,
-//                new InstantCommand(() -> {
-//                    stackIndex--;
-//                }),
-//                cycleToPoleAutoCommand,
-//                cycleToStackWaypointAutoCommand,
-
-                new InstantCommand(() -> {
-                    arm.toInitPosition();
-//                    lift.setTargetPosition(50);
-                }),
-                liftToPositionCommand,
+                new R2V2_GrabFromStackCommand(drive, lift, arm, wrist, gripper, coffin, 4, false),
+                new InstantCommand(() -> { stackIndex--; }),
+                cycleToPoleAutoCommand,
+                cycleToStackWaypointAutoCommand,
+                new InstantCommand(() -> { arm.toInitPosition(); }),
                 parkTrajectoryCommand
-
-                //grabFromStackCommand,
-
-//                new InstantCommand(() -> {
-//                    stackIndex--;
-//                }),
-//                cycleToPoleAutoCommand,
-//                cycleToStackWaypointAutoCommand//, grabFromStackCommand,
-//                new InstantCommand(() -> { stackIndex--; }),
-//                cycleToPoleAutoCommand,
-//                cycleToStackWaypointAutoCommand, grabFromStackCommand,
-//                new InstantCommand(() -> { stackIndex--; }),
-//                cycleToPoleAutoCommand
         ));
 
     }

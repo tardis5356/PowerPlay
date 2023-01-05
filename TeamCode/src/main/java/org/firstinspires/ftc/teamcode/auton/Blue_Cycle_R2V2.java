@@ -105,7 +105,7 @@ public class Blue_Cycle_R2V2 extends CommandOpMode {
         cycleToPoleAutoCommand = new R2V2_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper, coffin, true);
         cycleToStackWaypointAutoCommand = new R2V2_CycleToStackWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex, true);
         deliverPreloadAutoCommand = new R2V2_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, true);
-        grabFromStackCommand = new R2V2_GrabFromStackCommand(drive, lift, arm, wrist, gripper, coffin,  stackIndex, true);
+        grabFromStackCommand = new R2V2_GrabFromStackCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, true);
         liftToPositionCommand = new LiftToPositionCommand(lift, 50, 25);
 
         // declare trajectories
@@ -192,9 +192,6 @@ public class Blue_Cycle_R2V2 extends CommandOpMode {
             telemetry.addLine("No tag snapshot available, it was never sighted during the init loop :(");
             telemetry.update();
         }
-        Pose2d startPose = new Pose2d(-36, 66, Math.toRadians(90));
-        drive.setPoseEstimate(startPose);
-        TrajectorySequence parkTrajectory2;
 
         switch (tagOfInterest.id) {
             case 1:
@@ -202,7 +199,8 @@ public class Blue_Cycle_R2V2 extends CommandOpMode {
                         .setReversed(true)
 //                        .splineTo(new Vector2d(-12, 12), Math.toRadians(90))
                         //.lineToConstantHeading(new Vector2d(-36, 18))
-                        .lineToConstantHeading(new Vector2d(-12, 18))
+                        .lineToLinearHeading(new Pose2d(-12, 18, 110))
+//                        .turn(-90)
 //                        .splineToConstantHeading(new Vector2d(-12, 12), Math.toRadians(180))
                         .build();
 
@@ -215,7 +213,8 @@ public class Blue_Cycle_R2V2 extends CommandOpMode {
 //                        .build();
                 parkTrajectory = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StackFarWaypointPos)
                         .setReversed(true)
-                        .lineToConstantHeading(new Vector2d(-36, 18))
+                        .lineToLinearHeading(new Pose2d(-36, 18, 110))
+//                        .turn(-90)
                         .build();
                 break;
 
@@ -223,14 +222,16 @@ public class Blue_Cycle_R2V2 extends CommandOpMode {
                 parkTrajectory = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StackFarWaypointPos)
                         .setReversed(true)
 //                        .splineTo(new Vector2d(-60, 12), Math.toRadians(90))
-                        .lineToConstantHeading(new Vector2d(-58, 15))
+                        .lineToLinearHeading(new Pose2d(-57, 15, 110))
+//                        .turn(-90)
                         .build();
                 break;
 
             default:
                 parkTrajectory = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StackFarWaypointPos)
                         .setReversed(true)
-                        .lineToConstantHeading(new Vector2d(-36, 18))
+                        .lineToLinearHeading(new Pose2d(-36, 18, 110))
+//                        .turn(-90)
 
                         .build();
                 break;
@@ -242,41 +243,16 @@ public class Blue_Cycle_R2V2 extends CommandOpMode {
 //    public void run() {
         schedule(new SequentialCommandGroup(
                 deliverPreloadAutoCommand,
-                grabFromStackCommand,
-
-                new InstantCommand(() -> {
-                    stackIndex--;
-                }),
-                cycleToPoleAutoCommand,
-//                liftToPositionCommand,
-                cycleToStackWaypointAutoCommand,
-                grabFromStackCommand,
-                new InstantCommand(() -> {
-                    stackIndex--;
-                }),
+                new R2V2_GrabFromStackCommand(drive, lift, arm, wrist, gripper, coffin, 4, true),
+                new InstantCommand(() -> { stackIndex--; }),
                 cycleToPoleAutoCommand,
                 cycleToStackWaypointAutoCommand,
-
-                new InstantCommand(() -> {
-                    arm.toInitPosition();
-//                    lift.setTargetPosition(50);
-                }),
+                new R2V2_GrabFromStackCommand(drive, lift, arm, wrist, gripper, coffin, 4, true),
+                new InstantCommand(() -> { stackIndex--; }),
+                cycleToPoleAutoCommand,
+                cycleToStackWaypointAutoCommand,
+                new InstantCommand(() -> { arm.toInitPosition(); }),
                 parkTrajectoryCommand
-//                liftToPositionCommand
-
-
-                //grabFromStackCommand,
-
-//                new InstantCommand(() -> {
-//                    stackIndex--;
-//                }),
-//                cycleToPoleAutoCommand,
-//                cycleToStackWaypointAutoCommand//, grabFromStackCommand,
-//                new InstantCommand(() -> { stackIndex--; }),
-//                cycleToPoleAutoCommand,
-//                cycleToStackWaypointAutoCommand, grabFromStackCommand,
-//                new InstantCommand(() -> { stackIndex--; }),
-//                cycleToPoleAutoCommand
         ));
 
     }

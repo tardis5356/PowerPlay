@@ -41,7 +41,7 @@ public class R2V2_DeliverPreloadAutoCommand extends SequentialCommandGroup {
                 new WaitCommand(500),
                 new InstantCommand(gripper::open),
                 new ParallelCommandGroup(
-                        new R2V2_FollowTrajectoryCommand(drive, R2V2_AutoTrajectories.blue_PreloadPoleToStackWaypoint),
+                        new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_PreloadPoleToStackWaypoint : R2V2_AutoTrajectories.red_PreloadPoleToStackWaypoint),
                         new SequentialCommandGroup(
                                 new WaitCommand(500),
                                 new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_INTAKE_R2V2, 0, "intake")

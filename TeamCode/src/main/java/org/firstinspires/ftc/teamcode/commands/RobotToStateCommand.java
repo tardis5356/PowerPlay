@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.commands;
 
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.STACK_POSITIONS_R2V2;
+
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 
@@ -14,7 +16,7 @@ public class RobotToStateCommand extends ParallelCommandGroup {
         switch(state){
             case "intake":
                 addCommands(
-                        new LiftToPositionCommand(lift, height + (stackIndex * 48), 15),
+                        new LiftToPositionCommand(lift, STACK_POSITIONS_R2V2[stackIndex], 5),
                         new InstantCommand(() -> {
                             arm.toIntakePosition();
                             wrist.toIntakePosition();
