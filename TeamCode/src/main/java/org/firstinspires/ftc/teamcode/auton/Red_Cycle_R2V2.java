@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -193,6 +194,9 @@ public class Red_Cycle_R2V2 extends CommandOpMode {
             telemetry.addLine("No tag snapshot available, it was never sighted during the init loop :(");
             telemetry.update();
         }
+//        Pose2d startPose = new Pose2d(36, 66, Math.toRadians(90));
+//        drive.setPoseEstimate(startPose);
+        TrajectorySequence parkTrajectory2;
 
         switch (tagOfInterest.id) {
             case 1:
@@ -240,20 +244,49 @@ public class Red_Cycle_R2V2 extends CommandOpMode {
 //    public void run() {
         schedule(new SequentialCommandGroup(
                 deliverPreloadAutoCommand,
-                new R2V2_GrabFromStackCommand(drive, lift, arm, wrist, gripper, coffin, 4, false),
-                new InstantCommand(() -> { stackIndex--; }),
+                grabFromStackCommand,
+
+                new InstantCommand(() -> {
+                    stackIndex--;
+               }),
                 cycleToPoleAutoCommand,
                 cycleToStackWaypointAutoCommand,
-                new R2V2_GrabFromStackCommand(drive, lift, arm, wrist, gripper, coffin, 4, false),
-                new InstantCommand(() -> { stackIndex--; }),
-                cycleToPoleAutoCommand,
-                cycleToStackWaypointAutoCommand,
-                new InstantCommand(() -> { arm.toInitPosition(); }),
+//                grabFromStackCommand,
+//                new InstantCommand(() -> {
+//                    stackIndex--;
+//                }),
+//                cycleToPoleAutoCommand,
+//                cycleToStackWaypointAutoCommand,
+
+                new InstantCommand(() -> {
+                    arm.toInitPosition();
+//                    lift.setTargetPosition(50);
+                }),
+                liftToPositionCommand,
                 parkTrajectoryCommand
+
+                //grabFromStackCommand,
+
+//                new InstantCommand(() -> {
+//                    stackIndex--;
+//                }),
+//                cycleToPoleAutoCommand,
+//                cycleToStackWaypointAutoCommand//, grabFromStackCommand,
+//                new InstantCommand(() -> { stackIndex--; }),
+//                cycleToPoleAutoCommand,
+//                cycleToStackWaypointAutoCommand, grabFromStackCommand,
+//                new InstantCommand(() -> { stackIndex--; }),
+//                cycleToPoleAutoCommand
         ));
 
     }
 
+    @Override
+    public void run() {
+        CommandScheduler.getInstance().run();
+
+        telemetry.update();
+    }
 
     void tagToTelemetry(AprilTagDetection detection) {
         telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
