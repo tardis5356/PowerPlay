@@ -151,17 +151,17 @@ public class Red_Cycle_R2V2 extends LinearOpMode {
 
         gripper.close();
 ////////////////////////////DEFINING PARK TRAJECTORIES//////////////////////////////
-        parkTrajectory1 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.red_StackFarWaypointPos)
+        parkTrajectory1 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.red_StackCloseWaypointPos)
                 .setReversed(true)
                 .lineToLinearHeading(new Pose2d(60, 13, Math.toRadians(270)))
                 .build();
 
-        parkTrajectory2 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.red_StackFarWaypointPos)
+        parkTrajectory2 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.red_StackCloseWaypointPos)
                 .setReversed(true)
                 .lineToLinearHeading(new Pose2d(36, 13, Math.toRadians(270)))
                 .build();
 
-        parkTrajectory3 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.red_StackFarWaypointPos)
+        parkTrajectory3 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.red_StackCloseWaypointPos)
                 .setReversed(true)
                 .lineToLinearHeading(new Pose2d(12, 13, Math.toRadians(270)))
                 .build();
@@ -362,8 +362,11 @@ public class Red_Cycle_R2V2 extends LinearOpMode {
                     );
                     parking = true;
                 }
+                CommandScheduler.getInstance().run();
+            } else {
+                CommandScheduler.getInstance().run();
             }
-            CommandScheduler.getInstance().run();
+
         }
     }
 

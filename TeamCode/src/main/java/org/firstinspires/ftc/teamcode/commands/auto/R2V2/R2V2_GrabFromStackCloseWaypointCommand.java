@@ -30,7 +30,7 @@ public class R2V2_GrabFromStackCloseWaypointCommand extends SequentialCommandGro
                 new InstantCommand(gripper::open),
 //                new WaitCommand(250),
                 new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StackCloseWaypointToStack : R2V2_AutoTrajectories.red_StackCloseWaypointToStack), //TODO: speed up
-//                new WaitCommand(250),
+                new WaitCommand(500),
                 new InstantCommand(() -> {
                     gripper.close();
                 }),

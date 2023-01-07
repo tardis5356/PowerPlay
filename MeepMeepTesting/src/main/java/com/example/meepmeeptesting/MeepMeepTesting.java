@@ -28,16 +28,16 @@ public class MeepMeepTesting {
                 .setDimensions(10.6, 11.3)
                 .followTrajectorySequence(drive ->
                               drive.trajectorySequenceBuilder(red_StartPos)
-                                      .lineTo(new Vector2d(36, 54))
+                                      .lineTo(new Vector2d(40, 63))
                                       .lineToConstantHeading(new Vector2d(36, 7))
-                                      .lineToConstantHeading(new Vector2d(36, 20))
+                                      .lineToConstantHeading(new Vector2d(36, 14))
                                       .splineToLinearHeading(red_PreloadPolePos, Math.toRadians(250))
 
                                       .back(-0.10)
                                       .splineToSplineHeading(red_StackFarWaypointPos, Math.toRadians(90))//180
 
-                                      .back(-0.10)
-                                      .splineToSplineHeading(red_StackFarWaypointPos, Math.toRadians(180))//180
+//                                      .back(-0.10)
+//                                      .splineToSplineHeading(red_StackFarWaypointPos, Math.toRadians(0))//180
 
                                       .back(-0.10)
                                       .lineTo(red_StackPos.vec())

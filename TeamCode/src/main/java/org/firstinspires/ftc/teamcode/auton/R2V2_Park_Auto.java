@@ -208,7 +208,7 @@ public class R2V2_Park_Auto extends CommandOpMode {
                 break;
 
             default:
-                parkTrajectory = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StackFarWaypointPos)
+                parkTrajectory = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StackCloseWaypointPos)
                         .setReversed(true)
                         .splineTo(new Vector2d(-36, 66), Math.toRadians(90))
                         .build();

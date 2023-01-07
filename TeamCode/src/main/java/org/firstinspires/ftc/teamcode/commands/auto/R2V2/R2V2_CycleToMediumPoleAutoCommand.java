@@ -31,14 +31,14 @@ public class R2V2_CycleToMediumPoleAutoCommand extends SequentialCommandGroup {
 //                new LiftToPositionCommand(lift, 400, 50),
 //                new WaitCommand(250),
                 new ParallelCommandGroup(
-                        new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StackWaypointToMedPole : R2V2_AutoTrajectories.red_StackCloseWaypointToMedPole),  //TODO: spline is slightly wrong
-//                        new SequentialCommandGroup(
+                        new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StackCloseWaypointToMedPole : R2V2_AutoTrajectories.red_StackCloseWaypointToMedPole),  //TODO: spline is slightly wrong
+                        new SequentialCommandGroup(
 //                                new WaitCommand(500),
-                        new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_MEDIUM_JUNCTION_R2V2, 0, "delivery")
-//                                new WaitCommand(1300)
-//                        )
+                                new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_MEDIUM_JUNCTION_R2V2, 0, "delivery"),
+                                new WaitCommand(500)
+                        )
                 ),
-                new InstantCommand(gripper::open)
+        new InstantCommand(gripper::open)
         );
     }
 
