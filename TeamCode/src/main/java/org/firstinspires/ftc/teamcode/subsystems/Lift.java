@@ -24,7 +24,7 @@ public class Lift extends SubsystemBase {
     public static double pE_R2V2 = BotPositions.LIFT_p_R2V2, i_R2V2 = BotPositions.LIFT_i_R2V2, d_R2V2 = BotPositions.LIFT_d_R2V2;
 
     public static double f_Barney = 0.2;
-    public static double f_R2V2 = -0.2;
+    public static double f_R2V2 = -0.22;
 
     public static int target = 0;
 
