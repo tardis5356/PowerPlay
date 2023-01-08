@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+@Disabled
 @TeleOp(name = "Primus_TeleOp", group = "Linear Opmode")
-//@Disabled
 public class Primus_TeleOp extends BaseClass_PP {    // LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();

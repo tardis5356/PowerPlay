@@ -32,6 +32,7 @@ public class Lift extends SubsystemBase {
 
     public double power = 0;
     public double stickValue = 0;
+    public double stickValue2 = 0;
     public double pid_R2V2 = 0;
     public double ff_R2V2 = 0;
     public boolean manualActive = false;
@@ -92,13 +93,14 @@ public class Lift extends SubsystemBase {
         manualActive = false;
     }
 
-    public void manualControl(double stick) {
+    public void manualControl(double stick, double stick2) {
 //        controller.setP(0);
         if (isBarney) {
             if (stick < 0) stickValue = stick * 0.2;
             else stickValue = stick * 1;
         } else {
             stickValue = stick * 1;
+            stickValue2 = stick * 0.4;
         }
     }
 
@@ -149,7 +151,7 @@ public class Lift extends SubsystemBase {
             }
         }
         if (manualActive) {
-            power = ff + stickValue;
+            power = ff + stickValue + stickValue2;
             mL_R2V2.setPower(power);
         }
 

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.auton;
+package org.firstinspires.ftc.teamcode.auto.barney;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -7,10 +7,12 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_AutoTrajectories;
+import org.firstinspires.ftc.teamcode.auto.apriltags.AprilTagDetectionPipeline;
+import org.firstinspires.ftc.teamcode.commands.LiftToPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_CycleToPoleAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_CycleToStackWaypointAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_DeliverPreloadAutoCommand;
@@ -19,10 +21,12 @@ import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_GrabFromStackC
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Barney;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
+import org.firstinspires.ftc.teamcode.subsystems.Coffin;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.commands.auto.barney.Barney_AutoTrajectories;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -30,8 +34,9 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@Autonomous(group = "drive", name = "Barney Park Auto")
-public class Barney_Park_Auto extends CommandOpMode {
+@Disabled
+@Autonomous(group = "drive", name = "Barney Blue Cycle")
+public class Blue_Cycle_Barney extends CommandOpMode {
     ElapsedTime runtime = new ElapsedTime();
 
     final static double fullAutoTime = 30, cycleTime = 5, parkTime = 2;
@@ -40,20 +45,24 @@ public class Barney_Park_Auto extends CommandOpMode {
     int totalCycles = 0;
     int stackIndex = 4;
 
-    public static double endHeading = 0;
-
     private SampleMecanumDrive_Barney drive;
-//    private Lift lift;
+    private Lift lift;
     private Arm arm;
     private Wrist wrist;
     private Gripper gripper;
     private BeaconArm beaconArm;
+    private Coffin coffin;
 //    private Camera camera;
 
     private Barney_CycleToPoleAutoCommand cycleToPoleAutoCommand;
     private Barney_CycleToStackWaypointAutoCommand cycleToStackWaypointAutoCommand;
     private Barney_DeliverPreloadAutoCommand deliverPreloadAutoCommand;
     private Barney_GrabFromStackCommand grabFromStackCommand;
+    private Barney_FollowTrajectoryCommand parkTrajectoryCommand;
+    private LiftToPositionCommand liftToPositionCommand;
+
+    TrajectorySequence parkTrajectory;
+
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -85,21 +94,26 @@ public class Barney_Park_Auto extends CommandOpMode {
     public void initialize() {
 //        MultipleTelemetry telemetry2 = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
+        // declare subsystems
         drive = new SampleMecanumDrive_Barney(hardwareMap);
         gripper = new Gripper(hardwareMap);
-//        lift = new Lift(hardwareMap);
+        lift = new Lift(hardwareMap);
         arm = new Arm(hardwareMap);
         wrist = new Wrist(hardwareMap);
         beaconArm = new BeaconArm(hardwareMap);
+        coffin = new Coffin(hardwareMap);
 //        camera = new Camera(hardwareMap, telemetry2);
 
-//        cycleToPoleAutoCommand = new Barney_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper);
-//        cycleToStackWaypointAutoCommand = new Barney_CycleToStackWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
-//        deliverPreloadAutoCommand = new Barney_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
-//        grabFromStackCommand = new Barney_GrabFromStackCommand(drive, lift, arm, wrist, gripper, stackIndex);
-
+        // declare trajectories
         drive.setPoseEstimate(Barney_AutoTrajectories.blue_StartPos);
         Barney_AutoTrajectories.generateTrajectories(drive);
+
+        // declare commands
+        cycleToPoleAutoCommand = new Barney_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper, coffin,true);
+        cycleToStackWaypointAutoCommand = new Barney_CycleToStackWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex, true);
+        deliverPreloadAutoCommand = new Barney_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, true);
+        grabFromStackCommand = new Barney_GrabFromStackCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, true);
+        liftToPositionCommand = new LiftToPositionCommand(lift, 50, 25);
 
         gripper.close();
 
@@ -123,10 +137,6 @@ public class Barney_Park_Auto extends CommandOpMode {
         telemetry.setMsTransmissionInterval(50);
 
         while (!isStarted() && !isStopRequested()) {
-
-
-            gripper.close();
-            arm.toInitPosition();
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
             if (currentDetections.size() != 0) {
@@ -187,15 +197,14 @@ public class Barney_Park_Auto extends CommandOpMode {
         }
         Pose2d startPose = new Pose2d(-36, 66, Math.toRadians(90));
         drive.setPoseEstimate(startPose);
-        TrajectorySequence parkTrajectory;
-//        TrajectorySequence parkTrajectory2;
+        TrajectorySequence parkTrajectory2;
 
         switch (tagOfInterest.id) {
             case 1:
-                parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StartPos)
+                parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StackFarWaypointPos)
                         .setReversed(true)
 //                        .splineTo(new Vector2d(-12, 12), Math.toRadians(90))
-                        .lineToConstantHeading(new Vector2d(-36, 18))
+                        //.lineToConstantHeading(new Vector2d(-36, 18))
                         .lineToConstantHeading(new Vector2d(-12, 18))
 //                        .splineToConstantHeading(new Vector2d(-12, 12), Math.toRadians(180))
                         .build();
@@ -207,47 +216,57 @@ public class Barney_Park_Auto extends CommandOpMode {
 //                        .setReversed(true)
 //                        .splineTo(new Vector2d(-36, 12), Math.toRadians(90))
 //                        .build();
-                parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StartPos)
+                parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StackFarWaypointPos)
                         .setReversed(true)
                         .lineToConstantHeading(new Vector2d(-36, 18))
                         .build();
                 break;
 
             case 3:
-                parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StartPos)
+                parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StackFarWaypointPos)
                         .setReversed(true)
 //                        .splineTo(new Vector2d(-60, 12), Math.toRadians(90))
-                        .lineToConstantHeading(new Vector2d(-36, 18))
-                        .lineToConstantHeading(new Vector2d(-55, 15))
+                        .lineToConstantHeading(new Vector2d(-58, 15))
                         .build();
                 break;
 
             default:
-                parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StartPos)
+                parkTrajectory = drive.trajectorySequenceBuilder(Barney_AutoTrajectories.blue_StackFarWaypointPos)
                         .setReversed(true)
-                        .splineTo(new Vector2d(-36, 66), Math.toRadians(90))
+                        .lineToConstantHeading(new Vector2d(-36, 18))
 
                         .build();
                 break;
         }
 
+        parkTrajectoryCommand = new Barney_FollowTrajectoryCommand(drive, parkTrajectory);
 
-        tagToTelemetry(tagOfInterest);
-        telemetry.update();
+//    @Override
+//    public void run() {
         schedule(new SequentialCommandGroup(
-//                deliverPreloadAutoCommand,
+                deliverPreloadAutoCommand,
+                grabFromStackCommand,
+
+                new InstantCommand(() -> {
+                    stackIndex--;
+                }),
+                cycleToPoleAutoCommand,
+                cycleToStackWaypointAutoCommand,
 //                grabFromStackCommand,
 //                new InstantCommand(() -> {
 //                    stackIndex--;
 //                }),
 //                cycleToPoleAutoCommand,
-//                cycleToStackWaypointAutoCommand, grabFromStackCommand,
-//                new InstantCommand(() -> {
-//                    stackIndex--;
-//                }),
-//                cycleToPoleAutoCommand,
 //                cycleToStackWaypointAutoCommand,
-                new Barney_FollowTrajectoryCommand(drive, parkTrajectory) //grabFromStackCommand,
+
+                new InstantCommand(() -> {
+                    arm.toInitPosition();
+//                    lift.setTargetPosition(50);
+                }),
+                liftToPositionCommand,
+                parkTrajectoryCommand
+
+                //grabFromStackCommand,
 
 //                new InstantCommand(() -> {
 //                    stackIndex--;
@@ -259,10 +278,10 @@ public class Barney_Park_Auto extends CommandOpMode {
 //                cycleToStackWaypointAutoCommand, grabFromStackCommand,
 //                new InstantCommand(() -> { stackIndex--; }),
 //                cycleToPoleAutoCommand
-                //new InstantCommand(() -> endHeading = parkTrajectory.end().getHeading())
         ));
 
     }
+
 
     void tagToTelemetry(AprilTagDetection detection) {
         telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
@@ -274,6 +293,5 @@ public class Barney_Park_Auto extends CommandOpMode {
         telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
     }
 }
-
 
 

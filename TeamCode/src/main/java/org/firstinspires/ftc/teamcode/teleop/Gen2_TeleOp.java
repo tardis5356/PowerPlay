@@ -25,7 +25,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.commands.ManualLiftCommand;
 import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
@@ -36,16 +35,25 @@ import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.TapeMeasure;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 
+import java.text.DecimalFormat;
+
 @TeleOp(name = "Gen2_TeleOp")
 public class Gen2_TeleOp extends CommandOpMode {
     private DcMotorEx mFR, mFL, mBR, mBL;
     private BNO055IMU imu;
 
+    private static final DecimalFormat df = new DecimalFormat("0.00");
+
     private double offset = 0.0;
-    private double powerMultiplier = 1.0;
+    private double CURRENT_POWER_MULTIPLIER = 1.0;
+    private double CURRENT_BASE_POWER_MULTIPLIER = 0.3;
+    private double ANTI_TIP_WEIGHTED_POWER_MULTIPLIER = 0;
+    private double ADAPTIVE_SPEED_POWER_MULTIPLIER_OFFSET = 0;
     private double SLOW_POWER_MULTIPLIER = 0.5;
     private double FAST_POWER_MULTIPLIER = 1.0;
     private boolean manualModeOn = false;
+
+    public float roll = 0.001f, rollOffset = 0, measuredMaxRoll = 0;
 
     private Drivetrain Drivetrain;
     private Lift lift;
@@ -58,7 +66,6 @@ public class Gen2_TeleOp extends CommandOpMode {
 
     private RobotToStateCommand liftRetractCommand, liftToTravelPositionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
     private RobotToStateCommand liftToIntakeCommand;
-    private ManualLiftCommand manualLiftCommand;
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -108,18 +115,17 @@ public class Gen2_TeleOp extends CommandOpMode {
         liftToLowJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_LOW_JUNCTION_R2V2, 0, "delivery");
         liftToMediumJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_MEDIUM_JUNCTION_R2V2, 0, "delivery");
         liftToHighJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_HIGH_JUNCTION_R2V2, 0, "delivery");
-        manualLiftCommand = new ManualLiftCommand(lift, manipulator.getLeftY());
 
         // driver triggers
         //driver = gamepad 1
 
         new Trigger(() -> driver.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5)
                 .whenActive(() -> {
-                    powerMultiplier = SLOW_POWER_MULTIPLIER;
+                    CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER;
                 });
         new Trigger(() -> driver.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5)
                 .whenActive(() -> {
-                    powerMultiplier = FAST_POWER_MULTIPLIER;
+                    CURRENT_BASE_POWER_MULTIPLIER = FAST_POWER_MULTIPLIER;
                 });
 
         //teleOp manual mode
@@ -134,43 +140,38 @@ public class Gen2_TeleOp extends CommandOpMode {
         //manipulator = gamepad 2
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.A)) // extend to ground junction and slow drive base on A button
                 .whenActive(liftToTravelPositionCommand)
-                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
+                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
                 .cancelWhenActive(liftToIntakeCommand)
-                .cancelWhenActive(manualLiftCommand)
                 .cancelWhenActive(liftRetractCommand);
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.X)) // extend to low junction and slow drive base on B button
                 .whenActive(liftToLowJunctionCommand)
-                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
+                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToTravelPositionCommand)
                 .cancelWhenActive(liftToIntakeCommand)
-                .cancelWhenActive(manualLiftCommand)
                 .cancelWhenActive(liftRetractCommand);
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.Y)) // extend to medium junction and slow drive base on Y button
                 .whenActive(liftToMediumJunctionCommand)
-                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
+                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
                 .cancelWhenActive(liftToTravelPositionCommand)
                 .cancelWhenActive(liftToIntakeCommand)
-                .cancelWhenActive(manualLiftCommand)
                 .cancelWhenActive(liftRetractCommand);
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.B)) // extend to high junction and slow drive base on X button
                 .whenActive(liftToHighJunctionCommand)
-                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
+                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
                 .cancelWhenActive(liftToTravelPositionCommand)
                 .cancelWhenActive(liftToIntakeCommand)
-                .cancelWhenActive(manualLiftCommand)
                 .cancelWhenActive(liftRetractCommand);
 
 //        new Trigger(() -> manipulator.getLeftY() > 0.2) // override all other commands and give manual control of lift
-//                .whenActive(manualLiftCommand)
 //                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
 //                .cancelWhenActive(liftToHighJunctionCommand)
 //                .cancelWhenActive(liftToMediumJunctionCommand)
@@ -181,13 +182,12 @@ public class Gen2_TeleOp extends CommandOpMode {
 
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_DOWN)) // retract to intake and speed up drive base on DOWN button
                 .whenActive(liftToIntakeCommand)
-                .whenActive(() -> powerMultiplier = FAST_POWER_MULTIPLIER)
+                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = FAST_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
                 .cancelWhenActive(liftToTravelPositionCommand)
-                .cancelWhenActive(liftRetractCommand)
-                .cancelWhenActive(manualLiftCommand);
+                .cancelWhenActive(liftRetractCommand);
 
         new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // closes gripper on left trigger
                 .whenActive(() -> {
@@ -208,9 +208,9 @@ public class Gen2_TeleOp extends CommandOpMode {
 
 
         new Trigger(() -> driver.getButton(GamepadKeys.Button.LEFT_BUMPER)) // move beacon arm to loading position
-                .whenActive(() -> beaconArm.toLoadingPosition());
-        new Trigger(() -> driver.getButton(GamepadKeys.Button.RIGHT_BUMPER)) // move beacon arm to scoring position
-                .whenActive(() -> beaconArm.toDeliveryPosition());
+                .toggleWhenActive(() -> beaconArm.toLoadingPosition(), () -> beaconArm.toDeliveryPosition());
+        //new Trigger(() -> driver.getButton(GamepadKeys.Button.RIGHT_BUMPER)) // move beacon arm to scoring position
+        //.whenActive(() -> beaconArm.toTravelPosition());
         new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_UP)) // move beacon arm to storage position
                 .whenActive(() -> beaconArm.toStoragePosition());
 
@@ -221,6 +221,9 @@ public class Gen2_TeleOp extends CommandOpMode {
         new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_DOWN))
                 .whileActiveContinuous(() -> tapeMeasure.stop());
 
+
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.LEFT_BUMPER)) // move beacon arm to loading position
+                .whenActive(() -> gripper.open());
 
         new Trigger(() -> driver.getButton(GamepadKeys.Button.A))
                 .whenActive(() -> {
@@ -248,10 +251,10 @@ public class Gen2_TeleOp extends CommandOpMode {
 
         double normalize = Math.max(abs(ly) + abs(lx) + abs(rx), 1.0);
 
-        mFL.setPower((ly + lx + rx) / normalize * powerMultiplier);
-        mBL.setPower((ly - lx + rx) / normalize * powerMultiplier);
-        mFR.setPower((ly - lx - rx) / normalize * powerMultiplier);
-        mBR.setPower((ly + lx - rx) / normalize * powerMultiplier);
+        mFL.setPower((ly + lx + rx) / normalize * CURRENT_POWER_MULTIPLIER);
+        mBL.setPower((ly - lx + rx) / normalize * CURRENT_POWER_MULTIPLIER);
+        mFR.setPower((ly - lx - rx) / normalize * CURRENT_POWER_MULTIPLIER);
+        mBR.setPower((ly + lx - rx) / normalize * CURRENT_POWER_MULTIPLIER);
 
         if (manualModeOn) {
 
@@ -295,24 +298,29 @@ public class Gen2_TeleOp extends CommandOpMode {
 //        gripper.open();
 
 
-        lift.manualControl(gamepad2.left_stick_y);
+        lift.manualControl(gamepad2.left_stick_y, gamepad2.right_stick_y);
 
-        //ANTI-TIP
-//        (m−rmin/rmax−rmin)×(tmax−tmin)+tmin // FORMULA
-//        if(rollOffset == 0) rollOffset = botOrientationDegs.thirdAngle;
-//
-//        roll = Math.abs(botOrientationDegs.thirdAngle) - Math.abs(rollOffset);
-//
-//        if(roll > measuredMaxRoll) measuredMaxRoll = roll;
-//
-//        float weightedPowerMultiplier = roll/measuredMaxRoll;
-//
-////        if(Math.abs(roll) > 5) {
-//        powerMultiplier = POWER_MULTIPLIER-weightedPowerMultiplier;
-////        }
-////        else { powerMultiplier = POWER_MULTIPLIER; }
-//
-//        if (powerMultiplier > 1) powerMultiplier = 1;
+        // ANTI-TIP
+        // FORMULA (m−rmin/rmax−rmin)×(tmax−tmin)+tmin
+
+        Orientation botOrientationDegs = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        if(rollOffset == 0) rollOffset = botOrientationDegs.thirdAngle;
+
+        roll = Math.abs(botOrientationDegs.thirdAngle) - Math.abs(rollOffset);
+
+        if(roll > measuredMaxRoll) measuredMaxRoll = roll;
+
+        ANTI_TIP_WEIGHTED_POWER_MULTIPLIER = roll/measuredMaxRoll;
+
+        if(Math.abs(roll) > 1.5) {
+            CURRENT_POWER_MULTIPLIER = CURRENT_BASE_POWER_MULTIPLIER-ANTI_TIP_WEIGHTED_POWER_MULTIPLIER; //+ADAPTIVE_SPEED_POWER_MULTIPLIER_OFFSET;
+        }
+        else {
+            CURRENT_POWER_MULTIPLIER = CURRENT_BASE_POWER_MULTIPLIER; //+ ADAPTIVE_SPEED_POWER_MULTIPLIER_OFFSET;
+        }
+
+        if (CURRENT_POWER_MULTIPLIER > 1) CURRENT_POWER_MULTIPLIER = 1;
 //
 //        telemetry.addData("heading", heading);
 //        telemetry.addData("roll", roll);

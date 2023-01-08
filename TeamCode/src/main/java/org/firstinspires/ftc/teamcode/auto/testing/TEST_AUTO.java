@@ -1,18 +1,15 @@
-package org.firstinspires.ftc.teamcode.auton;
+package org.firstinspires.ftc.teamcode.auto.testing;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.arcrobotics.ftclib.command.Command;
-import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.auto.apriltags.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.commands.LiftToPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_AutoTrajectories;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_CycleToPoleAutoCommand;
@@ -20,7 +17,6 @@ import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_CycleToStackWaypoi
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_DeliverPreloadAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_FollowTrajectoryCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_GrabFromStackCommand;
-import org.firstinspires.ftc.teamcode.drive.DriveConstants_R2V2;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
@@ -36,6 +32,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
+@Disabled
 @Autonomous(group = "drive", name = "TEST")
 public class TEST_AUTO extends LinearOpMode {
     OpenCvCamera camera;

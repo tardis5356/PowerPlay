@@ -1,13 +1,14 @@
 
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 
+@Disabled
 @TeleOp(name = "Optimus_TeleOp", group = "Linear Opmode")
-//@Disabled
 public class Optimus_TeleOp extends BaseClass_PP {
 
     // Declare OpMode members.

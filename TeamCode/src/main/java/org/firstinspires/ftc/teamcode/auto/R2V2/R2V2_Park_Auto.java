@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.auton;
+package org.firstinspires.ftc.teamcode.auto.R2V2;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.auto.apriltags.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_AutoTrajectories;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_CycleToPoleAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_CycleToStackWaypointAutoCommand;
@@ -29,7 +30,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@Autonomous(group = "drive", name = "R2V2 Park Auto")
+@Autonomous(group = "drive", name = "\uD83D\uDE99 R2V2 Park Auto \uD83D\uDE97")
 public class R2V2_Park_Auto extends CommandOpMode {
     ElapsedTime runtime = new ElapsedTime();
 

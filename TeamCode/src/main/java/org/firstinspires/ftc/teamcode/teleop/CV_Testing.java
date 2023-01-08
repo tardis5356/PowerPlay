@@ -3,10 +3,12 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+@Disabled
 @TeleOp(name = "CV_Testing")
 public class CV_Testing extends CommandOpMode {
     private DcMotorEx m1;

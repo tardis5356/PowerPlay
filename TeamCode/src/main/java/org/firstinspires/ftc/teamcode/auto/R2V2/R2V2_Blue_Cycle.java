@@ -1,19 +1,16 @@
-package org.firstinspires.ftc.teamcode.auton;
+package org.firstinspires.ftc.teamcode.auto.R2V2;
 
 
-import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.arcrobotics.ftclib.command.Command;
-import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.auto.apriltags.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.commands.LiftToPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_AutoTrajectories;
@@ -26,7 +23,6 @@ import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_DeliverPreloadClos
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_FollowTrajectoryCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_GrabFromStackCloseWaypointCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_GrabFromStackCommand;
-import org.firstinspires.ftc.teamcode.drive.DriveConstants_R2V2;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
@@ -42,8 +38,8 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@Autonomous(group = "drive", name = "R2V2 Red Cycle")
-public class Red_Cycle_R2V2 extends LinearOpMode {
+@Autonomous(group = "drive", name = "\uD83D\uDFE6 R2V2 Blue Cycle \uD83D\uDFE6")
+public class R2V2_Blue_Cycle extends LinearOpMode {
     ElapsedTime runtime = new ElapsedTime();
 
     OpenCvCamera camera;
@@ -132,38 +128,38 @@ public class Red_Cycle_R2V2 extends LinearOpMode {
 //        camera = new Camera(hardwareMap, telemetry2);
 
         //generate trajectories, must do this before you declare commands
-        drive.setPoseEstimate(R2V2_AutoTrajectories.red_StartPos);
+        drive.setPoseEstimate(R2V2_AutoTrajectories.blue_StartPos);
         R2V2_AutoTrajectories.generateTrajectories(drive);
 
         // declare commands
-        cycleToPoleAutoCommand = new R2V2_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper, coffin, false);
-        cycleToStackWaypointAutoCommand = new R2V2_CycleToStackWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex, false);
-        deliverPreloadAutoCommand = new R2V2_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, false);
-        grabFromStackCommand = new R2V2_GrabFromStackCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, false);
+        cycleToPoleAutoCommand = new R2V2_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper, coffin, true);
+        cycleToStackWaypointAutoCommand = new R2V2_CycleToStackWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex, true);
+        deliverPreloadAutoCommand = new R2V2_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, true);
+        grabFromStackCommand = new R2V2_GrabFromStackCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, true);
 
 
-        cycleToMediumPoleAutoCommand = new R2V2_CycleToMediumPoleAutoCommand(drive, lift, arm, wrist, gripper, coffin, false);
-        cycleToStackCloseWaypointAutoCommand = new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex, false);
-        deliverPreloadCWAutoCommand = new R2V2_DeliverPreloadCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, false);
-        grabFromStackCWCommand = new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, false);
+        cycleToMediumPoleAutoCommand = new R2V2_CycleToMediumPoleAutoCommand(drive, lift, arm, wrist, gripper, coffin, true);
+        cycleToStackCloseWaypointAutoCommand = new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex, true);
+        deliverPreloadCWAutoCommand = new R2V2_DeliverPreloadCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, true);
+        grabFromStackCWCommand = new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, true);
 
         liftToPositionCommand = new LiftToPositionCommand(lift, 50, 25);
 
         gripper.close();
 ////////////////////////////DEFINING PARK TRAJECTORIES//////////////////////////////
-        parkTrajectory1 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.red_StackFarWaypointPos)
+        parkTrajectory1 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StackFarWaypointPos)
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(60, 13, Math.toRadians(270)))
+                .lineToLinearHeading(new Pose2d(-58, 13, Math.toRadians(270)))
                 .build();
 
-        parkTrajectory2 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.red_StackFarWaypointPos)
+        parkTrajectory2 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StackFarWaypointPos)
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(36, 13, Math.toRadians(270)))
+                .lineToLinearHeading(new Pose2d(-36, 13, Math.toRadians(270)))
                 .build();
 
-        parkTrajectory3 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.red_StackFarWaypointPos)
+        parkTrajectory3 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StackFarWaypointPos)
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(12, 13, Math.toRadians(270)))
+                .lineToLinearHeading(new Pose2d(-12, 13, Math.toRadians(270)))
                 .build();
         ////////////////////////////////////DONE DEFINING PARK TRAJECTORIES///////////////////////////////////////
 
@@ -172,89 +168,21 @@ public class Red_Cycle_R2V2 extends LinearOpMode {
 
                 deliverPreloadCWAutoCommand,
 
-                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 4, false),
-//                grabFromStackCWCommand,
-//                new InstantCommand(() -> {
-//                    stackIndex--;
-//                }),
+                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 4, true),
                 cycleToMediumPoleAutoCommand,
                 cycleToStackCloseWaypointAutoCommand,
 
-                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 3, false),
-//                grabFromStackCWCommand,
-//                new InstantCommand(() -> {
-//                    stackIndex--;
-//                }),
+                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 3, true),
                 cycleToMediumPoleAutoCommand,
                 cycleToStackCloseWaypointAutoCommand,
 
-                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 2, false),
-//                grabFromStackCWCommand,
-//                new InstantCommand(() -> {
-//                    stackIndex--;
-//                }),
+                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 2, true),
                 cycleToMediumPoleAutoCommand,
-                cycleToStackCloseWaypointAutoCommand,
-
-//                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 1, false),
-////                grabFromStackCWCommand,
-////                new InstantCommand(() -> {
-////                    stackIndex--;
-////                }),
-//                cycleToMediumPoleAutoCommand,
-//                cycleToStackCloseWaypointAutoCommand
-
-                // TODO: add park
-//                new InstantCommand(() -> {
-//                    stackIndex--;
-//                }),
-//                cycleToPoleAutoCommand,
-//                cycleToStackWaypointAutoCommand,
-
-//                new InstantCommand(() -> {
-//                    arm.toInitPosition();
-////                    lift.setTargetPosition(50);
-//                }),
-                liftToPositionCommand//,
-
-//                new InstantCommand(() -> {
-//                    switch (tagOfInterest.id){
-//                        case 1:
-//                            drive.followTrajectorySequenceAsync(parkTrajectory1);
-//                            telemetry.addLine("park traj 1");
-//                            break;
-//                        default:
-//                        case 2:
-//                            drive.followTrajectorySequenceAsync(parkTrajectory2);
-//                            telemetry.addLine("park traj 2");
-//                            break;
-//                        case 3:
-//                            drive.followTrajectorySequenceAsync(parkTrajectory3);
-//                            telemetry.addLine("park traj 3");
-//                            break;
-//                    }
-//                })
-//                parkTrajectoryCommand
-
-
-                //grabFromStackCommand,
-
-//                new InstantCommand(() -> {
-//                    stackIndex--;
-//                }),
-//                cycleToPoleAutoCommand,
-//                cycleToStackWaypointAutoCommand//, grabFromStackCommand,
-//                new InstantCommand(() -> { stackIndex--; }),
-//                cycleToPoleAutoCommand,
-//                cycleToStackWaypointAutoCommand, grabFromStackCommand,
-//                new InstantCommand(() -> { stackIndex--; }),
-//                cycleToPoleAutoCommand
+                cycleToStackCloseWaypointAutoCommand
         ));
 
 
         while (!isStarted() && !isStopRequested()) {
-
-
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
             if (currentDetections.size() != 0) {
@@ -302,29 +230,6 @@ public class Red_Cycle_R2V2 extends LinearOpMode {
         }
         ///////////////////////////////END OF INITIALIZATION/////////////////////////////////////////////////////////
 /////////////////////////////////////////////////INIT DONE, ASSIGNING APRIL TAG////////////////////////////////////////////
-//        switch (tagOfInterest.id) {
-//            case 1:
-//                parkTrajectory = parkTrajectory1;
-//
-//                break;
-//
-//            case 2:
-//                parkTrajectory = parkTrajectory2;
-//
-//                break;
-//
-//            case 3:
-//                parkTrajectory = parkTrajectory3;
-//
-//                break;
-//
-//            default:
-//                parkTrajectory = parkTrajectory2;
-//
-//                break;
-//        }
-//
-//        parkTrajectoryCommand = new R2V2_FollowTrajectoryCommand(drive, parkTrajectory);
 /////////////////////////////////////////////////////////////TAG ASSIGNED, START AUTO LOOP/////////////////////////////////////////////////
         runtime.reset();
         while (!isStopRequested() && opModeIsActive()) {
@@ -362,11 +267,13 @@ public class Red_Cycle_R2V2 extends LinearOpMode {
                     );
                     parking = true;
                 }
+                CommandScheduler.getInstance().run();
+            } else {
+                CommandScheduler.getInstance().run();
             }
-            CommandScheduler.getInstance().run();
         }
+        CommandScheduler.getInstance().reset();
     }
-
 
     void tagToTelemetry(AprilTagDetection detection) {
         telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
