@@ -166,33 +166,33 @@ public class R2V2_Red_Cycle extends LinearOpMode {
 
 
         schedule(new SequentialCommandGroup(
-                deliverPreloadCWAutoCommand,
+                deliverPreloadCWAutoCommand//,
 
-                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 4, false),
-//                grabFromStackCWCommand,
-//                new InstantCommand(() -> {
-//                    stackIndex--;
-//                }),
-                cycleToMediumPoleAutoCommand,
-                cycleToStackCloseWaypointAutoCommand,
-
-                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 3, false),
-//                grabFromStackCWCommand,
-//                new InstantCommand(() -> {
-//                    stackIndex--;
-//                }),
-                cycleToMediumPoleAutoCommand,
-                cycleToStackCloseWaypointAutoCommand,
-
-                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 2, false),
-//                grabFromStackCWCommand,
-//                new InstantCommand(() -> {
-//                    stackIndex--;
-//                }),
-                cycleToMediumPoleAutoCommand,
-                cycleToStackCloseWaypointAutoCommand,
-
-                liftToPositionCommand
+//                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 4, false),
+////                grabFromStackCWCommand,
+////                new InstantCommand(() -> {
+////                    stackIndex--;
+////                }),
+//                cycleToMediumPoleAutoCommand,
+//                cycleToStackCloseWaypointAutoCommand,
+//
+//                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 3, false),
+////                grabFromStackCWCommand,
+////                new InstantCommand(() -> {
+////                    stackIndex--;
+////                }),
+//                cycleToMediumPoleAutoCommand,
+//                cycleToStackCloseWaypointAutoCommand,
+//
+//                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 2, false),
+////                grabFromStackCWCommand,
+////                new InstantCommand(() -> {
+////                    stackIndex--;
+////                }),
+//                cycleToMediumPoleAutoCommand,
+//                cycleToStackCloseWaypointAutoCommand,
+//
+//                liftToPositionCommand
         ));
 
 

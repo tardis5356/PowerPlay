@@ -335,6 +335,8 @@ public class Gen2_TeleOp extends CommandOpMode {
         telemetry.addData("lift pid", lift.getLiftPID());
         telemetry.addData("lift ff", lift.getLiftFF());
 
+        telemetry.addData("liftbase", lift.getLiftBase());
+
 
 //        telemetry.addData("arm pos", arm.getArmPosition());
 //        telemetry.addData("gripper pos", gripper.getGripperPosition());
