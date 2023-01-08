@@ -48,7 +48,7 @@ public class MeepMeepTesting {
                                 .setReversed(false)
 
                                 .back(-0.10)
-                                .splineToLinearHeading(red_StackCloseWaypointPos, Math.toRadians(90))
+                                .splineToLinearHeading(red_StackCloseWaypointPos, Math.toRadians(0))
 
                                 .back(-0.10)
                                 .lineTo(red_StackPos.vec())
@@ -56,6 +56,35 @@ public class MeepMeepTesting {
                                 .back(-0.10)
                                 .lineTo(red_StackCloseWaypointPos.vec())
 
+
+//                                //score cone (MEDIUM)
+                                .back(0.10)
+                                .splineToSplineHeading(red_MedPolePos, Math.toRadians(150))
+
+                                .back(-0.10)
+//                                .splineToSplineHeading(red_StackCloseWaypointPos, Math.toRadians(0))
+                                .splineToSplineHeading(red_StackPos, Math.toRadians(0))
+//                                //score cone (MEDIUM)
+                                .back(0.10)
+                                .splineToSplineHeading(red_MedPolePos, Math.toRadians(150))
+
+                                .back(-0.10)
+//                                .splineToSplineHeading(red_StackCloseWaypointPos, Math.toRadians(0))
+                                .splineToSplineHeading(red_StackPos, Math.toRadians(0))
+//                                //score cone (MEDIUM)
+                                .back(0.10)
+                                .splineToSplineHeading(red_MedPolePos, Math.toRadians(150))
+
+                                .back(-0.10)
+//                                .splineToSplineHeading(red_StackCloseWaypointPos, Math.toRadians(0))
+                                .splineToSplineHeading(red_StackPos, Math.toRadians(0))
+//                                //score cone (MEDIUM)
+                                .back(0.10)
+                                .splineToSplineHeading(red_MedPolePos, Math.toRadians(150))
+
+                                .back(-0.10)
+//                                .splineToSplineHeading(red_StackCloseWaypointPos, Math.toRadians(0))
+                                .splineToSplineHeading(red_StackPos, Math.toRadians(0))
 
 //                                .setReversed(true)
 ////                                .lineTo(new Vector2d(36, 54))
@@ -83,11 +112,6 @@ public class MeepMeepTesting {
 ////                                .back(-0.10)
 ////                                .splineToSplineHeading(red_StackCloseWaypointPos, Math.toRadians(0))
 //
-//                                //score cone (MEDIUM)
-                                .back(0.10)
-                                .splineToSplineHeading(red_MedPolePos, Math.toRadians(150))
-                                .back(-0.10)
-                                .splineToSplineHeading(red_StackCloseWaypointPos, Math.toRadians(0))
 //
 //                                .lineToLinearHeading(new Pose2d(60, 15, Math.toRadians(270)))
 

@@ -165,7 +165,6 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
 
 
         schedule(new SequentialCommandGroup(
-
                 deliverPreloadCWAutoCommand,
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 4, true),
