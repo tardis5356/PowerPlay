@@ -20,7 +20,7 @@ public class RobotToStateCommand extends ParallelCommandGroup {
                         new InstantCommand(() -> {
                             arm.toIntakePosition();
                             wrist.toIntakePosition();
-                            coffin.extend();
+//                            coffin.extend();
                         })
                 );
                 break;

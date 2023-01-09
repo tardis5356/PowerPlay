@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.auto.R2V2;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandScheduler;
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -173,11 +174,11 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 3, true),
                 cycleToMediumPoleAutoCommand,
-                cycleToStackCloseWaypointAutoCommand,
-
-                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 2, true),
-                cycleToMediumPoleAutoCommand,
                 cycleToStackCloseWaypointAutoCommand
+
+//                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 2, true),
+//                cycleToMediumPoleAutoCommand,
+//                cycleToStackCloseWaypointAutoCommand
         ));
 
 
@@ -261,6 +262,7 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
                             break;
                     }
                     schedule(
+                            new InstantCommand(gripper::open, gripper),
                             new RobotToStateCommand(lift, arm, wrist, gripper, coffin, 100, 0, "travel"),
                             parkTrajectoryCommand
                     );

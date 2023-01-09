@@ -303,24 +303,24 @@ public class Gen2_TeleOp extends CommandOpMode {
         // ANTI-TIP
         // FORMULA (m−rmin/rmax−rmin)×(tmax−tmin)+tmin
 
-        Orientation botOrientationDegs = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-
-        if(rollOffset == 0) rollOffset = botOrientationDegs.thirdAngle;
-
-        roll = Math.abs(botOrientationDegs.thirdAngle) - Math.abs(rollOffset);
-
-        if(roll > measuredMaxRoll) measuredMaxRoll = roll;
-
-        ANTI_TIP_WEIGHTED_POWER_MULTIPLIER = roll/measuredMaxRoll;
-
-        if(Math.abs(roll) > 1.5) {
-            CURRENT_POWER_MULTIPLIER = CURRENT_BASE_POWER_MULTIPLIER-ANTI_TIP_WEIGHTED_POWER_MULTIPLIER; //+ADAPTIVE_SPEED_POWER_MULTIPLIER_OFFSET;
-        }
-        else {
+//        Orientation botOrientationDegs = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+//
+//        if(rollOffset == 0) rollOffset = botOrientationDegs.thirdAngle;
+//
+//        roll = Math.abs(botOrientationDegs.thirdAngle) - Math.abs(rollOffset);
+//
+//        if(roll > measuredMaxRoll) measuredMaxRoll = roll;
+//
+//        ANTI_TIP_WEIGHTED_POWER_MULTIPLIER = roll/measuredMaxRoll;
+//
+//        if(Math.abs(roll) > 1.5) {
+//            CURRENT_POWER_MULTIPLIER = CURRENT_BASE_POWER_MULTIPLIER-ANTI_TIP_WEIGHTED_POWER_MULTIPLIER; //+ADAPTIVE_SPEED_POWER_MULTIPLIER_OFFSET;
+//        }
+//        else {
             CURRENT_POWER_MULTIPLIER = CURRENT_BASE_POWER_MULTIPLIER; //+ ADAPTIVE_SPEED_POWER_MULTIPLIER_OFFSET;
-        }
-
-        if (CURRENT_POWER_MULTIPLIER > 1) CURRENT_POWER_MULTIPLIER = 1;
+//        }
+//
+//        if (CURRENT_POWER_MULTIPLIER > 1) CURRENT_POWER_MULTIPLIER = 1;
 //
 //        telemetry.addData("heading", heading);
 //        telemetry.addData("roll", roll);

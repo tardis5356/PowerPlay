@@ -61,7 +61,7 @@ public class Lift extends SubsystemBase {
 
             mL_R2V2 = hardwareMap.crservo.get("mL");
 
-            mBL = hardwareMap.get(DcMotorEx.class, "mBL");
+            mBL = hardwareMap.get(DcMotorEx.class, "mLEnc");
 
             mBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             mBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -129,7 +129,7 @@ public class Lift extends SubsystemBase {
     }
 
     public void liftPID_R2V2() {
-        int liftPos = -mBL.getCurrentPosition();
+        int liftPos = mBL.getCurrentPosition();
         double pid = -controller.calculate(liftPos, target);
 //        double ff = -Math.cos(Math.toRadians(target / ticks_in_degree)) * f_R2V2;
         double ff = f_R2V2;
@@ -165,7 +165,7 @@ public class Lift extends SubsystemBase {
     public double getLiftPosition() {
         double currentPos = 0;
         if (isBarney) currentPos = mL_Barney.getCurrentPosition();
-        if (!isBarney) currentPos = -mBL.getCurrentPosition();
+        if (!isBarney) currentPos = mBL.getCurrentPosition();
         return currentPos;
     }
 

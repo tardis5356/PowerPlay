@@ -31,7 +31,7 @@ public class R2V2_DeliverPreloadCloseWaypointAutoCommand extends SequentialComma
                         new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StartToPreloadPole : R2V2_AutoTrajectories.red_StartToPreloadPole),
                         new SequentialCommandGroup(
                                 new WaitCommand(1000), // TODO: the lift is lifting as soon as program starts sometimes?
-//                                new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_HIGH_JUNCTION_R2V2, 0, "delivery"),
+                                new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_HIGH_JUNCTION_R2V2, 0, "delivery"),
                                 new WaitCommand(500)
                         )
                 ),
@@ -41,6 +41,9 @@ public class R2V2_DeliverPreloadCloseWaypointAutoCommand extends SequentialComma
                         new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_PreloadPoleToStackCloseWaypoint : R2V2_AutoTrajectories.red_PreloadPoleToStackCloseWaypoint),
                         new SequentialCommandGroup(
                                 new WaitCommand(500),
+                                new InstantCommand(() -> {
+                                    coffin.extend();
+                                }),
                                 new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_INTAKE_R2V2, 0, "intake")
                         )
                         //new InstantCommand(gripper::open)

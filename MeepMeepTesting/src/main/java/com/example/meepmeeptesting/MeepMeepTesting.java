@@ -35,56 +35,56 @@ public class MeepMeepTesting {
                 .setDimensions(12, 12)
                 .followTrajectorySequence(drive ->
                                 // RED
-                        drive.trajectorySequenceBuilder(red_StartPos)
-                                .setReversed(true)
-//                        .lineTo(new Vector2d(36, 54))
-//                        .lineTo(new Vector2d(36, 7), SampleMecanumDrive_R2V2.getVelocityConstraint(62, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
-//                                SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
-//                        .lineTo(new Vector2d(36, 20))
-                                .lineTo(new Vector2d(40, 63))
-                                .splineToConstantHeading(new Vector2d(36, 7), Math.toRadians(270))
-                                .lineTo(new Vector2d(36, 14))
-                                .splineToLinearHeading(red_PreloadPolePos, Math.toRadians(200))
-                                .setReversed(false)
-
-                                .back(-0.10)
-                                .splineToLinearHeading(red_StackCloseWaypointPos, Math.toRadians(0))
-
-                                .back(-0.10)
-                                .lineTo(red_StackPos.vec())
-
-                                .back(-0.10)
-                                .lineTo(red_StackCloseWaypointPos.vec())
-
-
-//                                //score cone (MEDIUM)
-                                .back(0.10)
-                                .splineToSplineHeading(red_MedPolePos, Math.toRadians(150))
-
-                                .back(-0.10)
-//                                .splineToSplineHeading(red_StackCloseWaypointPos, Math.toRadians(0))
-                                .splineToSplineHeading(red_StackPos, Math.toRadians(0))
-//                                //score cone (MEDIUM)
-                                .back(0.10)
-                                .splineToSplineHeading(red_MedPolePos, Math.toRadians(150))
-
-                                .back(-0.10)
-//                                .splineToSplineHeading(red_StackCloseWaypointPos, Math.toRadians(0))
-                                .splineToSplineHeading(red_StackPos, Math.toRadians(0))
-//                                //score cone (MEDIUM)
-                                .back(0.10)
-                                .splineToSplineHeading(red_MedPolePos, Math.toRadians(150))
-
-                                .back(-0.10)
-//                                .splineToSplineHeading(red_StackCloseWaypointPos, Math.toRadians(0))
-                                .splineToSplineHeading(red_StackPos, Math.toRadians(0))
-//                                //score cone (MEDIUM)
-                                .back(0.10)
-                                .splineToSplineHeading(red_MedPolePos, Math.toRadians(150))
-
-                                .back(-0.10)
-//                                .splineToSplineHeading(red_StackCloseWaypointPos, Math.toRadians(0))
-                                .splineToSplineHeading(red_StackPos, Math.toRadians(0))
+//                        drive.trajectorySequenceBuilder(red_StartPos)
+//                                .setReversed(true)
+////                        .lineTo(new Vector2d(36, 54))
+////                        .lineTo(new Vector2d(36, 7), SampleMecanumDrive_R2V2.getVelocityConstraint(62, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+////                                SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
+////                        .lineTo(new Vector2d(36, 20))
+//                                .lineTo(new Vector2d(40, 63))
+//                                .splineToConstantHeading(new Vector2d(36, 7), Math.toRadians(270))
+//                                .lineTo(new Vector2d(36, 14))
+//                                .splineToLinearHeading(red_PreloadPolePos, Math.toRadians(200))
+//                                .setReversed(false)
+//
+//                                .back(-0.10)
+//                                .splineToLinearHeading(red_StackCloseWaypointPos, Math.toRadians(0))
+//
+//                                .back(-0.10)
+//                                .lineTo(red_StackPos.vec())
+//
+//                                .back(-0.10)
+//                                .lineTo(red_StackCloseWaypointPos.vec())
+//
+//
+////                                //score cone (MEDIUM)
+//                                .back(0.10)
+//                                .splineToSplineHeading(red_MedPolePos, Math.toRadians(150))
+//
+//                                .back(-0.10)
+////                                .splineToSplineHeading(red_StackCloseWaypointPos, Math.toRadians(0))
+//                                .splineToSplineHeading(red_StackPos, Math.toRadians(0))
+////                                //score cone (MEDIUM)
+//                                .back(0.10)
+//                                .splineToSplineHeading(red_MedPolePos, Math.toRadians(150))
+//
+//                                .back(-0.10)
+////                                .splineToSplineHeading(red_StackCloseWaypointPos, Math.toRadians(0))
+//                                .splineToSplineHeading(red_StackPos, Math.toRadians(0))
+////                                //score cone (MEDIUM)
+//                                .back(0.10)
+//                                .splineToSplineHeading(red_MedPolePos, Math.toRadians(150))
+//
+//                                .back(-0.10)
+////                                .splineToSplineHeading(red_StackCloseWaypointPos, Math.toRadians(0))
+//                                .splineToSplineHeading(red_StackPos, Math.toRadians(0))
+////                                //score cone (MEDIUM)
+//                                .back(0.10)
+//                                .splineToSplineHeading(red_MedPolePos, Math.toRadians(150))
+//
+//                                .back(-0.10)
+////                                .splineToSplineHeading(red_StackCloseWaypointPos, Math.toRadians(0))
+//                                .splineToSplineHeading(red_StackPos, Math.toRadians(0))
 
 //                                .setReversed(true)
 ////                                .lineTo(new Vector2d(36, 54))
@@ -117,22 +117,22 @@ public class MeepMeepTesting {
 
 
                                 //BLUE
-//                                drive.trajectorySequenceBuilder(blue_StartPos)
-//                                        .setReversed(true)
-////                        .splineTo(new Vector2d(-36, 20), Math.toRadians(270))
-//                                        .lineTo(new Vector2d(-36, 54))
-//                                        .lineTo(new Vector2d(-36, 7))
-//                                        .lineTo(new Vector2d(-36, 20))
-//                                        .splineToLinearHeading(blue_PreloadPolePos, Math.toRadians(340))
-//                                        .setReversed(false)
-//                                        .back(-0.10)
-//                                        .splineToLinearHeading(blue_StackCloseWaypointPos, Math.toRadians(180))
-//
-//                                        //grab cone
-//                                        .back(-0.10)
-//                                        .lineTo(blue_StackPos.vec())
-//                                        .back(-0.10)
-//                                        .lineTo(blue_StackCloseWaypointPos.vec())
+                                drive.trajectorySequenceBuilder(blue_StartPos)
+                                        .setReversed(true)
+//                        .splineTo(new Vector2d(-36, 20), Math.toRadians(270))
+                                        .lineTo(new Vector2d(-36, 54))
+                                        .lineTo(new Vector2d(-36, 7))
+                                        .lineTo(new Vector2d(-36, 20))
+                                        .splineToLinearHeading(blue_PreloadPolePos, Math.toRadians(340))
+                                        .setReversed(false)
+                                        .back(-0.10)
+                                        .splineToLinearHeading(blue_StackCloseWaypointPos, Math.toRadians(180))
+
+                                        //grab cone
+                                        .back(-0.10)
+                                        .lineTo(blue_StackPos.vec())
+                                        .back(-0.10)
+                                        .lineTo(blue_StackCloseWaypointPos.vec())
 //
 //                                        //score cone
 //                                        .back(0.10)

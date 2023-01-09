@@ -150,7 +150,7 @@ public class R2V2_Red_Cycle extends LinearOpMode {
 ////////////////////////////DEFINING PARK TRAJECTORIES//////////////////////////////
         parkTrajectory1 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.red_StackFarWaypointPos)
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(60, 13, Math.toRadians(270)))
+                .lineToLinearHeading(new Pose2d(60, 16, Math.toRadians(270)))
                 .build();
 
         parkTrajectory2 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.red_StackFarWaypointPos)
@@ -174,13 +174,13 @@ public class R2V2_Red_Cycle extends LinearOpMode {
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 3, false),
                 cycleToMediumPoleAutoCommand,
-                cycleToStackCloseWaypointAutoCommand,
+                cycleToStackCloseWaypointAutoCommand
 
-                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 2, false),
-                cycleToMediumPoleAutoCommand,
-                cycleToStackCloseWaypointAutoCommand,
+//                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 2, false),
+//                cycleToMediumPoleAutoCommand,
+//                cycleToStackCloseWaypointAutoCommand,
 
-                liftToPositionCommand
+//                liftToPositionCommand
         ));
 
 

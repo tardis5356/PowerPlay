@@ -34,7 +34,7 @@ public class R2V2_DeliverPreloadAutoCommand extends SequentialCommandGroup {
                         new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StartToPreloadPole : R2V2_AutoTrajectories.red_StartToPreloadPole),
                         new SequentialCommandGroup(
                                 new WaitCommand(500),
-                                new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_HIGH_JUNCTION_R2V2, 0, "delivery"),
+                                //new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_HIGH_JUNCTION_R2V2, 0, "delivery"),
                                 new WaitCommand(500)
                         )
                 ),

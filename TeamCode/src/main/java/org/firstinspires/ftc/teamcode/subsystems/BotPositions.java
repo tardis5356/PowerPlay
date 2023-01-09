@@ -30,7 +30,7 @@ public class BotPositions {
 
     public static int LIFT_FULL_RETRACTION_R2V2 = 0, LIFT_INTAKE_AUTO_R2V2 = 25, LIFT_INTAKE_R2V2 = 30, LIFT_TRAVEL_R2V2 = 100, LIFT_LOW_JUNCTION_R2V2 = 350, LIFT_MEDIUM_JUNCTION_R2V2 = 800, LIFT_HIGH_JUNCTION_R2V2 = 1175;
 
-    public static int[] STACK_POSITIONS_R2V2 = {25, 80, 135, 180, 240};//0 = bottom cone, 4 = top cone
+    public static int[] STACK_POSITIONS_R2V2 = {25, 80, 135, 210, 270};//0 = bottom cone, 4 = top cone
 
     public static double LIFT_p_R2V2 = 0, LIFT_i_R2V2 = 0, LIFT_d_R2V2 = 0;
 
@@ -38,9 +38,9 @@ public class BotPositions {
 
     public static double WRIST_INIT_R2V2 = 0.7, WRIST_INTAKE_R2V2 = 0.26, WRIST_DELIVERY_R2V2 = 0.85, WRIST_TRAVEL_R2V2 = 0.05;
 
-    public static double GRIPPER_OPEN_R2V2 = 0.55, GRIPPER_CLOSED_R2V2 = 0.2;//.48, .27, 0.15
+    public static double GRIPPER_OPEN_R2V2 = 0.55, GRIPPER_CLOSED_R2V2 = 0.15;//.48, .27, 0.15
 
     public static double BEACON_ARM_LOAD_R2V2 = 1, BEACON_ARM_STORAGE_R2V2 = 0.6, BEACON_ARM_DELIVERY_R2V2 = 0.8;
 
-    public static double COFFIN_EXTENDED_R2V2 = 0.85, COFFIN_RETRACTED_R2V2 = 0.3;
+    public static double COFFIN_EXTENDED_R2V2 = 0.8, COFFIN_RETRACTED_R2V2 = 0.2;
 }

@@ -26,6 +26,9 @@ public class R2V2_GrabFromStackCloseWaypointCommand extends SequentialCommandGro
         this.gripper = gripper;
 
         addCommands(
+                new InstantCommand(() -> {
+                    coffin.extend();
+                }),
                 new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_INTAKE_AUTO_R2V2, stackIndex, "intake"),
                 new InstantCommand(gripper::open),
 //                new WaitCommand(250),
