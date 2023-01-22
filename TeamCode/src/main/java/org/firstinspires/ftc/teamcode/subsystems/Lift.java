@@ -32,6 +32,7 @@ public class Lift extends SubsystemBase {
 
     public double power = 0;
     public double stickValue = 0;
+    public double stickValue2 = 0;
     public double pid_R2V2 = 0;
     public double ff_R2V2 = 0;
     public boolean manualActive = false;
@@ -60,7 +61,7 @@ public class Lift extends SubsystemBase {
 
             mL_R2V2 = hardwareMap.crservo.get("mL");
 
-            mBL = hardwareMap.get(DcMotorEx.class, "mBL");
+            mBL = hardwareMap.get(DcMotorEx.class, "mLEnc");
 
             mBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             mBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -72,7 +73,7 @@ public class Lift extends SubsystemBase {
         if (isBarney) liftPID_Barney();
         if (!isBarney) {
             liftPID_R2V2();
-            if (liftBase.isPressed()) {
+            if (liftBase.isPressed() && mBL.getCurrentPosition() < 0) {
                 mBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             }
         }
@@ -92,14 +93,20 @@ public class Lift extends SubsystemBase {
         manualActive = false;
     }
 
-    public void manualControl(double stick) {
+    public void manualControl(double stick, double stick2) {
 //        controller.setP(0);
         if (isBarney) {
             if (stick < 0) stickValue = stick * 0.2;
             else stickValue = stick * 1;
         } else {
             stickValue = stick * 1;
+            if(stickValue2 < 0) stickValue2 = stick2 * 0.2;
+            else stickValue2 = stick2 * 0.4;
         }
+    }
+
+    public boolean getLiftBase(){
+        return liftBase.isPressed();
     }
 
     public void liftPID_Barney() {
@@ -122,7 +129,7 @@ public class Lift extends SubsystemBase {
     }
 
     public void liftPID_R2V2() {
-        int liftPos = -mBL.getCurrentPosition();
+        int liftPos = mBL.getCurrentPosition();
         double pid = -controller.calculate(liftPos, target);
 //        double ff = -Math.cos(Math.toRadians(target / ticks_in_degree)) * f_R2V2;
         double ff = f_R2V2;
@@ -139,17 +146,17 @@ public class Lift extends SubsystemBase {
                 if (liftPos > target) {
                     power = 0.7;
                 }
-                mL_R2V2.setPower(power + stickValue);
+                mL_R2V2.setPower(power + stickValue + stickValue2);
             } else {
-                mL_R2V2.setPower(ff + stickValue);
+                mL_R2V2.setPower(ff + stickValue + stickValue2);
             }
 
-            if (Math.abs(stickValue) > 0.05) {
+            if (Math.abs(stickValue+stickValue2) > 0.05) {
                 manualActive = true;
             }
         }
         if (manualActive) {
-            power = ff + stickValue;
+            power = ff + stickValue + stickValue2;
             mL_R2V2.setPower(power);
         }
 
@@ -158,7 +165,7 @@ public class Lift extends SubsystemBase {
     public double getLiftPosition() {
         double currentPos = 0;
         if (isBarney) currentPos = mL_Barney.getCurrentPosition();
-        if (!isBarney) currentPos = -mBL.getCurrentPosition();
+        if (!isBarney) currentPos = mBL.getCurrentPosition();
         return currentPos;
     }
 

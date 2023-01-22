@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_FULL_RETRACTION_Barney;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_HIGH_JUNCTION_Barney;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_INTAKE_Barney;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_LOW_JUNCTION_Barney;
@@ -11,6 +10,7 @@ import static java.lang.Math.abs;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 
@@ -28,7 +28,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.teamcode.commands.ManualLiftCommand;
 import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
 import org.firstinspires.ftc.teamcode.subsystems.Coffin;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
@@ -39,6 +38,7 @@ import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
 import org.firstinspires.ftc.teamcode.subsystems.TapeMeasure;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 
+@Disabled
 @TeleOp(name = "Gen1_TeleOp")
 public class Gen1_TeleOp extends CommandOpMode {
     private DcMotorEx mFR, mFL, mBR, mBL;
@@ -61,7 +61,6 @@ public class Gen1_TeleOp extends CommandOpMode {
 
     private RobotToStateCommand liftToTravelPositionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
     private RobotToStateCommand liftToIntakeCommand;
-    private ManualLiftCommand manualLiftCommand;
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -113,7 +112,6 @@ public class Gen1_TeleOp extends CommandOpMode {
         liftToLowJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_LOW_JUNCTION_Barney, 0, "delivery");
         liftToMediumJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_MEDIUM_JUNCTION_Barney, 0, "delivery");
         liftToHighJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_HIGH_JUNCTION_Barney, 0, "delivery");
-        manualLiftCommand = new ManualLiftCommand(lift, manipulator.getLeftY());
 
         // driver triggers
         //driver = gamepad 1
@@ -143,35 +141,30 @@ public class Gen1_TeleOp extends CommandOpMode {
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
-                .cancelWhenActive(liftToIntakeCommand)
-                .cancelWhenActive(manualLiftCommand);
+                .cancelWhenActive(liftToIntakeCommand);
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.X)) // extend to low junction and slow drive base on B button
                 .whenActive(liftToLowJunctionCommand)
                 .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToTravelPositionCommand)
-                .cancelWhenActive(liftToIntakeCommand)
-                .cancelWhenActive(manualLiftCommand);
+                .cancelWhenActive(liftToIntakeCommand);
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.Y)) // extend to medium junction and slow drive base on Y button
                 .whenActive(liftToMediumJunctionCommand)
                 .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
                 .cancelWhenActive(liftToTravelPositionCommand)
-                .cancelWhenActive(liftToIntakeCommand)
-                .cancelWhenActive(manualLiftCommand);
+                .cancelWhenActive(liftToIntakeCommand);
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.B)) // extend to high junction and slow drive base on X button
                 .whenActive(liftToHighJunctionCommand)
                 .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
                 .cancelWhenActive(liftToTravelPositionCommand)
-                .cancelWhenActive(liftToIntakeCommand)
-                .cancelWhenActive(manualLiftCommand);
+                .cancelWhenActive(liftToIntakeCommand);
 
 //        new Trigger(() -> manipulator.getLeftY() > 0.2) // override all other commands and give manual control of lift
-//                .whenActive(manualLiftCommand)
 //                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
 //                .cancelWhenActive(liftToHighJunctionCommand)
 //                .cancelWhenActive(liftToMediumJunctionCommand)
@@ -186,8 +179,7 @@ public class Gen1_TeleOp extends CommandOpMode {
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
-                .cancelWhenActive(liftToTravelPositionCommand)
-                .cancelWhenActive(manualLiftCommand);
+                .cancelWhenActive(liftToTravelPositionCommand);
 
         new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // closes gripper on left trigger
                 .whenActive(() -> {
@@ -291,7 +283,7 @@ public class Gen1_TeleOp extends CommandOpMode {
 //        gripper.open();
 
 
-        lift.manualControl(-gamepad2.left_stick_y);
+        lift.manualControl(-gamepad2.left_stick_y, -gamepad2.right_stick_y);
 
         //ANTI-TIP
 //        (m−rmin/rmax−rmin)×(tmax−tmin)+tmin // FORMULA

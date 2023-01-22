@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.vision;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -10,6 +11,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
+@Disabled
 @TeleOp(name = "Blue Cone Detection", group = "Vision")
 public class blueConeDetection extends LinearOpMode{
     BluePipeline bluePipeline = new BluePipeline(telemetry);
