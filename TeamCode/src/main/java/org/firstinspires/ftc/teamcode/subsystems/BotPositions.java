@@ -11,13 +11,13 @@ import java.util.Arrays;
 
 @Config
 public class BotPositions {
-    public static boolean isBarney = false;
+    public static boolean isBarney = true;
     //true = Barney
     //false = R2V2
 
     public static int LIFT_FULL_RETRACTION_Barney = 0, LIFT_INTAKE_Barney = 50, LIFT_TRAVEL_Barney = 100, LIFT_LOW_JUNCTION_Barney = 275, LIFT_MEDIUM_JUNCTION_Barney = 550, LIFT_HIGH_JUNCTION_Barney = 800;
 
-    public static double LIFT_pE_Barney = 0.07, LIFT_pR_Barney = 0.0001, LIFT_i_Barney = 0, LIFT_d_Barney = 0;
+    public static double LIFT_pE_Barney = 0.01, LIFT_pR_Barney = 0.0001, LIFT_i_Barney = 0, LIFT_d_Barney = 0;
 
     public static double ARM_INIT_Barney = 0.6, ARM_INTAKE_Barney = 0.76, ARM_DELIVERY_Barney = 0.4, ARM_TRAVEL_Barney = 0.65;
 

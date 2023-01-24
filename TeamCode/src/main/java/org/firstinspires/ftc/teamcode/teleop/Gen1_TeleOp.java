@@ -38,7 +38,7 @@ import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
 import org.firstinspires.ftc.teamcode.subsystems.TapeMeasure;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 
-@Disabled
+//@Disabled
 @TeleOp(name = "Gen1_TeleOp")
 public class Gen1_TeleOp extends CommandOpMode {
     private DcMotorEx mFR, mFL, mBR, mBL;
@@ -181,15 +181,21 @@ public class Gen1_TeleOp extends CommandOpMode {
                 .cancelWhenActive(liftToLowJunctionCommand)
                 .cancelWhenActive(liftToTravelPositionCommand);
 
-        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // closes gripper on left trigger
+        //gripper will close if left trigger is pressed or cone is in gripper
+        //if right trigger is held down, it will override and open the gripper
+        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5 || (gripper.hasCone() && manipulator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) < 0.5)) // closes gripper on left trigger
                 .whenActive(() -> {
 //                    if (!manualModeOn) {
+                    //checks color sensor before closing
+                   // gripper.closeCV();
                         gripper.close();
 //                    }
                 });
         new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5) // opens gripper on right trigger
                 .whenActive(() -> {
 //                    if (!manualModeOn) {
+                    //checks color sensor to keep open
+                   // gripper.closeCV();
                         gripper.open();
 //                    }
                 });
@@ -217,6 +223,9 @@ public class Gen1_TeleOp extends CommandOpMode {
 
     @Override
     public void run() {
+        //gripper closes when distance to cone is less than 1 cm
+        //gripper.closeCV();
+
         super.run();
         //FIELDCENTRIC
         Orientation botOrientationRadians = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
