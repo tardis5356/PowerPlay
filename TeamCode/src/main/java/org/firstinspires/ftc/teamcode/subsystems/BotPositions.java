@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 @Config
 public class BotPositions {
-    public static boolean isBarney = true;
+    public static boolean isBarney = false;
     //true = Barney
     //false = R2V2
 
@@ -34,11 +34,11 @@ public class BotPositions {
 
     public static double LIFT_p_R2V2 = 0, LIFT_i_R2V2 = 0, LIFT_d_R2V2 = 0;
 
-    public static double ARM_INIT_R2V2 = 0.53, ARM_INTAKE_R2V2 = 0.625, ARM_DELIVERY_R2V2 = 0.42, ARM_TRAVEL_R2V2 = 0.53;
+    public static double ARM_INIT_R2V2 = 0.55, ARM_INTAKE_R2V2 = 0.64, ARM_DELIVERY_R2V2 = 0.39, ARM_TRAVEL_R2V2 = 0.53;
 
-    public static double WRIST_INIT_R2V2 = 0.7, WRIST_INTAKE_R2V2 = 0.26, WRIST_DELIVERY_R2V2 = 0.85, WRIST_TRAVEL_R2V2 = 0.05;
+    public static double WRIST_INIT_R2V2 = 0.78, WRIST_INTAKE_R2V2 = 0.35, WRIST_DELIVERY_R2V2 = 0.9, WRIST_TRAVEL_R2V2 = 0.05;
 
-    public static double GRIPPER_OPEN_R2V2 = 0.55, GRIPPER_CLOSED_R2V2 = 0.15;//.48, .27, 0.15
+    public static double GRIPPER_OPEN_R2V2 = 0.6, GRIPPER_CLOSED_R2V2 = 0.23;
 
     public static double BEACON_ARM_LOAD_R2V2 = 1, BEACON_ARM_STORAGE_R2V2 = 0.6, BEACON_ARM_DELIVERY_R2V2 = 0.8;
 

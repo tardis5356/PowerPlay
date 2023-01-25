@@ -338,10 +338,10 @@ public class Gen2_TeleOp extends CommandOpMode {
         telemetry.addData("liftbase", lift.getLiftBase());
 
 
-//        telemetry.addData("arm pos", arm.getArmPosition());
-//        telemetry.addData("gripper pos", gripper.getGripperPosition());
+        telemetry.addData("arm pos", arm.getArmPosition());
+        telemetry.addData("gripper pos", gripper.getGripperPosition());
 //        telemetry.addData("beacon pos", beaconArm.getBeaconArmPosition());
-//        telemetry.addData("wrist pos", String.format("%.2f", wrist.getWristPosition()));
+        telemetry.addData("wrist pos", String.format("%.2f", wrist.getWristPosition()));
 
 //        telemetry.addData("manual mode is", manualModeOn);
 //
