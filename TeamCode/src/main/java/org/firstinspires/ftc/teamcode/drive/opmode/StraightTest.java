@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 /*
  * This is a simple routine to test translational drive capabilities.
  */
-@Disabled
+//@Disabled
 @Config
 @Autonomous(group = "drive")
 public class StraightTest extends LinearOpMode {

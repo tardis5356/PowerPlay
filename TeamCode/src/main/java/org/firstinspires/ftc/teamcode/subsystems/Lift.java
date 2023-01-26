@@ -61,7 +61,7 @@ public class Lift extends SubsystemBase {
 
             mL_R2V2 = hardwareMap.crservo.get("mL");
 
-            mBL = hardwareMap.get(DcMotorEx.class, "mLEnc");
+            mBL = hardwareMap.get(DcMotorEx.class, "mFL"); //intentional mBL and mFL difference
 
             mBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             mBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
