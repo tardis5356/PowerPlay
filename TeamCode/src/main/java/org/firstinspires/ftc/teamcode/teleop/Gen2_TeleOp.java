@@ -39,7 +39,7 @@ import java.text.DecimalFormat;
 
 @TeleOp(name = "Gen2_TeleOp")
 public class Gen2_TeleOp extends CommandOpMode {
-    private DcMotorEx mFR, mFL, mBR, mBL;
+    private DcMotorEx mFR, mLEnc, mBR, mBL;
     private BNO055IMU imu;
 
     private static final DecimalFormat df = new DecimalFormat("0.00");
@@ -81,17 +81,17 @@ public class Gen2_TeleOp extends CommandOpMode {
         // Motors and Other Stuff
         //defineComponents
         mFR = hardwareMap.get(DcMotorEx.class, "mFR");
-        mFL = hardwareMap.get(DcMotorEx.class, "mFL ");
+        mLEnc = hardwareMap.get(DcMotorEx.class, "mFL ");
         mBR = hardwareMap.get(DcMotorEx.class, "mBR");
         mBL = hardwareMap.get(DcMotorEx.class, "mBL");
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         // Behaviors
-        mFL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mLEnc.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mFR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mBR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        mFL.setDirection(DcMotorSimple.Direction.REVERSE);
+        mLEnc.setDirection(DcMotorSimple.Direction.REVERSE);
         mBL.setDirection(DcMotorSimple.Direction.REVERSE);
 
         imu.initialize(parameters);
@@ -251,7 +251,7 @@ public class Gen2_TeleOp extends CommandOpMode {
 
         double normalize = Math.max(abs(ly) + abs(lx) + abs(rx), 1.0);
 
-        mFL.setPower((ly + lx + rx) / normalize * CURRENT_POWER_MULTIPLIER);
+        mLEnc.setPower((ly + lx + rx) / normalize * CURRENT_POWER_MULTIPLIER);
         mBL.setPower((ly - lx + rx) / normalize * CURRENT_POWER_MULTIPLIER);
         mFR.setPower((ly - lx - rx) / normalize * CURRENT_POWER_MULTIPLIER);
         mBR.setPower((ly + lx - rx) / normalize * CURRENT_POWER_MULTIPLIER);

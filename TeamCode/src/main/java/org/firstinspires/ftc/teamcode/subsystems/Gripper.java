@@ -26,7 +26,7 @@ public class Gripper extends SubsystemBase {
 
     public Gripper(HardwareMap hardwareMap) {
         servo = hardwareMap.get(Servo.class, "sG");
-        if (isBarney) colorSensor = hardwareMap.get(NormalizedColorSensor.class, "Color");
+        if (isBarney) colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorGripper");
         close();
         //it was originally open()
     }

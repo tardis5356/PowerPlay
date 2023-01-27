@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 public class Lift extends SubsystemBase {
     private PIDController controller,
             extendController, retractController;
-    private DcMotorEx mL_Barney, mBL, mL_R2V2;
+    private DcMotorEx mL_Barney, mL_R2V2;
 
     private TouchSensor liftBase;
 
@@ -23,7 +23,7 @@ public class Lift extends SubsystemBase {
     public static double pE_R2V2 = BotPositions.LIFT_p_R2V2, i_R2V2 = BotPositions.LIFT_i_R2V2, d_R2V2 = BotPositions.LIFT_d_R2V2;
 
     public static double f_Barney = 0.2;
-    public static double f_R2V2 = -0.22;
+    public static double f_R2V2 = 0.22;
 
     public static int target = 0;
 
@@ -61,10 +61,8 @@ public class Lift extends SubsystemBase {
 //            mL_R2V2 = hardwareMap.crservo.get("mL");
             mL_R2V2 = hardwareMap.get(DcMotorEx.class, "mL");
 
-            mBL = hardwareMap.get(DcMotorEx.class, "mFL"); //intentional mBL and mFL difference
-
-            mBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            mBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            mL_R2V2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            mL_R2V2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             target = 30;
         }
     }
@@ -73,8 +71,8 @@ public class Lift extends SubsystemBase {
         if (isBarney) liftPID_Barney();
         if (!isBarney) {
             liftPID_R2V2();
-            if (liftBase.isPressed() && mBL.getCurrentPosition() < 0) {
-                mBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            if (liftBase.isPressed() && mL_R2V2.getCurrentPosition() < 0) {
+                mL_R2V2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             }
         }
     }
@@ -129,8 +127,8 @@ public class Lift extends SubsystemBase {
     }
 
     public void liftPID_R2V2() {
-        int liftPos = mBL.getCurrentPosition();
-        double pid = -controller.calculate(liftPos, target);
+        int liftPos = mL_R2V2.getCurrentPosition();
+        double pid = controller.calculate(liftPos, target);
 //        double ff = -Math.cos(Math.toRadians(target / ticks_in_degree)) * f_R2V2;
         double ff = f_R2V2;
 
@@ -141,10 +139,10 @@ public class Lift extends SubsystemBase {
         if (!manualActive) {
             if (Math.abs(target - liftPos) > 25) {
                 if (liftPos < target) {
-                    power = -1;
+                    power = 1;
                 }
                 if (liftPos > target) {
-                    power = 0.7;
+                    power = -0.7;
                 }
                 mL_R2V2.setPower(power + stickValue + stickValue2);
             } else {
@@ -165,7 +163,7 @@ public class Lift extends SubsystemBase {
     public double getLiftPosition() {
         double currentPos = 0;
         if (isBarney) currentPos = mL_Barney.getCurrentPosition();
-        if (!isBarney) currentPos = mBL.getCurrentPosition();
+        if (!isBarney) currentPos = mL_R2V2.getCurrentPosition();
         return currentPos;
     }
 
