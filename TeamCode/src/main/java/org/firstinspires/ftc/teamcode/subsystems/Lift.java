@@ -15,8 +15,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 public class Lift extends SubsystemBase {
     private PIDController controller,
             extendController, retractController;
-    private DcMotorEx mL_Barney, mBL;
-    private CRServo mL_R2V2;
+    private DcMotorEx mL_Barney, mBL, mL_R2V2;
 
     private TouchSensor liftBase;
 
@@ -59,7 +58,8 @@ public class Lift extends SubsystemBase {
 
             liftBase = hardwareMap.get(TouchSensor.class, "liftBase");
 
-            mL_R2V2 = hardwareMap.crservo.get("mL");
+//            mL_R2V2 = hardwareMap.crservo.get("mL");
+            mL_R2V2 = hardwareMap.get(DcMotorEx.class, "mL");
 
             mBL = hardwareMap.get(DcMotorEx.class, "mFL"); //intentional mBL and mFL difference
 
