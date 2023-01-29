@@ -65,7 +65,7 @@ public class DriveConstants_R2V2 {
      * small and gradually increase them later after everything is working. All distance units are
      * inches.
      */
-    public static double MAX_VEL = 50;//86; (in/s)   //2022-12-13 52.65   2023-01-06 32
+    public static double MAX_VEL = 86;//50; (in/s)   //2022-12-13 52.65   2023-01-06 32
     public static double MAX_ACCEL = 50;//120; //68.7   //2022-12-13 52.65   2023-01-06 32
     public static double MAX_ANG_VEL = Math.toRadians(180);  //2022-12-13 180
     public static double MAX_ANG_ACCEL = Math.toRadians(180);  //2022-12-13 180

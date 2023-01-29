@@ -38,6 +38,8 @@ public class Lift extends SubsystemBase {
 
     public boolean retract = false;
 
+    public int resets = 0;
+
     public Lift(HardwareMap hardwareMap) {
 //        retractController = new PIDController(pR, iR, dR);
 //        telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry());
@@ -73,8 +75,10 @@ public class Lift extends SubsystemBase {
         if (isBarney) liftPID_Barney();
         if (!isBarney) {
             liftBangBang_R2V2();
-            if (liftBase.isPressed() && Math.abs(mL_R2V2.getCurrentPosition()) - 60 > 0) {
+            if (liftBase.isPressed() && (Math.abs(mL_R2V2.getCurrentPosition()) - 60) < 0) {
                 mL_R2V2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                mL_R2V2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                resets++;
             }
         }
     }
@@ -107,6 +111,9 @@ public class Lift extends SubsystemBase {
 
     public boolean getLiftBase(){
         return liftBase.isPressed();
+    }
+    public int getLiftBaseResets(){
+        return resets;
     }
 
     public void liftPID_Barney() {
@@ -141,16 +148,16 @@ public class Lift extends SubsystemBase {
         if (!manualActive) {
             if (Math.abs(target - liftPos) > 25) {
                 if (liftPos < target) {
-                    power = 1;
+                    power = 0.8;//1
                 }
                 if (liftPos > target) {
-                    power = -0.3;
+                    power = -0.2;//-0.3
                 }
-                mL_R2V2.setPower(power + stickValue + stickValue2);
-                mL2_R2V2.setPower(power + stickValue + stickValue2);
+                mL_R2V2.setPower(power);
+                mL2_R2V2.setPower(power);
             } else {
-                mL_R2V2.setPower(ff + stickValue + stickValue2);
-                mL2_R2V2.setPower(ff + stickValue + stickValue2);
+                mL_R2V2.setPower(ff);
+                mL2_R2V2.setPower(ff);
             }
 
             if (Math.abs(stickValue+stickValue2) > 0.05) {

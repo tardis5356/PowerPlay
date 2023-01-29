@@ -31,7 +31,7 @@ public class R2V2_CycleToMediumPoleAutoCommand extends SequentialCommandGroup {
                         new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StackWaypointToMedPole : R2V2_AutoTrajectories.red_StackCloseWaypointToMedPole),  //TODO: spline is slightly wrong
                         new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_MEDIUM_JUNCTION_R2V2, 0, "delivery")
                 ),
-                new WaitCommand(1000),
+                new WaitCommand(250),
                 new InstantCommand(gripper::open)
         );
     }

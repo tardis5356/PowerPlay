@@ -140,7 +140,7 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
 
 
         cycleToMediumPoleAutoCommand = new R2V2_CycleToMediumPoleAutoCommand(drive, lift, arm, wrist, gripper, coffin, true);
-        cycleToStackCloseWaypointAutoCommand = new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex, true);
+        cycleToStackCloseWaypointAutoCommand = new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, true);
         deliverPreloadCWAutoCommand = new R2V2_DeliverPreloadCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, true);
         grabFromStackCWCommand = new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, true);
 
@@ -173,6 +173,10 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
                 cycleToStackCloseWaypointAutoCommand,
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 3, true),
+                cycleToMediumPoleAutoCommand,
+                cycleToStackCloseWaypointAutoCommand,
+
+                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 2, true),
                 cycleToMediumPoleAutoCommand,
                 cycleToStackCloseWaypointAutoCommand
 
@@ -242,8 +246,11 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
                 telemetry.update();
             }
 
+            telemetry.addData("lift pos", lift.getLiftPosition());
+            telemetry.addData("lift target", lift.getLiftTargetPosition());
+            telemetry.addData("lift power", lift.getLiftPower());
 
-            if (runtime.seconds() > 25) {
+            if (runtime.seconds() > 27.5) {
                 if (!parking) {
                     CommandScheduler.getInstance().cancelAll();
                     switch (tagOfInterest.id) {
