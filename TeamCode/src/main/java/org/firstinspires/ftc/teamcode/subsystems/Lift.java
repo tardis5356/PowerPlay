@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 public class Lift extends SubsystemBase {
     private PIDController controller,
             extendController, retractController;
-    private DcMotorEx mL_Barney, mL_R2V2;
+    private DcMotorEx mL_Barney, mL_R2V2, mL2_R2V2;
 
     private TouchSensor liftBase;
 
@@ -60,9 +60,11 @@ public class Lift extends SubsystemBase {
 
 //            mL_R2V2 = hardwareMap.crservo.get("mL");
             mL_R2V2 = hardwareMap.get(DcMotorEx.class, "mL");
+            mL2_R2V2 = hardwareMap.get(DcMotorEx.class, "mL2");
 
             mL_R2V2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             mL_R2V2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            mL2_R2V2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             target = 30;
         }
     }
@@ -71,7 +73,7 @@ public class Lift extends SubsystemBase {
         if (isBarney) liftPID_Barney();
         if (!isBarney) {
             liftPID_R2V2();
-            if (liftBase.isPressed() && mL_R2V2.getCurrentPosition() < 0) {
+            if (liftBase.isPressed() && Math.abs(mL_R2V2.getCurrentPosition()) -60 > 0) {
                 mL_R2V2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             }
         }
@@ -142,11 +144,13 @@ public class Lift extends SubsystemBase {
                     power = 1;
                 }
                 if (liftPos > target) {
-                    power = -0.7;
+                    power = -0.3;
                 }
                 mL_R2V2.setPower(power + stickValue + stickValue2);
+                mL2_R2V2.setPower(power + stickValue + stickValue2);
             } else {
                 mL_R2V2.setPower(ff + stickValue + stickValue2);
+                mL2_R2V2.setPower(ff + stickValue + stickValue2);
             }
 
             if (Math.abs(stickValue+stickValue2) > 0.05) {
@@ -156,6 +160,7 @@ public class Lift extends SubsystemBase {
         if (manualActive) {
             power = ff + stickValue + stickValue2;
             mL_R2V2.setPower(power);
+            mL2_R2V2.setPower(power);
         }
 
     }
