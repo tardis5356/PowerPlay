@@ -72,8 +72,8 @@ public class Lift extends SubsystemBase {
     public void periodic() {
         if (isBarney) liftPID_Barney();
         if (!isBarney) {
-            liftPID_R2V2();
-            if (liftBase.isPressed() && Math.abs(mL_R2V2.getCurrentPosition()) -60 > 0) {
+            liftBangBang_R2V2();
+            if (liftBase.isPressed() && Math.abs(mL_R2V2.getCurrentPosition()) - 60 > 0) {
                 mL_R2V2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             }
         }
@@ -128,7 +128,7 @@ public class Lift extends SubsystemBase {
         mL_Barney.setPower(power);
     }
 
-    public void liftPID_R2V2() {
+    public void liftBangBang_R2V2() {
         int liftPos = mL_R2V2.getCurrentPosition();
         double pid = controller.calculate(liftPos, target);
 //        double ff = -Math.cos(Math.toRadians(target / ticks_in_degree)) * f_R2V2;
@@ -152,6 +152,30 @@ public class Lift extends SubsystemBase {
                 mL_R2V2.setPower(ff + stickValue + stickValue2);
                 mL2_R2V2.setPower(ff + stickValue + stickValue2);
             }
+
+            if (Math.abs(stickValue+stickValue2) > 0.05) {
+                manualActive = true;
+            }
+        }
+        if (manualActive) {
+            power = ff + stickValue + stickValue2;
+            mL_R2V2.setPower(power);
+            mL2_R2V2.setPower(power);
+        }
+
+    }
+
+    public void liftPID_R2V2() {
+        int liftPos = mL_R2V2.getCurrentPosition();
+        double pid = controller.calculate(liftPos, target);
+//        double ff = -Math.cos(Math.toRadians(target / ticks_in_degree)) * f_R2V2;
+        double ff = f_R2V2 - (liftPos / 7000);
+
+        if (!manualActive) {
+            power = pid + ff;
+
+            mL_R2V2.setPower(power);
+            mL2_R2V2.setPower(power);
 
             if (Math.abs(stickValue+stickValue2) > 0.05) {
                 manualActive = true;
