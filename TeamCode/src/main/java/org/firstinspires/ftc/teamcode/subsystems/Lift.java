@@ -67,7 +67,7 @@ public class Lift extends SubsystemBase {
             mL_R2V2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             mL_R2V2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             mL2_R2V2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            target = 30;
+            target = 10;
         }
     }
 
@@ -143,21 +143,28 @@ public class Lift extends SubsystemBase {
 
 //        power = pid + stickValue;
         pid_R2V2 = pid;
-        ff_R2V2 = ff - (liftPos / 7000);
+        ff_R2V2 = ff; // - (liftPos / 7000);
 
         if (!manualActive) {
-            if (Math.abs(target - liftPos) > 25) {
-                if (liftPos < target) {
-                    power = 0.8;//1
+            if(target != 10 && !liftBase.isPressed()) {
+                if (Math.abs(target - liftPos) > 25) {
+                    if (liftPos < target) {
+                        power = 0.8;//1
+                    }
+                    if (liftPos > target) {
+                        power = -0.1;//-0.3
+                    }
+                    mL_R2V2.setPower(power);
+                    mL2_R2V2.setPower(power);
+                } else {
+                    mL_R2V2.setPower(ff);
+                    mL2_R2V2.setPower(ff);
                 }
-                if (liftPos > target) {
-                    power = -0.2;//-0.3
+            }else{
+                if(liftBase.isPressed()) {
+                    mL_R2V2.setPower(0);
+                    mL2_R2V2.setPower(0);
                 }
-                mL_R2V2.setPower(power);
-                mL2_R2V2.setPower(power);
-            } else {
-                mL_R2V2.setPower(ff);
-                mL2_R2V2.setPower(ff);
             }
 
             if (Math.abs(stickValue+stickValue2) > 0.05) {

@@ -67,7 +67,7 @@ public class Gen2_TeleOp extends CommandOpMode {
     private TapeMeasure tapeMeasure;
     private Coffin coffin;
 
-    private RobotToStateCommand liftRetractCommand, liftToTravelPositionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
+    private RobotToStateCommand liftToTravelPositionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
     private RobotToStateCommand liftToIntakeCommand;
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -113,7 +113,6 @@ public class Gen2_TeleOp extends CommandOpMode {
         coffin = new Coffin(hardwareMap);
 
         liftToIntakeCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_INTAKE_R2V2, 0, "intake");
-        liftRetractCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_FULL_RETRACTION_R2V2, 0, "delivery");
         liftToTravelPositionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_TRAVEL_R2V2, 0, "travel");
         liftToLowJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_LOW_JUNCTION_R2V2, 0, "delivery");
         liftToMediumJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_MEDIUM_JUNCTION_R2V2, 0, "delivery");
@@ -147,32 +146,28 @@ public class Gen2_TeleOp extends CommandOpMode {
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
-                .cancelWhenActive(liftToIntakeCommand)
-                .cancelWhenActive(liftRetractCommand);
+                .cancelWhenActive(liftToIntakeCommand);
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.X)) // extend to low junction and slow drive base on B button
                 .whenActive(liftToLowJunctionCommand)
                 .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToTravelPositionCommand)
-                .cancelWhenActive(liftToIntakeCommand)
-                .cancelWhenActive(liftRetractCommand);
+                .cancelWhenActive(liftToIntakeCommand);
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.Y)) // extend to medium junction and slow drive base on Y button
                 .whenActive(liftToMediumJunctionCommand)
                 .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
                 .cancelWhenActive(liftToTravelPositionCommand)
-                .cancelWhenActive(liftToIntakeCommand)
-                .cancelWhenActive(liftRetractCommand);
+                .cancelWhenActive(liftToIntakeCommand);
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.B)) // extend to high junction and slow drive base on X button
                 .whenActive(liftToHighJunctionCommand)
                 .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
                 .cancelWhenActive(liftToTravelPositionCommand)
-                .cancelWhenActive(liftToIntakeCommand)
-                .cancelWhenActive(liftRetractCommand);
+                .cancelWhenActive(liftToIntakeCommand);
 
 //        new Trigger(() -> manipulator.getLeftY() > 0.2) // override all other commands and give manual control of lift
 //                .whenActive(() -> powerMultiplier = SLOW_POWER_MULTIPLIER)
@@ -189,8 +184,7 @@ public class Gen2_TeleOp extends CommandOpMode {
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
-                .cancelWhenActive(liftToTravelPositionCommand)
-                .cancelWhenActive(liftRetractCommand);
+                .cancelWhenActive(liftToTravelPositionCommand);
 
         new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // closes gripper on left trigger
                 .whenActive(() -> {
