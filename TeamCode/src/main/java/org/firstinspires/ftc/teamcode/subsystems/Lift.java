@@ -146,7 +146,7 @@ public class Lift extends SubsystemBase {
         ff_R2V2 = ff; // - (liftPos / 7000);
 
         if (!manualActive) {
-            if(target != 10 && !liftBase.isPressed()) {
+            if(target != 10) {
                 if (Math.abs(target - liftPos) > 25) {
                     if (liftPos < target) {
                         power = 0.8;//1
@@ -161,9 +161,44 @@ public class Lift extends SubsystemBase {
                     mL2_R2V2.setPower(ff);
                 }
             }else{
+
+            }
+
+            if(target != 10){
+                if (Math.abs(target - liftPos) > 25) {
+                    if (liftPos < target) {
+                        power = 0.8;//1
+                    }
+                    if (liftPos > target) {
+                        power = -0.1;//-0.3
+                    }
+                    mL_R2V2.setPower(power);
+                    mL2_R2V2.setPower(power);
+                } else {
+                    mL_R2V2.setPower(ff);
+                    mL2_R2V2.setPower(ff);
+                }
+            }
+
+            if(target == 10 && liftBase.isPressed()){
                 if(liftBase.isPressed()) {
                     mL_R2V2.setPower(0);
                     mL2_R2V2.setPower(0);
+                }
+            }
+            if(target == 10 && !liftBase.isPressed()){
+                if (Math.abs(target - liftPos) > 25) {
+                    if (liftPos < target) {
+                        power = 0.8;//1
+                    }
+                    if (liftPos > target) {
+                        power = -0.1;//-0.3
+                    }
+                    mL_R2V2.setPower(power);
+                    mL2_R2V2.setPower(power);
+                } else {
+                    mL_R2V2.setPower(ff);
+                    mL2_R2V2.setPower(ff);
                 }
             }
 

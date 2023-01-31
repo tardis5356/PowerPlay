@@ -186,21 +186,39 @@ public class Gen2_TeleOp extends CommandOpMode {
                 .cancelWhenActive(liftToLowJunctionCommand)
                 .cancelWhenActive(liftToTravelPositionCommand);
 
-        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // closes gripper on left trigger
+//        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // closes gripper on left trigger
+//                .whenActive(() -> {
+//                    if (!manualModeOn) {
+//                        gripper.open();
+//                    } else {
+////                        arm.increasePosition();
+//                    }
+//                });
+//        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5) // opens gripper on right trigger
+//                .whenActive(() -> {
+//                    if (!manualModeOn) {
+//                        gripper.close();
+//                    } else {
+////                        arm.decreasePosition();
+//                    }
+//                });
+        //gripper will close if left trigger is pressed or cone is in gripper
+        //if right trigger is held down, it will override and open the gripper
+        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5 || (gripper.hasCone() && manipulator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) < 0.5)) // closes gripper on left trigger
                 .whenActive(() -> {
-                    if (!manualModeOn) {
-                        gripper.open();
-                    } else {
-//                        arm.increasePosition();
-                    }
+//                    if (!manualModeOn) {
+                    //checks color sensor before closing
+                    // gripper.closeCV();
+                    gripper.close();
+//                    }
                 });
         new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5) // opens gripper on right trigger
                 .whenActive(() -> {
-                    if (!manualModeOn) {
-                        gripper.close();
-                    } else {
-//                        arm.decreasePosition();
-                    }
+//                    if (!manualModeOn) {
+                    //checks color sensor to keep open
+                    // gripper.closeCV();
+                    gripper.open();
+//                    }
                 });
 
 

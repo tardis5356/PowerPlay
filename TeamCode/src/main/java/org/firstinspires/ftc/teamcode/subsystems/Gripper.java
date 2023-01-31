@@ -26,7 +26,7 @@ public class Gripper extends SubsystemBase {
 
     public Gripper(HardwareMap hardwareMap) {
         servo = hardwareMap.get(Servo.class, "sG");
-        if (isBarney) colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorGripper");
+        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorGripper");
         close();
         //it was originally open()
     }
@@ -58,6 +58,8 @@ public class Gripper extends SubsystemBase {
         }
         return closed;
     }
+
+
 
     public void increasePosition() {
         servoPosition += 0.005;
