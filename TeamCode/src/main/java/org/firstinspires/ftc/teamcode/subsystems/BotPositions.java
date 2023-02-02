@@ -30,7 +30,7 @@ public class BotPositions {
 
     public static int LIFT_FULL_RETRACTION_R2V2 = 0, LIFT_INTAKE_AUTO_R2V2 = 25, LIFT_INTAKE_R2V2 = 10, LIFT_TRAVEL_R2V2 = 10, LIFT_LOW_JUNCTION_R2V2 = 350, LIFT_MEDIUM_JUNCTION_R2V2 = 800, LIFT_HIGH_JUNCTION_R2V2 = 1200;//1175
 
-    public static int[] STACK_POSITIONS_R2V2 = {10, 80, 110, 145, 210};//0 = bottom cone, 4 = top cone
+    public static int[] STACK_POSITIONS_R2V2 = {10, 80, 125, 145, 270};//0 = bottom cone, 4 = top cone
 
     public static double LIFT_p_R2V2 = 0, LIFT_i_R2V2 = 0, LIFT_d_R2V2 = 0;
 

@@ -150,7 +150,7 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
 ////////////////////////////DEFINING PARK TRAJECTORIES//////////////////////////////
         parkTrajectory1 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StackFarWaypointPos)
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-58, 13, Math.toRadians(270)))
+                .lineToLinearHeading(new Pose2d(-12, 13, Math.toRadians(270)))
                 .build();
 
         parkTrajectory2 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StackFarWaypointPos)
@@ -160,7 +160,7 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
 
         parkTrajectory3 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StackFarWaypointPos)
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-12, 13, Math.toRadians(270)))
+                .lineToLinearHeading(new Pose2d(-58, 13, Math.toRadians(270)))
                 .build();
         ////////////////////////////////////DONE DEFINING PARK TRAJECTORIES///////////////////////////////////////
 
@@ -170,15 +170,15 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 4, true),
                 cycleToMediumPoleAutoCommand,
-                cycleToStackCloseWaypointAutoCommand,
+                new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, coffin, 3, true),
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 3, true),
                 cycleToMediumPoleAutoCommand,
-                cycleToStackCloseWaypointAutoCommand,
+                new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, coffin, 2, true),
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 2, true),
                 cycleToMediumPoleAutoCommand,
-                cycleToStackCloseWaypointAutoCommand
+                new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, coffin, 1, true)
 
 //                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 2, true),
 //                cycleToMediumPoleAutoCommand,

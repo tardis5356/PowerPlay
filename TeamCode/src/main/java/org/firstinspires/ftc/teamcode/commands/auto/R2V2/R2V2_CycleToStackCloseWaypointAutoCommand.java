@@ -29,7 +29,7 @@ public class R2V2_CycleToStackCloseWaypointAutoCommand extends ParallelCommandGr
                 new SequentialCommandGroup(
                     new WaitCommand(500),
                    // new LiftToPositionCommand(lift, 50, 25))
-                        new RobotToStateCommand(lift, arm, wrist, gripper, coffin, BotPositions.LIFT_INTAKE_R2V2, 0, "travel")
+                        new RobotToStateCommand(lift, arm, wrist, gripper, coffin, BotPositions.LIFT_INTAKE_R2V2, stackIndex, "travel")
             ));
 
     }

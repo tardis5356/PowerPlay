@@ -38,11 +38,11 @@ public class R2V2_DeliverPreloadCloseWaypointAutoCommand extends SequentialComma
                 new ParallelCommandGroup(
                         new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_PreloadPoleToStackCloseWaypoint : R2V2_AutoTrajectories.red_PreloadPoleToStackCloseWaypoint),
                         new SequentialCommandGroup(
-                                new WaitCommand(500),
+                                new WaitCommand(200),
                                 new InstantCommand(() -> {
                                     coffin.extend();
                                 }),
-                                new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_INTAKE_R2V2, 0, "intake")
+                                new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_INTAKE_R2V2, 4, "intake")
                         )
                         //new InstantCommand(gripper::open)
                 )
