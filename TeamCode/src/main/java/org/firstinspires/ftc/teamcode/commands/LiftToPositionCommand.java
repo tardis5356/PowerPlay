@@ -23,6 +23,7 @@ public class LiftToPositionCommand extends CommandBase {
 
     @Override
     public void execute() { // runs continuously
+        lift.setTolerance(tolerance);
         lift.setTargetPosition(targetPosition);
     }
 

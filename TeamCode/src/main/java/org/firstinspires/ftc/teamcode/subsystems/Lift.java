@@ -42,6 +42,8 @@ public class Lift extends SubsystemBase {
 
     public int resets = 0;
 
+    public int liftOffset = 0;
+
     public Lift(HardwareMap hardwareMap) {
 //        retractController = new PIDController(pR, iR, dR);
 //        telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry());
@@ -62,7 +64,6 @@ public class Lift extends SubsystemBase {
 
             liftBase = hardwareMap.get(TouchSensor.class, "liftBase");
 
-//            mL_R2V2 = hardwareMap.crservo.get("mL");
             mL_R2V2 = hardwareMap.get(DcMotorEx.class, "mL");
             mL2_R2V2 = hardwareMap.get(DcMotorEx.class, "mL2");
 
@@ -76,14 +77,15 @@ public class Lift extends SubsystemBase {
     public void periodic() {
         if (isBarney) liftPID_Barney();
         if (!isBarney) {
-            liftBangBang_R2V2();
-//            liftPID_R2V2();
+           // liftBangBang_R2V2();
+            if(liftOffset == 0 || liftOffset == 1) setLiftOffset();
+            liftPID_R2V2();
             //if absolute value of position is greater than tolerance, reset position at base
-//            if (liftBase.isPressed() && Math.abs(mL_R2V2.getCurrentPosition()) > tolerance) {
-//                mL_R2V2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//                mL_R2V2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//                resets++;
-//            }
+            if (liftBase.isPressed() && Math.abs(mL_R2V2.getCurrentPosition()) > tolerance) {
+                mL_R2V2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                mL_R2V2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                resets++;
+            }
         }
     }
 
@@ -103,6 +105,15 @@ public class Lift extends SubsystemBase {
 
     public void setTolerance(int targetTolerance){
         tolerance = targetTolerance;
+    }
+
+    public void setLiftOffset(){
+        if(mL_R2V2.getCurrentPosition() > 300 && liftOffset == 0){ // if lift is extended and no offset has been set already
+            liftOffset = 1;
+        }
+        if(liftOffset == 1 && liftBase.isPressed()){ // once lift has extended once and limit is reached, get offset
+            liftOffset = mL_R2V2.getCurrentPosition();
+        }
     }
 
     public void manualControl(double stick, double stick2) {
@@ -145,7 +156,8 @@ public class Lift extends SubsystemBase {
 
     public void liftBangBang_R2V2() {
         int liftPos = mL_R2V2.getCurrentPosition();
-        double pid = controller.calculate(liftPos, target);
+        int liftTarget = target + liftOffset;
+        double pid = controller.calculate(liftPos, liftTarget);
 //        double ff = -Math.cos(Math.toRadians(target / ticks_in_degree)) * f_R2V2;
         double ff = f_R2V2;
 
@@ -154,12 +166,12 @@ public class Lift extends SubsystemBase {
         ff_R2V2 = ff; // - (liftPos / 7000);
 
         if (!manualActive) {
-            if(target != 10){
-                if (Math.abs(target - liftPos) > tolerance) {
-                    if (liftPos < target) {
+            if(liftTarget != 10){
+                if (Math.abs(liftTarget - liftPos) > tolerance) {
+                    if (liftPos < liftTarget) {
                         power = 1;//1
                     }
-                    if (liftPos > target) {
+                    if (liftPos > liftTarget) {
                         power = -0.4;//-0.3
                     }
                     mL_R2V2.setPower(power);
@@ -170,18 +182,18 @@ public class Lift extends SubsystemBase {
                 }
             }
 
-            if(target == 10 && liftBase.isPressed()){
+            if(liftTarget == 10 && liftBase.isPressed()){
                 if(liftBase.isPressed()) {
                     mL_R2V2.setPower(0);
                     mL2_R2V2.setPower(0);
                 }
             }
-            if(target == 10 && !liftBase.isPressed()){
-                if (Math.abs(target - liftPos) > tolerance) {
-                    if (liftPos < target) {
+            if(liftTarget == 10 && !liftBase.isPressed()){
+                if (Math.abs(liftTarget - liftPos) > tolerance) {
+                    if (liftPos < liftTarget) {
                         power = 1;//1
                     }
-                    if (liftPos > target) {
+                    if (liftPos > liftTarget) {
                         power = -0.4;//-0.3
                     }
                     mL_R2V2.setPower(power);
@@ -206,9 +218,11 @@ public class Lift extends SubsystemBase {
 
     public void liftPID_R2V2() {
         int liftPos = mL_R2V2.getCurrentPosition();
+        int liftTarget = target + liftOffset;
         double pid = controller.calculate(liftPos, target);
 //        double ff = -Math.cos(Math.toRadians(target / ticks_in_degree)) * f_R2V2;
         double ff = f_R2V2;
+        pid_R2V2 = pid;
 
         if (!manualActive) {
             power = pid + ff;
