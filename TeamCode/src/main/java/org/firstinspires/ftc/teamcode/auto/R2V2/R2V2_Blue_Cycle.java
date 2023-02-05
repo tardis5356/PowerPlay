@@ -27,7 +27,7 @@ import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_GrabFromStackComma
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
-import org.firstinspires.ftc.teamcode.subsystems.Coffin;
+import org.firstinspires.ftc.teamcode.subsystems.BatWing;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
@@ -80,7 +80,7 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
     private Wrist wrist;
     private Gripper gripper;
     private BeaconArm beaconArm;
-    private Coffin coffin;
+    private BatWing batwing;
 //    private Camera camera;
 
     private R2V2_CycleToPoleAutoCommand cycleToPoleAutoCommand;
@@ -125,7 +125,7 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
         arm = new Arm(hardwareMap);
         wrist = new Wrist(hardwareMap);
         beaconArm = new BeaconArm(hardwareMap);
-        coffin = new Coffin(hardwareMap);
+        batwing = new BatWing(hardwareMap);
 //        camera = new Camera(hardwareMap, telemetry2);
 
         //generate trajectories, must do this before you declare commands
@@ -133,16 +133,16 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
         R2V2_AutoTrajectories.generateTrajectories(drive);
 
         // declare commands
-        cycleToPoleAutoCommand = new R2V2_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper, coffin, true);
+        cycleToPoleAutoCommand = new R2V2_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper, batwing, true);
         cycleToStackWaypointAutoCommand = new R2V2_CycleToStackWaypointAutoCommand(drive, lift, arm, wrist, gripper, stackIndex, true);
-        deliverPreloadAutoCommand = new R2V2_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, true);
-        grabFromStackCommand = new R2V2_GrabFromStackCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, true);
+        deliverPreloadAutoCommand = new R2V2_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, batwing, stackIndex, true);
+        grabFromStackCommand = new R2V2_GrabFromStackCommand(drive, lift, arm, wrist, gripper, batwing, stackIndex, true);
 
 
-        cycleToMediumPoleAutoCommand = new R2V2_CycleToMediumPoleAutoCommand(drive, lift, arm, wrist, gripper, coffin, true);
-        cycleToStackCloseWaypointAutoCommand = new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, true);
-        deliverPreloadCWAutoCommand = new R2V2_DeliverPreloadCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, true);
-        grabFromStackCWCommand = new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, stackIndex, true);
+        cycleToMediumPoleAutoCommand = new R2V2_CycleToMediumPoleAutoCommand(drive, lift, arm, wrist, gripper, batwing, true);
+        cycleToStackCloseWaypointAutoCommand = new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, stackIndex, true);
+        deliverPreloadCWAutoCommand = new R2V2_DeliverPreloadCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, stackIndex, true);
+        grabFromStackCWCommand = new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, stackIndex, true);
 
         liftToPositionCommand = new LiftToPositionCommand(lift, 50, 25);
 
@@ -168,19 +168,19 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
         schedule(new SequentialCommandGroup(
                 deliverPreloadCWAutoCommand,
 
-                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 4, true),
+                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 4, true),
                 cycleToMediumPoleAutoCommand,
-                new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, coffin, 3, true),
+                new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 3, true),
 
-                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 3, true),
+                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 3, true),
                 cycleToMediumPoleAutoCommand,
-                new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, coffin, 2, true),
+                new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 2, true),
 
-                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 2, true),
+                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 2, true),
                 cycleToMediumPoleAutoCommand,
-                new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, coffin, 1, true)
+                new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 1, true)
 
-//                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, coffin, 2, true),
+//                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 2, true),
 //                cycleToMediumPoleAutoCommand,
 //                cycleToStackCloseWaypointAutoCommand
         ));
@@ -270,7 +270,7 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
                     }
                     schedule(
                             new InstantCommand(gripper::open, gripper),
-                            new RobotToStateCommand(lift, arm, wrist, gripper, coffin, 100, 0, "travel"),
+                            new RobotToStateCommand(lift, arm, wrist, gripper, batwing, 100, 0, "travel"),
                             parkTrajectoryCommand
                     );
                     parking = true;

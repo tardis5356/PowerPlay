@@ -18,7 +18,7 @@ public class Lift extends SubsystemBase {
     private DcMotorEx mL_Barney, mL_R2V2, mL2_R2V2;
 
     private TouchSensor liftBase;
-
+//TODO: fix these variables, not being called
     public static double pE_Barney = BotPositions.LIFT_pE_Barney, pR_Barney = BotPositions.LIFT_pR_Barney, i_Barney = BotPositions.LIFT_i_Barney, d_Barney = BotPositions.LIFT_d_Barney;
     public static double pE_R2V2 = BotPositions.LIFT_p_R2V2, i_R2V2 = BotPositions.LIFT_i_R2V2, d_R2V2 = BotPositions.LIFT_d_R2V2;
 
@@ -77,7 +77,7 @@ public class Lift extends SubsystemBase {
     public void periodic() {
         if (isBarney) liftPID_Barney();
         if (!isBarney) {
-           // liftBangBang_R2V2();
+          // liftBangBang_R2V2();
             if(liftOffset == 0 || liftOffset == 1) setLiftOffset();
             liftPID_R2V2();
             //if absolute value of position is greater than tolerance, reset position at base
@@ -90,8 +90,8 @@ public class Lift extends SubsystemBase {
     }
 
     public void updatePIDValues() {
-        if (retract) controller.setP(pR_Barney);
-        else controller.setP(pE_Barney);
+//        if (retract) controller.setP(pR_Barney);
+//        else controller.setP(pE_Barney);
     }
 
     public void setTargetPosition(int targetPos) {

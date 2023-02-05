@@ -6,14 +6,13 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
-import org.firstinspires.ftc.teamcode.subsystems.BotPositions;
-import org.firstinspires.ftc.teamcode.subsystems.Coffin;
+import org.firstinspires.ftc.teamcode.subsystems.BatWing;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 
 public class RobotToStateCommand extends ParallelCommandGroup {
-    public RobotToStateCommand(Lift lift, Arm arm, Wrist wrist, Gripper gripper, Coffin coffin, int height, int stackIndex, String state) {
+    public RobotToStateCommand(Lift lift, Arm arm, Wrist wrist, Gripper gripper, BatWing batwing, int height, int stackIndex, String state) {
         switch(state){
             case "intake":
                 addCommands(
@@ -21,7 +20,7 @@ public class RobotToStateCommand extends ParallelCommandGroup {
                         new InstantCommand(() -> {
                             arm.toIntakePosition();
                             wrist.toIntakePosition();
-//                            coffin.extend();
+                            batwing.storage();//
                         })
                 );
                 break;
@@ -31,7 +30,7 @@ public class RobotToStateCommand extends ParallelCommandGroup {
                         new InstantCommand(() -> {
                             arm.toDeliverPosition();
                             wrist.toDeliverPosition();
-                            coffin.retract();
+                            batwing.deployed();
                         })
                 );
                 break;
@@ -41,7 +40,7 @@ public class RobotToStateCommand extends ParallelCommandGroup {
                         new InstantCommand(() -> {
                             arm.toTravelPosition();
                             wrist.toTravelPosition();
-                            coffin.retract();
+                            batwing.storage();
                         })
                 );
                 break;

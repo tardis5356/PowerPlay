@@ -10,7 +10,6 @@ import static java.lang.Math.abs;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 
@@ -29,7 +28,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
-import org.firstinspires.ftc.teamcode.subsystems.Coffin;
+import org.firstinspires.ftc.teamcode.subsystems.BatWing;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
@@ -57,7 +56,7 @@ public class Gen1_TeleOp extends CommandOpMode {
     private Gripper gripper;
     private BeaconArm beaconArm;
     private TapeMeasure tapeMeasure;
-    private Coffin coffin;
+    private BatWing coffin;
 
     private RobotToStateCommand liftToTravelPositionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
     private RobotToStateCommand liftToIntakeCommand;
@@ -102,7 +101,7 @@ public class Gen1_TeleOp extends CommandOpMode {
         wrist = new Wrist(hardwareMap);
         beaconArm = new BeaconArm(hardwareMap);
         tapeMeasure = new TapeMeasure(hardwareMap);
-        coffin = new Coffin(hardwareMap);
+        coffin = new BatWing(hardwareMap);
 
 //        m_grabCommand = new GrabStone(m_gripper);
 //        m_releaseCommand = new ReleaseStone(m_gripper);
@@ -327,7 +326,7 @@ public class Gen1_TeleOp extends CommandOpMode {
 
         telemetry.addData("arm pos", arm.getArmPosition());
         telemetry.addData("gripper pos", gripper.getGripperPosition());
-        telemetry.addData("beacon pos", beaconArm.getBeaconArmPosition());
+       // telemetry.addData("beacon pos", beaconArm.getBeaconArmPosition());
         telemetry.addData("wrist pos", String.format("%.2f", wrist.getWristPosition()));
 
         telemetry.addData("tape measure power", tapeMeasure.getTapeMeasurePower());

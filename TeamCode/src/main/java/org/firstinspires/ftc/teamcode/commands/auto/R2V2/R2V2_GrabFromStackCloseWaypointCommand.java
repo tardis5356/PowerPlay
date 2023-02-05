@@ -6,12 +6,11 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
-import org.firstinspires.ftc.teamcode.subsystems.Coffin;
+import org.firstinspires.ftc.teamcode.subsystems.BatWing;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
@@ -22,14 +21,14 @@ public class R2V2_GrabFromStackCloseWaypointCommand extends SequentialCommandGro
 
     private Gripper gripper;
 
-    public R2V2_GrabFromStackCloseWaypointCommand(SampleMecanumDrive_R2V2 drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, Coffin coffin, int stackIndex, boolean isBlue) {
+    public R2V2_GrabFromStackCloseWaypointCommand(SampleMecanumDrive_R2V2 drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, BatWing batwing, int stackIndex, boolean isBlue) {
         this.gripper = gripper;
 
         addCommands(
-                new InstantCommand(() -> {
-                    coffin.extend();
-                }),
-                new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_INTAKE_AUTO_R2V2, stackIndex, "intake"),
+//                new InstantCommand(() -> {
+//                    batwing.extend();
+//                }),
+                new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_AUTO_R2V2, stackIndex, "intake"),
                 new InstantCommand(gripper::open),
 //                new WaitCommand(250),
 //                new ParallelCommandGroup(
@@ -47,7 +46,7 @@ public class R2V2_GrabFromStackCloseWaypointCommand extends SequentialCommandGro
                         new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StackToStackWaypoint : R2V2_AutoTrajectories.red_StackToStackWaypoint),
                         new SequentialCommandGroup(
 //                                new WaitCommand(700),
-                                new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_INTAKE_AUTO_R2V2, 0, "travel"))
+                                new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_AUTO_R2V2, 0, "travel"))
 
                 )
         );

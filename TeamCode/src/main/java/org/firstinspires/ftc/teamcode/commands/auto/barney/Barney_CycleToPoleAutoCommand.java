@@ -11,7 +11,7 @@ import com.arcrobotics.ftclib.command.WaitCommand;
 import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Barney;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
-import org.firstinspires.ftc.teamcode.subsystems.Coffin;
+import org.firstinspires.ftc.teamcode.subsystems.BatWing;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
@@ -21,7 +21,7 @@ public class Barney_CycleToPoleAutoCommand extends SequentialCommandGroup {
 
     private Gripper gripper;
 
-    public Barney_CycleToPoleAutoCommand(SampleMecanumDrive_Barney drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, Coffin coffin, boolean isBlue) {
+    public Barney_CycleToPoleAutoCommand(SampleMecanumDrive_Barney drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, BatWing coffin, boolean isBlue) {
         this.gripper = gripper;
 
         addCommands(

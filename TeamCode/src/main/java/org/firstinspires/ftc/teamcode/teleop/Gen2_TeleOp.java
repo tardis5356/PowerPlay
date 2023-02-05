@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_FULL_RETRACTION_R2V2;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_HIGH_JUNCTION_R2V2;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_INTAKE_R2V2;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_LOW_JUNCTION_R2V2;
@@ -20,10 +19,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.VoltageSensor;
-import com.qualcomm.robotcore.util.BatteryChecker;
 
-import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -31,7 +27,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
-import org.firstinspires.ftc.teamcode.subsystems.Coffin;
+import org.firstinspires.ftc.teamcode.subsystems.BatWing;
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
@@ -65,7 +61,7 @@ public class Gen2_TeleOp extends CommandOpMode {
     private Gripper gripper;
     private BeaconArm beaconArm;
     private TapeMeasure tapeMeasure;
-    private Coffin coffin;
+    private BatWing batwing;
 
     private RobotToStateCommand liftToTravelPositionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
     private RobotToStateCommand liftToIntakeCommand;
@@ -110,13 +106,13 @@ public class Gen2_TeleOp extends CommandOpMode {
         wrist = new Wrist(hardwareMap);
         beaconArm = new BeaconArm(hardwareMap);
         tapeMeasure = new TapeMeasure(hardwareMap);
-        coffin = new Coffin(hardwareMap);
+        batwing = new BatWing(hardwareMap);
 
-        liftToIntakeCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_INTAKE_R2V2, 0, "intake");
-        liftToTravelPositionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_TRAVEL_R2V2, 0, "travel");
-        liftToLowJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_LOW_JUNCTION_R2V2, 0, "delivery");
-        liftToMediumJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_MEDIUM_JUNCTION_R2V2, 0, "delivery");
-        liftToHighJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_HIGH_JUNCTION_R2V2, 0, "delivery");
+        liftToIntakeCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_R2V2, 0, "intake");
+        liftToTravelPositionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_TRAVEL_R2V2, 0, "travel");
+        liftToLowJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_LOW_JUNCTION_R2V2, 0, "delivery");
+        liftToMediumJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_MEDIUM_JUNCTION_R2V2, 0, "delivery");
+        liftToHighJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_HIGH_JUNCTION_R2V2, 0, "delivery");
 
         // driver triggers
         //driver = gamepad 1

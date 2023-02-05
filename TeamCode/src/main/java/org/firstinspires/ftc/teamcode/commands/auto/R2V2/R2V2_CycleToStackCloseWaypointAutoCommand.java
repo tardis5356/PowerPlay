@@ -6,14 +6,13 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 
 
-import org.firstinspires.ftc.teamcode.commands.LiftToPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
-import org.firstinspires.ftc.teamcode.subsystems.Coffin;
+import org.firstinspires.ftc.teamcode.subsystems.BatWing;
 import org.firstinspires.ftc.teamcode.subsystems.BotPositions;
 
 public class R2V2_CycleToStackCloseWaypointAutoCommand extends ParallelCommandGroup {
@@ -21,7 +20,7 @@ public class R2V2_CycleToStackCloseWaypointAutoCommand extends ParallelCommandGr
 
     private Gripper gripper;
 
-    public R2V2_CycleToStackCloseWaypointAutoCommand(SampleMecanumDrive_R2V2 drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, Coffin coffin, int stackIndex, boolean isBlue) {
+    public R2V2_CycleToStackCloseWaypointAutoCommand(SampleMecanumDrive_R2V2 drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, BatWing batwing, int stackIndex, boolean isBlue) {
         this.gripper = gripper;
 
         addCommands(
@@ -29,7 +28,7 @@ public class R2V2_CycleToStackCloseWaypointAutoCommand extends ParallelCommandGr
                 new SequentialCommandGroup(
                     new WaitCommand(500),
                    // new LiftToPositionCommand(lift, 50, 25))
-                        new RobotToStateCommand(lift, arm, wrist, gripper, coffin, BotPositions.LIFT_INTAKE_R2V2, stackIndex, "travel")
+                        new RobotToStateCommand(lift, arm, wrist, gripper, batwing, BotPositions.LIFT_INTAKE_R2V2, stackIndex, "travel")
             ));
 
     }

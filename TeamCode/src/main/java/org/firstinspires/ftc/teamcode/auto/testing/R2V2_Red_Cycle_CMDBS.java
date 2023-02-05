@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_GrabFromStackComma
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
-import org.firstinspires.ftc.teamcode.subsystems.Coffin;
+import org.firstinspires.ftc.teamcode.subsystems.BatWing;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
@@ -78,7 +78,7 @@ public class R2V2_Red_Cycle_CMDBS extends CommandOpMode {
     private Wrist wrist;
     private Gripper gripper;
     private BeaconArm beaconArm;
-    private Coffin coffin;
+    private BatWing coffin;
 //    private Camera camera;
 
     private R2V2_CycleToPoleAutoCommand cycleToPoleAutoCommand;
@@ -124,7 +124,7 @@ public class R2V2_Red_Cycle_CMDBS extends CommandOpMode {
         arm = new Arm(hardwareMap);
         wrist = new Wrist(hardwareMap);
         beaconArm = new BeaconArm(hardwareMap);
-        coffin = new Coffin(hardwareMap);
+        coffin = new BatWing(hardwareMap);
 //        camera = new Camera(hardwareMap, telemetry2);
 
         //generate trajectories, must do this before you declare commands

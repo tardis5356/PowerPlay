@@ -32,7 +32,7 @@ public class BotPositions {
 
     public static int[] STACK_POSITIONS_R2V2 = {10, 80, 110, 130, 160};//0 = bottom cone, 4 = top cone
 
-    public static double LIFT_p_R2V2 = 0, LIFT_i_R2V2 = 0, LIFT_d_R2V2 = 0;
+    public static double LIFT_p_R2V2 = 0.05, LIFT_i_R2V2 = 0, LIFT_d_R2V2 = 0;
 
     public static double ARM_INIT_R2V2 = 0.55, ARM_INTAKE_R2V2 = 0.64, ARM_DELIVERY_R2V2 = 0.39, ARM_TRAVEL_R2V2 = 0.53;
 
@@ -42,5 +42,5 @@ public class BotPositions {
 
     public static double BEACON_ARM_LOAD_R2V2 = 1, BEACON_ARM_STORAGE_R2V2 = 0.6, BEACON_ARM_DELIVERY_R2V2 = 0.8;
 
-    public static double COFFIN_EXTENDED_R2V2 = 0.8, COFFIN_RETRACTED_R2V2 = 0.2;
+    public static double BATWING_DEPLOYED_R2V2 = 0.55, BATWING_RETRACTED_R2V2 = 0.7, BATWING_STORAGE_R2V2 = 0.2;
 }

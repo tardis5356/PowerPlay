@@ -12,7 +12,7 @@ import com.arcrobotics.ftclib.command.WaitCommand;
 import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
-import org.firstinspires.ftc.teamcode.subsystems.Coffin;
+import org.firstinspires.ftc.teamcode.subsystems.BatWing;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
@@ -23,26 +23,33 @@ public class R2V2_DeliverPreloadCloseWaypointAutoCommand extends SequentialComma
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    public R2V2_DeliverPreloadCloseWaypointAutoCommand(SampleMecanumDrive_R2V2 drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, Coffin coffin, int stackIndex, boolean isBlue) {
+    public R2V2_DeliverPreloadCloseWaypointAutoCommand(SampleMecanumDrive_R2V2 drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, BatWing batwing, int stackIndex, boolean isBlue) {
         this.gripper = gripper;
 
         addCommands(
+                new InstantCommand(() -> {
+                    batwing.deployed();
+                }),
                 new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StartToPreloadPoleWaypoint : R2V2_AutoTrajectories.red_StartToPreloadPole),
                 new ParallelCommandGroup(
                         new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_PreloadPoleWaypointToPreloadPole : R2V2_AutoTrajectories.red_StartToPreloadPole),
-                                new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_HIGH_JUNCTION_R2V2, 0, "delivery")
+                                new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_HIGH_JUNCTION_R2V2, 0, "delivery")
 
                 ),
                 new WaitCommand(250),
                 new InstantCommand(gripper::open),
+                new WaitCommand(250),
+                new InstantCommand(() -> {
+                    batwing.retract();
+                }),
                 new ParallelCommandGroup(
                         new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_PreloadPoleToStackCloseWaypoint : R2V2_AutoTrajectories.red_PreloadPoleToStackCloseWaypoint),
                         new SequentialCommandGroup(
                                 new WaitCommand(200),
-                                new InstantCommand(() -> {
-                                    coffin.extend();
-                                }),
-                                new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_INTAKE_R2V2, 4, "intake")
+//                                new InstantCommand(() -> {
+//                                    batwing.extend();
+//                                }),
+                                new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_R2V2, 4, "intake")
                         )
                         //new InstantCommand(gripper::open)
                 )
