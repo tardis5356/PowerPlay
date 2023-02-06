@@ -32,7 +32,7 @@ public class BotPositions {
 
     public static int[] STACK_POSITIONS_R2V2 = {10, 80, 110, 130, 160};//0 = bottom cone, 4 = top cone
 
-    public static double LIFT_p_R2V2 = 0.05, LIFT_i_R2V2 = 0, LIFT_d_R2V2 = 0;
+    public static double LIFT_p_R2V2 = 0.05, LIFT_i_R2V2 = 0, LIFT_d_R2V2 = 0.001;
 
     public static double ARM_INIT_R2V2 = 0.55, ARM_INTAKE_R2V2 = 0.64, ARM_DELIVERY_R2V2 = 0.39, ARM_TRAVEL_R2V2 = 0.53;
 

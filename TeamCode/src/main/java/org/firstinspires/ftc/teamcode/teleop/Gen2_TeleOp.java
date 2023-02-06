@@ -215,6 +215,9 @@ public class Gen2_TeleOp extends CommandOpMode {
                     // gripper.closeCV();
                     gripper.open();
 //                    }
+                })
+                .whenInactive(() ->{
+                    batwing.retract();
                 });
 
 

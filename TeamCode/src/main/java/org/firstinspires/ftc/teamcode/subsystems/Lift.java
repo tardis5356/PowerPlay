@@ -18,7 +18,7 @@ public class Lift extends SubsystemBase {
     private DcMotorEx mL_Barney, mL_R2V2, mL2_R2V2;
 
     private TouchSensor liftBase;
-//TODO: fix these variables, not being called
+    //TODO: fix these variables, not being called
     public static double pE_Barney = BotPositions.LIFT_pE_Barney, pR_Barney = BotPositions.LIFT_pR_Barney, i_Barney = BotPositions.LIFT_i_Barney, d_Barney = BotPositions.LIFT_d_Barney;
     public static double pE_R2V2 = BotPositions.LIFT_p_R2V2, i_R2V2 = BotPositions.LIFT_i_R2V2, d_R2V2 = BotPositions.LIFT_d_R2V2;
 
@@ -77,8 +77,8 @@ public class Lift extends SubsystemBase {
     public void periodic() {
         if (isBarney) liftPID_Barney();
         if (!isBarney) {
-          // liftBangBang_R2V2();
-            if(liftOffset == 0 || liftOffset == 1) setLiftOffset();
+            // liftBangBang_R2V2();
+            if (liftOffset == 0 || liftOffset == 1) setLiftOffset();
             liftPID_R2V2();
             //if absolute value of position is greater than tolerance, reset position at base
             if (liftBase.isPressed() && Math.abs(mL_R2V2.getCurrentPosition()) > tolerance) {
@@ -90,8 +90,14 @@ public class Lift extends SubsystemBase {
     }
 
     public void updatePIDValues() {
-//        if (retract) controller.setP(pR_Barney);
-//        else controller.setP(pE_Barney);
+        if (isBarney) {
+            if (retract) controller.setP(pR_Barney);
+            else controller.setP(pE_Barney);
+        } else {
+//            if (retract) controller.setP(pE_R2V2);
+//            else controller.setP(pE_R2V2);
+            controller.setP(pE_R2V2);
+        }
     }
 
     public void setTargetPosition(int targetPos) {
@@ -103,15 +109,15 @@ public class Lift extends SubsystemBase {
         manualActive = false;
     }
 
-    public void setTolerance(int targetTolerance){
+    public void setTolerance(int targetTolerance) {
         tolerance = targetTolerance;
     }
 
-    public void setLiftOffset(){
-        if(mL_R2V2.getCurrentPosition() > 300 && liftOffset == 0){ // if lift is extended and no offset has been set already
+    public void setLiftOffset() {
+        if (mL_R2V2.getCurrentPosition() > 300 && liftOffset == 0) { // if lift is extended and no offset has been set already
             liftOffset = 1;
         }
-        if(liftOffset == 1 && liftBase.isPressed()){ // once lift has extended once and limit is reached, get offset
+        if (liftOffset == 1 && liftBase.isPressed()) { // once lift has extended once and limit is reached, get offset
             liftOffset = mL_R2V2.getCurrentPosition();
         }
     }
@@ -123,15 +129,16 @@ public class Lift extends SubsystemBase {
             else stickValue = stick * 1;
         } else {
             stickValue = stick * 1;
-            if(stickValue2 < 0) stickValue2 = stick2 * 0.2;
+            if (stickValue2 < 0) stickValue2 = stick2 * 0.2;
             else stickValue2 = stick2 * 0.4;
         }
     }
 
-    public boolean getLiftBase(){
+    public boolean getLiftBase() {
         return liftBase.isPressed();
     }
-    public int getLiftBaseResets(){
+
+    public int getLiftBaseResets() {
         return resets;
     }
 
@@ -141,7 +148,7 @@ public class Lift extends SubsystemBase {
         double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f_Barney;
 
 //        if (!manualActive) {
-            power = pid + ff + stickValue;
+        power = pid + ff + stickValue;
 //
 //            if (Math.abs(stickValue) > 0.05) {
 //                manualActive = true;
@@ -166,7 +173,7 @@ public class Lift extends SubsystemBase {
         ff_R2V2 = ff; // - (liftPos / 7000);
 
         if (!manualActive) {
-            if(liftTarget != 10){
+            if (liftTarget != 10) {
                 if (Math.abs(liftTarget - liftPos) > tolerance) {
                     if (liftPos < liftTarget) {
                         power = 1;//1
@@ -182,13 +189,13 @@ public class Lift extends SubsystemBase {
                 }
             }
 
-            if(liftTarget == 10 && liftBase.isPressed()){
-                if(liftBase.isPressed()) {
+            if (liftTarget == 10 && liftBase.isPressed()) {
+                if (liftBase.isPressed()) {
                     mL_R2V2.setPower(0);
                     mL2_R2V2.setPower(0);
                 }
             }
-            if(liftTarget == 10 && !liftBase.isPressed()){
+            if (liftTarget == 10 && !liftBase.isPressed()) {
                 if (Math.abs(liftTarget - liftPos) > tolerance) {
                     if (liftPos < liftTarget) {
                         power = 1;//1
@@ -204,7 +211,7 @@ public class Lift extends SubsystemBase {
                 }
             }
 
-            if (Math.abs(stickValue+stickValue2) > 0.05) {
+            if (Math.abs(stickValue + stickValue2) > 0.05) {
                 manualActive = true;
             }
         }
@@ -227,10 +234,35 @@ public class Lift extends SubsystemBase {
         if (!manualActive) {
             power = pid + ff;
 
+            if (liftTarget != 10) {
+                if (Math.abs(liftTarget - liftPos) > tolerance) {
+                    mL_R2V2.setPower(power);
+                    mL2_R2V2.setPower(power);
+                } else {
+                    mL_R2V2.setPower(ff);
+                    mL2_R2V2.setPower(ff);
+                }
+            }
+
+            if (liftTarget == 10 && liftBase.isPressed()) {
+                if (liftBase.isPressed()) {
+                    mL_R2V2.setPower(0);
+                    mL2_R2V2.setPower(0);
+                }
+            }
+            if (liftTarget == 10 && !liftBase.isPressed()) {
+                if (Math.abs(liftTarget - liftPos) > tolerance) {
+                    mL_R2V2.setPower(power);
+                    mL2_R2V2.setPower(power);
+                } else {
+                    mL_R2V2.setPower(ff);
+                    mL2_R2V2.setPower(ff);
+                }
+            }
             mL_R2V2.setPower(power);
             mL2_R2V2.setPower(power);
 
-            if (Math.abs(stickValue+stickValue2) > 0.05) {
+            if (Math.abs(stickValue + stickValue2) > 0.05) {
                 manualActive = true;
             }
         }

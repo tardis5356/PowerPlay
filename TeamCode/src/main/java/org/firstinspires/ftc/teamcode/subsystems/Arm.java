@@ -42,35 +42,35 @@ public class Arm extends SubsystemBase {
     }
 
     public void increasePosition() {
-        servoPosition += 0.005;
-        servoPosition = (Range.clip(servoPosition, 0, 1));
-        servo.setPosition(servoPosition);
+//        servoPosition += 0.005;
+//        servoPosition = (Range.clip(servoPosition, 0, 1));
+//        servo.setPosition(servoPosition);
     }
 
     public void decreasePosition() {
-        servoPosition -= 0.005;
-        servoPosition = (Range.clip(servoPosition, 0, 1));
-        servo.setPosition(servoPosition);
+//        servoPosition -= 0.005;
+//        servoPosition = (Range.clip(servoPosition, 0, 1));
+//        servo.setPosition(servoPosition);
     }
 
     public void toInitPosition() {
-        servoPosition = isBarney ? ARM_INIT_Barney : ARM_INIT_R2V2;
-        servo.setPosition(isBarney ? ARM_INIT_Barney : ARM_INIT_R2V2);
+//        servoPosition = isBarney ? ARM_INIT_Barney : ARM_INIT_R2V2;
+//        servo.setPosition(isBarney ? ARM_INIT_Barney : ARM_INIT_R2V2);
     }
 
     public void toIntakePosition() {
-        servoPosition = isBarney ? ARM_INTAKE_Barney : ARM_INTAKE_R2V2;
-        servo.setPosition(isBarney ? ARM_INTAKE_Barney : ARM_INTAKE_R2V2);
+//        servoPosition = isBarney ? ARM_INTAKE_Barney : ARM_INTAKE_R2V2;
+//        servo.setPosition(isBarney ? ARM_INTAKE_Barney : ARM_INTAKE_R2V2);
     }
 
     public void toDeliverPosition() {
-        servoPosition = isBarney ? ARM_DELIVERY_Barney : ARM_DELIVERY_R2V2;
-        servo.setPosition(isBarney ? ARM_DELIVERY_Barney : ARM_DELIVERY_R2V2);
+//        servoPosition = isBarney ? ARM_DELIVERY_Barney : ARM_DELIVERY_R2V2;
+//        servo.setPosition(isBarney ? ARM_DELIVERY_Barney : ARM_DELIVERY_R2V2);
     }
 
     public void toTravelPosition() {
-        servoPosition = isBarney ? ARM_TRAVEL_Barney : ARM_TRAVEL_R2V2;
-        servo.setPosition(isBarney ? ARM_TRAVEL_Barney : ARM_TRAVEL_R2V2);
+//        servoPosition = isBarney ? ARM_TRAVEL_Barney : ARM_TRAVEL_R2V2;
+//        servo.setPosition(isBarney ? ARM_TRAVEL_Barney : ARM_TRAVEL_R2V2);
     }
 
     public double getArmPosition() {
