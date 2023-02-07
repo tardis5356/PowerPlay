@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.commands.auto.R2V2;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_INTAKE_AUTO_R2V2;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -34,14 +35,22 @@ public class R2V2_GrabFromStackCloseWaypointCommand extends SequentialCommandGro
 //                new ParallelCommandGroup(
                 new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StackCloseWaypointToStack : R2V2_AutoTrajectories.red_StackCloseWaypointToStack), //TODO: speed up
                 // new WaitCommand(500),
-                new InstantCommand(() -> {
-//                            if (gripper.hasCone()) {
-                    gripper.close();
-//                            }
-                }),
+
+
+////                            });
+////
+//                }),
 //                ),
 
 //                new WaitCommand(250),
+//                        ),
+                new InstantCommand(() ->
+                {
+//                            if (gripper.hasCone()) {
+                    gripper.close();
+
+//                            }
+                }),
                 new ParallelCommandGroup(
                         new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StackToStackWaypoint : R2V2_AutoTrajectories.red_StackToStackWaypoint),
                         new SequentialCommandGroup(

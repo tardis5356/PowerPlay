@@ -96,7 +96,7 @@ public class Lift extends SubsystemBase {
         } else {
 //            if (retract) controller.setP(pE_R2V2);
 //            else controller.setP(pE_R2V2);
-            controller.setP(pE_R2V2);
+            controller.setPID(pE_R2V2, i_R2V2, d_R2V2);
         }
     }
 
@@ -259,8 +259,6 @@ public class Lift extends SubsystemBase {
                     mL2_R2V2.setPower(ff);
                 }
             }
-            mL_R2V2.setPower(power);
-            mL2_R2V2.setPower(power);
 
             if (Math.abs(stickValue + stickValue2) > 0.05) {
                 manualActive = true;
