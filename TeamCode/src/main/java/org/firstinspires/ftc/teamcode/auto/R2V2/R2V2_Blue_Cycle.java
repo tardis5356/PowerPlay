@@ -150,17 +150,17 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
 ////////////////////////////DEFINING PARK TRAJECTORIES//////////////////////////////
         parkTrajectory1 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StackFarWaypointPos)
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-12, 13, Math.toRadians(270)))
+                .lineToLinearHeading(new Pose2d(-12, 15, Math.toRadians(270)))
                 .build();
 
         parkTrajectory2 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StackFarWaypointPos)
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-36, 13, Math.toRadians(270)))
+                .lineToLinearHeading(new Pose2d(-36, 15, Math.toRadians(270)))
                 .build();
 
         parkTrajectory3 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StackFarWaypointPos)
                 .setReversed(true)
-                .lineToLinearHeading(new Pose2d(-58, 13, Math.toRadians(270)))
+                .lineToLinearHeading(new Pose2d(-58, 15, Math.toRadians(270)))
                 .build();
         ////////////////////////////////////DONE DEFINING PARK TRAJECTORIES///////////////////////////////////////
 

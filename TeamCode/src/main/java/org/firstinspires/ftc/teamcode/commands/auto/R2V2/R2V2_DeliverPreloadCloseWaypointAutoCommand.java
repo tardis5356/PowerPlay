@@ -36,22 +36,16 @@ public class R2V2_DeliverPreloadCloseWaypointAutoCommand extends SequentialComma
                                 new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_HIGH_JUNCTION_R2V2, 0, "delivery")
 
                 ),
-                new WaitCommand(150),
                 new InstantCommand(gripper::open),
-                new WaitCommand(250),
-                new InstantCommand(() -> {
-                    batwing.retract();
-                }),
                 new ParallelCommandGroup(
                         new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_PreloadPoleToStackCloseWaypoint : R2V2_AutoTrajectories.red_PreloadPoleToStackCloseWaypoint),
                         new SequentialCommandGroup(
-                                new WaitCommand(200),
-//                                new InstantCommand(() -> {
-//                                    batwing.extend();
-//                                }),
+                                new WaitCommand(1000),
+                                new InstantCommand(() -> {
+                                    batwing.retract();
+                                }),
                                 new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_R2V2, 4, "intake")
                         )
-                        //new InstantCommand(gripper::open)
                 )
         );
     }

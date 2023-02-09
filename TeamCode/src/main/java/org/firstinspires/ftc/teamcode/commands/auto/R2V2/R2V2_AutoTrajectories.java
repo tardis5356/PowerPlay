@@ -24,7 +24,7 @@ public class R2V2_AutoTrajectories {
     public static final Pose2d blue_MedPolePos = new Pose2d(-29, 22, Math.toRadians(212));
     public static final Pose2d blue_StackFarWaypointPos = new Pose2d(-38, 11, Math.toRadians(180));
     public static final Pose2d blue_StackCloseWaypointPos = new Pose2d(-50, 12, Math.toRadians(180));
-    public static final Pose2d blue_StackPos = new Pose2d(-59, 12, Math.toRadians(180));//-63
+    public static final Pose2d blue_StackPos = new Pose2d(-58, 12, Math.toRadians(180));//-63
 
     //red auto positions
 //    public static final Pose2d red_StartPos = new Pose2d(41, 64, Math.toRadians(90));

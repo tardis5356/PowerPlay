@@ -30,12 +30,12 @@ public class R2V2_CycleToMediumPoleAutoCommand extends SequentialCommandGroup {
                         new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StackWaypointToMedPole : R2V2_AutoTrajectories.red_StackCloseWaypointToMedPole),  //TODO: spline is slightly wrong
                         new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_MEDIUM_JUNCTION_R2V2, 0, "delivery")
                 ),
-                new WaitCommand(150),
-                new InstantCommand(gripper::open),
-                new WaitCommand(250),
-                new InstantCommand((() -> {
-                    batwing.retract();
-                }))
+//                new WaitCommand(150),
+                new InstantCommand(gripper::open)//,
+//                new WaitCommand(250),
+//                new InstantCommand((() -> {
+//                    batwing.retract();
+//                }))
 
 
         );

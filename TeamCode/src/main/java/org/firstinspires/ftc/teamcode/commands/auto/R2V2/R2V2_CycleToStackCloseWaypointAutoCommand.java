@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.commands.auto.R2V2;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
@@ -26,10 +27,13 @@ public class R2V2_CycleToStackCloseWaypointAutoCommand extends ParallelCommandGr
         addCommands(
                 new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_MedPoleToStackWaypoint : R2V2_AutoTrajectories.red_MedPoleToStackWaypoint), //TODO: speed up a lot
                 new SequentialCommandGroup(
-                    new WaitCommand(500),
-                   // new LiftToPositionCommand(lift, 50, 25))
+                        new WaitCommand(500),
+                        new InstantCommand((() -> {
+                            batwing.retract();
+                        })),
+                        // new LiftToPositionCommand(lift, 50, 25))
                         new RobotToStateCommand(lift, arm, wrist, gripper, batwing, BotPositions.LIFT_INTAKE_R2V2, stackIndex, "travel")
-            ));
+                ));
 
     }
 

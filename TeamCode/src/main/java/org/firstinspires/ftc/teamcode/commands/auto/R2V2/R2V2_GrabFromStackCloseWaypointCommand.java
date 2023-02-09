@@ -27,24 +27,9 @@ public class R2V2_GrabFromStackCloseWaypointCommand extends SequentialCommandGro
         this.gripper = gripper;
 
         addCommands(
-//                new InstantCommand(() -> {
-//                    batwing.extend();
-//                }),
                 new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_AUTO_R2V2, stackIndex, "intake"),
                 new InstantCommand(gripper::open),
-//                new WaitCommand(250),
-//                new ParallelCommandGroup(
                 new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StackCloseWaypointToStack : R2V2_AutoTrajectories.red_StackCloseWaypointToStack), //TODO: speed up
-                // new WaitCommand(500),
-
-
-////                            });
-////
-//                }),
-//                ),
-
-//                new WaitCommand(250),
-//                        ),
                 new InstantCommand(() ->
                 {
 //                            if (gripper.hasCone()) {
