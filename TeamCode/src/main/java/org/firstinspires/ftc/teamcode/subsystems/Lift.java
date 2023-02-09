@@ -70,7 +70,7 @@ public class Lift extends SubsystemBase {
             mL_R2V2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             mL_R2V2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             mL2_R2V2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            target = 10;
+            target = -10;
         }
     }
 
@@ -78,13 +78,13 @@ public class Lift extends SubsystemBase {
         if (isBarney) liftPID_Barney();
         if (!isBarney) {
             // liftBangBang_R2V2();
-            if (liftOffset == 0 || liftOffset == 1) setLiftOffset();
+//            if (liftOffset == 0 || liftOffset == 1) setLiftOffset();
             liftPID_R2V2();
             //if absolute value of position is greater than tolerance, reset position at base
             if (liftBase.isPressed() && Math.abs(mL_R2V2.getCurrentPosition()) > tolerance) {
                 mL_R2V2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 mL_R2V2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                resets++;
+//                resets++;
             }
         }
     }
@@ -101,6 +101,8 @@ public class Lift extends SubsystemBase {
     }
 
     public void setTargetPosition(int targetPos) {
+        mL_R2V2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        mL2_R2V2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         double oldTargetPos = target; // get old target before setting new target
         target = targetPos;
         if (targetPos < oldTargetPos) retract = true; // set retraction to true
@@ -163,7 +165,7 @@ public class Lift extends SubsystemBase {
 
     public void liftBangBang_R2V2() {
         int liftPos = mL_R2V2.getCurrentPosition();
-        int liftTarget = target + liftOffset;
+        int liftTarget = target; // + liftOffset;
         double pid = controller.calculate(liftPos, liftTarget);
 //        double ff = -Math.cos(Math.toRadians(target / ticks_in_degree)) * f_R2V2;
         double ff = f_R2V2;
@@ -225,40 +227,30 @@ public class Lift extends SubsystemBase {
 
     public void liftPID_R2V2() {
         int liftPos = mL_R2V2.getCurrentPosition();
-        int liftTarget = target + liftOffset;
+        int liftTarget = target; // + liftOffset;
         double pid = controller.calculate(liftPos, target);
 //        double ff = -Math.cos(Math.toRadians(target / ticks_in_degree)) * f_R2V2;
         double ff = f_R2V2;
         pid_R2V2 = pid;
 
         if (!manualActive) {
-            power = pid + ff;
 
-            if (liftTarget != 10) {
-                if (Math.abs(liftTarget - liftPos) > tolerance) {
-                    mL_R2V2.setPower(power);
-                    mL2_R2V2.setPower(power);
-                } else {
-                    mL_R2V2.setPower(ff);
-                    mL2_R2V2.setPower(ff);
-                }
-            }
+            // lowest position (no motor power) target position is -10
+            if (liftTarget != -10) power = pid + ff;
 
-            if (liftTarget == 10 && liftBase.isPressed()) {
-                if (liftBase.isPressed()) {
-                    mL_R2V2.setPower(0);
-                    mL2_R2V2.setPower(0);
-                }
-            }
-            if (liftTarget == 10 && !liftBase.isPressed()) {
-                if (Math.abs(liftTarget - liftPos) > tolerance) {
-                    mL_R2V2.setPower(power);
-                    mL2_R2V2.setPower(power);
-                } else {
-                    mL_R2V2.setPower(ff);
-                    mL2_R2V2.setPower(ff);
-                }
-            }
+            if (liftTarget == -10 && !liftBase.isPressed()) power = -0.1;
+            if (liftTarget == -10 && liftBase.isPressed()) power = 0;
+
+//            if (liftTarget == -10 && liftBase.isPressed()) {
+//                mL_R2V2.setPower(0);
+//                mL2_R2V2.setPower(0);
+//            }
+//            if (liftTarget == -10 && !liftBase.isPressed()) {
+//                mL_R2V2.setPower(power);
+//                mL2_R2V2.setPower(power);
+//            }
+            mL_R2V2.setPower(power);
+            mL2_R2V2.setPower(power);
 
             if (Math.abs(stickValue + stickValue2) > 0.05) {
                 manualActive = true;

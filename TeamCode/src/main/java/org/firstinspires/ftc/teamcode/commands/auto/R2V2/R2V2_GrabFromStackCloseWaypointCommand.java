@@ -7,6 +7,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
@@ -54,7 +55,7 @@ public class R2V2_GrabFromStackCloseWaypointCommand extends SequentialCommandGro
                 new ParallelCommandGroup(
                         new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StackToStackWaypoint : R2V2_AutoTrajectories.red_StackToStackWaypoint),
                         new SequentialCommandGroup(
-//                                new WaitCommand(700),
+                                new WaitCommand(100),
                                 new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_AUTO_R2V2, 0, "travel"))
 
                 )

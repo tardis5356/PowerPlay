@@ -36,7 +36,7 @@ public class R2V2_DeliverPreloadCloseWaypointAutoCommand extends SequentialComma
                                 new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_HIGH_JUNCTION_R2V2, 0, "delivery")
 
                 ),
-                new WaitCommand(250),
+                new WaitCommand(150),
                 new InstantCommand(gripper::open),
                 new WaitCommand(250),
                 new InstantCommand(() -> {

@@ -178,7 +178,11 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 2, true),
                 cycleToMediumPoleAutoCommand,
-                new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 1, true)
+                new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 1, true),
+
+                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 1, true),
+                cycleToMediumPoleAutoCommand,
+                new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 0, true)
 
 //                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 2, true),
 //                cycleToMediumPoleAutoCommand,
@@ -250,7 +254,7 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
             telemetry.addData("lift target", lift.getLiftTargetPosition());
             telemetry.addData("lift power", lift.getLiftPower());
 
-            if (runtime.seconds() > 27.5) {
+            if (runtime.seconds() > 28) {
                 if (!parking) {
                     CommandScheduler.getInstance().cancelAll();
                     switch (tagOfInterest.id) {
