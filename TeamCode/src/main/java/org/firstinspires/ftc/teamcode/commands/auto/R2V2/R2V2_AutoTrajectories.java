@@ -24,7 +24,7 @@ public class R2V2_AutoTrajectories {
     public static final Pose2d blue_MedPolePos = new Pose2d(-29, 22, Math.toRadians(212));
     public static final Pose2d blue_StackFarWaypointPos = new Pose2d(-38, 11, Math.toRadians(180));
     public static final Pose2d blue_StackCloseWaypointPos = new Pose2d(-50, 12, Math.toRadians(180));
-    public static final Pose2d blue_StackPos = new Pose2d(-58, 12, Math.toRadians(180));//-63
+    public static final Pose2d blue_StackPos = new Pose2d(-58.5, 12, Math.toRadians(180));//-63
 
     //red auto positions
 //    public static final Pose2d red_StartPos = new Pose2d(41, 64, Math.toRadians(90));
@@ -39,7 +39,7 @@ public class R2V2_AutoTrajectories {
 //    public static final Pose2d red_StackPos = new Pose2d(56, 14, Math.toRadians(0)); // x -58
 
     public static final Pose2d red_StartPos = new Pose2d(40.5, 64, Math.toRadians(90));
-    public static final Pose2d red_PreloadPolePos = new Pose2d(32, 2, Math.toRadians(50));
+    public static final Pose2d red_PreloadPolePos = new Pose2d(32, 2, Math.toRadians(40));
     public static final Pose2d red_MainPolePos = new Pose2d(5, 22.5, Math.toRadians(302));
     public static final Pose2d red_MedPolePos = new Pose2d(30, 16.5, Math.toRadians(332));
     public static final Pose2d red_StackFarWaypointPos = new Pose2d(38, 11, Math.toRadians(0));
@@ -58,11 +58,9 @@ public class R2V2_AutoTrajectories {
                         .setReversed(true)
                         .lineTo(new Vector2d(-31, 63), SampleMecanumDrive_R2V2.getVelocityConstraint(30, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                                 SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
-                        .splineToConstantHeading(new Vector2d(-33, 7), Math.toRadians(270), SampleMecanumDrive_R2V2.getVelocityConstraint(60, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+                        .splineToConstantHeading(new Vector2d(-33, 20), Math.toRadians(270), SampleMecanumDrive_R2V2.getVelocityConstraint(86, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                                 SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
-                        .lineTo(new Vector2d(-31, 63), SampleMecanumDrive_R2V2.getVelocityConstraint(30, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
-                                SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
-                        .splineToConstantHeading(new Vector2d(-33, 7), Math.toRadians(270), SampleMecanumDrive_R2V2.getVelocityConstraint(60, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+                        .splineToLinearHeading(blue_PreloadPolePos, Math.toRadians(340), SampleMecanumDrive_R2V2.getVelocityConstraint(50, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                                 SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
                         .setReversed(false)
                         .build();
@@ -187,16 +185,16 @@ public class R2V2_AutoTrajectories {
                         .setReversed(true)
                         .lineTo(new Vector2d(40, 63), SampleMecanumDrive_R2V2.getVelocityConstraint(30, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                                 SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
-                        .splineToConstantHeading(new Vector2d(36, 7), Math.toRadians(270), SampleMecanumDrive_R2V2.getVelocityConstraint(30, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+                        .splineToConstantHeading(new Vector2d(36, 20), Math.toRadians(270), SampleMecanumDrive_R2V2.getVelocityConstraint(86, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                                 SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
                          .setReversed(false)
                         .build();
         red_PreloadPoleWaypointToPreloadPole =
                 drive.trajectorySequenceBuilder(red_StartToPreloadPoleWaypoint.end())
                         .setReversed(true)
-                        .lineTo(new Vector2d(36, 14), SampleMecanumDrive_R2V2.getVelocityConstraint(30, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
-                                SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
-                        .splineToLinearHeading(red_PreloadPolePos, Math.toRadians(250), SampleMecanumDrive_R2V2.getVelocityConstraint(20, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+//                        .lineTo(new Vector2d(36, 14), SampleMecanumDrive_R2V2.getVelocityConstraint(30, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+//                                SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
+                        .splineToLinearHeading(red_PreloadPolePos, Math.toRadians(250), SampleMecanumDrive_R2V2.getVelocityConstraint(50, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                                 SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL)) //TODO: test 200 end tangent
                         .setReversed(false)
                         .build();
@@ -212,7 +210,7 @@ public class R2V2_AutoTrajectories {
         red_PreloadPoleToStackCloseWaypoint =
                 drive.trajectorySequenceBuilder(red_PreloadPolePos)
                         .back(-0.10)
-                        .splineToLinearHeading(red_StackCloseWaypointPos, Math.toRadians(0), SampleMecanumDrive_R2V2.getVelocityConstraint(30, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+                        .splineToLinearHeading(red_StackCloseWaypointPos, Math.toRadians(0), SampleMecanumDrive_R2V2.getVelocityConstraint(60, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                                 SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL)) //TODO: test 90 end tangent
                         .build();
 //
@@ -226,7 +224,7 @@ public class R2V2_AutoTrajectories {
         red_MedPoleToStackWaypoint =
                 drive.trajectorySequenceBuilder(red_MedPolePos)
                         .back(-0.10)
-                        .splineToSplineHeading(red_StackCloseWaypointPos, Math.toRadians(180), SampleMecanumDrive_R2V2.getVelocityConstraint(30, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+                        .splineToSplineHeading(red_StackCloseWaypointPos, Math.toRadians(180), SampleMecanumDrive_R2V2.getVelocityConstraint(60, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                                 SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
                         .build();
 
@@ -247,14 +245,14 @@ public class R2V2_AutoTrajectories {
         red_StackCloseWaypointToStack =
                 drive.trajectorySequenceBuilder(red_StackCloseWaypointPos)
                         .back(-0.10)
-                        .lineTo(red_StackPos.vec(), SampleMecanumDrive_R2V2.getVelocityConstraint(10, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+                        .lineTo(red_StackPos.vec(), SampleMecanumDrive_R2V2.getVelocityConstraint(20, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                                 SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
                         .build();
 //
         red_StackToStackWaypoint =
                 drive.trajectorySequenceBuilder(red_StackPos)
                         .back(-0.10)
-                        .lineTo(red_StackCloseWaypointPos.vec(), SampleMecanumDrive_R2V2.getVelocityConstraint(10, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+                        .lineTo(red_StackCloseWaypointPos.vec(), SampleMecanumDrive_R2V2.getVelocityConstraint(20, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                                 SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
 //                        .lineTo(blue_StackFarWaypointPos.vec())
                         .build();
@@ -276,7 +274,7 @@ public class R2V2_AutoTrajectories {
         red_StackWaypointToMedPole =
                 drive.trajectorySequenceBuilder(red_StackCloseWaypointPos)
                         .back(0.10)
-                        .splineToSplineHeading(red_MedPolePos, Math.toRadians(180), SampleMecanumDrive_R2V2.getVelocityConstraint(30, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+                        .splineToSplineHeading(red_MedPolePos, Math.toRadians(180), SampleMecanumDrive_R2V2.getVelocityConstraint(60, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                                 SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
                         .build();
     }

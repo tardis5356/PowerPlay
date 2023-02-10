@@ -273,8 +273,8 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
                             break;
                     }
                     schedule(
-                            new InstantCommand(gripper::open, gripper),
-                            new RobotToStateCommand(lift, arm, wrist, gripper, batwing, 100, 0, "travel"),
+//                            new InstantCommand(gripper::open, gripper),
+                            new RobotToStateCommand(lift, arm, wrist, gripper, batwing, 100, 0, "delivery"),
                             parkTrajectoryCommand
                     );
                     parking = true;

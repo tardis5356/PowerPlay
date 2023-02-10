@@ -170,17 +170,19 @@ public class R2V2_Red_Cycle extends LinearOpMode {
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 4, false),
                 cycleToMediumPoleAutoCommand,
-                cycleToStackCloseWaypointAutoCommand,
+                new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 3, false),
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 3, false),
                 cycleToMediumPoleAutoCommand,
-                cycleToStackCloseWaypointAutoCommand
+                new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 2, false),
 
-//                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 2, false),
-//                cycleToMediumPoleAutoCommand,
-//                cycleToStackCloseWaypointAutoCommand,
+                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 2, false),
+                cycleToMediumPoleAutoCommand,
+                new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 1, false),
 
-//                liftToPositionCommand
+                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 1, false),
+                cycleToMediumPoleAutoCommand,
+                new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 0, false)
         ));
 
 
@@ -245,7 +247,7 @@ public class R2V2_Red_Cycle extends LinearOpMode {
             }
 
 
-            if (runtime.seconds() > 27.5) {
+            if (runtime.seconds() > 28) {
                 if (!parking) {
                     CommandScheduler.getInstance().cancelAll();
                     switch (tagOfInterest.id) {
