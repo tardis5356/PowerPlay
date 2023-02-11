@@ -24,6 +24,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.commands.DropConeCommand;
 import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
@@ -45,11 +46,11 @@ public class Gen2_TeleOp extends CommandOpMode {
 
     private double offset = 0.0;
     private double CURRENT_POWER_MULTIPLIER = 1.0;
-    private double CURRENT_BASE_POWER_MULTIPLIER = 0.3;
+    public static double CURRENT_BASE_POWER_MULTIPLIER = 0.3;
     private double ANTI_TIP_WEIGHTED_POWER_MULTIPLIER = 0;
     private double ADAPTIVE_SPEED_POWER_MULTIPLIER_OFFSET = 0;
-    private double SLOW_POWER_MULTIPLIER = 0.5;
-    private double FAST_POWER_MULTIPLIER = 1.0;
+    public static double SLOW_POWER_MULTIPLIER = 0.5;
+    public double FAST_POWER_MULTIPLIER = 1.0;
     private boolean manualModeOn = false;
 
     public float roll = 0.001f, rollOffset = 0, measuredMaxRoll = 0;
@@ -65,6 +66,8 @@ public class Gen2_TeleOp extends CommandOpMode {
 
     private RobotToStateCommand liftToTravelPositionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
     private RobotToStateCommand liftToIntakeCommand;
+
+    private DropConeCommand dropConeCommand;
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -114,6 +117,8 @@ public class Gen2_TeleOp extends CommandOpMode {
         liftToMediumJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_MEDIUM_JUNCTION_R2V2, 0, "delivery");
         liftToHighJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_HIGH_JUNCTION_R2V2, 0, "delivery");
 
+        dropConeCommand = new DropConeCommand(gripper, batwing);
+
         // driver triggers
         //driver = gamepad 1
 
@@ -138,7 +143,7 @@ public class Gen2_TeleOp extends CommandOpMode {
         //manipulator = gamepad 2
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.A)) // extend to ground junction and slow drive base on A button
                 .whenActive(liftToTravelPositionCommand)
-                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER)
+                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = FAST_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
@@ -182,44 +187,20 @@ public class Gen2_TeleOp extends CommandOpMode {
                 .cancelWhenActive(liftToLowJunctionCommand)
                 .cancelWhenActive(liftToTravelPositionCommand);
 
-//        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // closes gripper on left trigger
-//                .whenActive(() -> {
-//                    if (!manualModeOn) {
-//                        gripper.open();
-//                    } else {
-////                        arm.increasePosition();
-//                    }
-//                });
-//        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5) // opens gripper on right trigger
-//                .whenActive(() -> {
-//                    if (!manualModeOn) {
-//                        gripper.close();
-//                    } else {
-////                        arm.decreasePosition();
-//                    }
-//                });
         //gripper will close if left trigger is pressed or cone is in gripper
         //if right trigger is held down, it will override and open the gripper
-        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5 || (gripper.hasCone() && manipulator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) < 0.5)) // closes gripper on left trigger
-                .whenActive(() -> {
-//                    if (!manualModeOn) {
-                    //checks color sensor before closing
-                    // gripper.closeCV();
-                    gripper.close();
-//                    }
-                });
-        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // opens gripper on right trigger
-                .whenActive(() -> {
-//                    if (!manualModeOn) {
-                    //checks color sensor to keep open
-                    // gripper.closeCV();
-                    gripper.open();
-//                    }
-                })
-                .whenInactive(() ->{
-                    batwing.retract();
-                });
+        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5) // closes gripper on left trigger
+                .whenActive(() -> gripper.close());
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.RIGHT_BUMPER) && gripper.hasCone()) // closes gripper on left bumper and hasCone
+                .whenActive(() -> gripper.close());
 
+        new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // opens gripper on right trigger
+                .whenActive(dropConeCommand);
+        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.LEFT_BUMPER) && batwing.atPole()) // opens gripper on right bumper and atPole
+                .whenActive(dropConeCommand);
+//                .whenInactive(() -> {
+//                    batwing.retract();
+//                });
 
         new Trigger(() -> driver.getButton(GamepadKeys.Button.LEFT_BUMPER)) // move beacon arm to loading position
                 .toggleWhenActive(() -> beaconArm.toLoadingPosition(), () -> beaconArm.toDeliveryPosition());
@@ -237,7 +218,7 @@ public class Gen2_TeleOp extends CommandOpMode {
 
 
         new Trigger(() -> driver.getButton(GamepadKeys.Button.LEFT_BUMPER)) // move beacon arm to loading position
-                .whenActive(() -> gripper.open());
+                .whenActive(() -> gripper.open()).whenInactive(() -> batwing.retract());
 
         new Trigger(() -> driver.getButton(GamepadKeys.Button.A))
                 .whenActive(() -> {
@@ -352,6 +333,9 @@ public class Gen2_TeleOp extends CommandOpMode {
         telemetry.addData("liftbase", lift.getLiftBase());
         telemetry.addData("liftbaseResets", lift.getLiftBaseResets());
 
+
+        telemetry.addData("pole distance", batwing.getDistance());
+        telemetry.addData("gripper distance", gripper.getDistance());
 
         telemetry.addData("arm pos", arm.getArmPosition());
         telemetry.addData("gripper pos", gripper.getGripperPosition());

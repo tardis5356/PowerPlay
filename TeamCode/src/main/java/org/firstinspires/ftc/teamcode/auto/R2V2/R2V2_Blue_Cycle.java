@@ -192,7 +192,7 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
 
         while (!isStarted() && !isStopRequested()) {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
-
+            new RobotToStateCommand(lift, arm, wrist, gripper, batwing, -10, 0, "init");
             if (currentDetections.size() != 0) {
                 boolean tagFound = false;
 
