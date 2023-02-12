@@ -11,13 +11,13 @@ import java.util.Vector;
 public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(500);
-        final Pose2d blue_StartPos = new Pose2d(-41, 64, Math.toRadians(90));
-        final Pose2d blue_PreloadPolePos = new Pose2d(-27.25, 4.5, Math.toRadians(160));
+        final Pose2d blue_StartPos = new Pose2d(-30.5, 64, Math.toRadians(90));
+        final Pose2d blue_PreloadPolePos = new Pose2d(-26, 6, Math.toRadians(140));//-35//130
         final Pose2d blue_MainPolePos = new Pose2d(-5, 22.5, Math.toRadians(212));
-        final Pose2d blue_MedPolePos = new Pose2d(-30, 20, Math.toRadians(212));
-        final Pose2d blue_StackFarWaypointPos = new Pose2d(-38, 11, Math.toRadians(180)); // x -58
-        final Pose2d blue_StackCloseWaypointPos = new Pose2d(-50, 11, Math.toRadians(180)); // x -58
-        final Pose2d blue_StackPos = new Pose2d(-58, 11, Math.toRadians(180)); // x -58
+        final Pose2d blue_MedPolePos = new Pose2d(-29, 22, Math.toRadians(212));
+        final Pose2d blue_StackFarWaypointPos = new Pose2d(-38, 11, Math.toRadians(180));
+        final Pose2d blue_StackCloseWaypointPos = new Pose2d(-50, 12, Math.toRadians(180));
+        final Pose2d blue_StackPos = new Pose2d(-59, 12, Math.toRadians(180));//-63
 
         //red auto positions
         final Pose2d red_StartPos = new Pose2d(41, 64, Math.toRadians(90));
@@ -119,20 +119,26 @@ public class MeepMeepTesting {
                                 //BLUE
                                 drive.trajectorySequenceBuilder(blue_StartPos)
                                         .setReversed(true)
-//                        .splineTo(new Vector2d(-36, 20), Math.toRadians(270))
-                                        .lineTo(new Vector2d(-36, 54))
-                                        .lineTo(new Vector2d(-36, 7))
-                                        .lineTo(new Vector2d(-36, 20))
-                                        .splineToLinearHeading(blue_PreloadPolePos, Math.toRadians(340))
+                                        .lineTo(new Vector2d(-31, 63))
+//                                        .splineToConstantHeading(new Vector2d(-33, 20), Math.toRadians(270))
+//                                        .splineToLinearHeading(blue_PreloadPolePos, Math.toRadians(340))
+                                        .splineToLinearHeading(blue_PreloadPolePos, Math.toRadians(300))
                                         .setReversed(false)
-                                        .back(-0.10)
-                                        .splineToLinearHeading(blue_StackCloseWaypointPos, Math.toRadians(180))
-
-                                        //grab cone
-                                        .back(-0.10)
-                                        .lineTo(blue_StackPos.vec())
-                                        .back(-0.10)
-                                        .lineTo(blue_StackCloseWaypointPos.vec())
+//                                        .setReversed(true)
+////                        .splineTo(new Vector2d(-36, 20), Math.toRadians(270))
+//                                        .lineTo(new Vector2d(-36, 54))
+//                                        .lineTo(new Vector2d(-36, 7))
+//                                        .lineTo(new Vector2d(-36, 20))
+//                                        .splineToLinearHeading(blue_PreloadPolePos, Math.toRadians(340))
+//                                        .setReversed(false)
+//                                        .back(-0.10)
+//                                        .splineToLinearHeading(blue_StackCloseWaypointPos, Math.toRadians(180))
+//
+//                                        //grab cone
+//                                        .back(-0.10)
+//                                        .lineTo(blue_StackPos.vec())
+//                                        .back(-0.10)
+//                                        .lineTo(blue_StackCloseWaypointPos.vec())
 //
 //                                        //score cone
 //                                        .back(0.10)

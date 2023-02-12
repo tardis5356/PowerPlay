@@ -19,12 +19,12 @@ public class R2V2_AutoTrajectories {
     */
 
     public static final Pose2d blue_StartPos = new Pose2d(-30.5, 64, Math.toRadians(90));
-    public static final Pose2d blue_PreloadPolePos = new Pose2d(-26, 6, Math.toRadians(140));//-35//130
+    public static final Pose2d blue_PreloadPolePos = new Pose2d(-25, 7, Math.toRadians(140));//-35//130
     public static final Pose2d blue_MainPolePos = new Pose2d(-5, 22.5, Math.toRadians(212));
-    public static final Pose2d blue_MedPolePos = new Pose2d(-29, 22, Math.toRadians(212));
+    public static final Pose2d blue_MedPolePos = new Pose2d(-30.5, 22, Math.toRadians(212));
     public static final Pose2d blue_StackFarWaypointPos = new Pose2d(-38, 11, Math.toRadians(180));
     public static final Pose2d blue_StackCloseWaypointPos = new Pose2d(-50, 12, Math.toRadians(180));
-    public static final Pose2d blue_StackPos = new Pose2d(-59, 12, Math.toRadians(180));//-63
+    public static final Pose2d blue_StackPos = new Pose2d(-59.5, 12, Math.toRadians(180));//-63
 
     //red auto positions
 //    public static final Pose2d red_StartPos = new Pose2d(41, 64, Math.toRadians(90));
@@ -46,9 +46,11 @@ public class R2V2_AutoTrajectories {
     public static final Pose2d red_StackCloseWaypointPos = new Pose2d(50, 9, Math.toRadians(0));
     public static final Pose2d red_StackPos = new Pose2d(62.5, 9, Math.toRadians(0));
 
-    public static TrajectorySequence blue_StartToPreloadPole, blue_StartToPreloadPoleWaypoint, blue_PreloadPoleWaypointToPreloadPole, blue_PreloadPoleToStackWaypoint, blue_PreloadPoleToStackCloseWaypoint, blue_MainPoleToStackWaypoint, blue_MedPoleToStackWaypoint, blue_StackWaypointToStack, blue_StackCloseWaypointToStack, blue_StackToStackWaypoint, blue_StackWaypointToMainPole,  blue_StackWaypointToMedPole,
+    public static TrajectorySequence blue_StartToPreloadPoleWaypoint, blue_PreloadPoleWaypointToPreloadPole, blue_PreloadPoleToStackWaypoint,  blue_PreloadPoleToStackCloseWaypoint, blue_MainPoleToStackWaypoint, blue_MedPoleToStackWaypoint, blue_StackWaypointToStack, blue_StackCloseWaypointToStack, blue_StackToStackWaypoint, blue_StackWaypointToMainPole,  blue_StackWaypointToMedPole,
     red_StartToPreloadPole, red_PreloadPoleToStackWaypoint, red_MainPoleToStackWaypoint, red_StackWaypointToStack, red_StackToStackWaypoint, red_StackWaypointToMainPole, red_MedPoleToStackWaypoint, red_PreloadPoleToStackCloseWaypoint, red_StackCloseWaypointToStack,
     red_StackCloseWaypointToMedPole, red_StackWaypointToMedPole, red_MedPoleToStack, red_StartToPreloadPoleWaypoint, red_PreloadPoleWaypointToPreloadPole;
+
+    public static TrajectorySequence blue_StartToPreloadPole, blue_PreloadPoleToStack, blue_StackToMedPole;
 
 
     public static void generateTrajectories(SampleMecanumDrive_R2V2 drive) {
@@ -64,6 +66,21 @@ public class R2V2_AutoTrajectories {
                                 SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
                         .setReversed(false)
                         .build();
+
+//        blue_PreloadPoleToStack =
+//                drive.trajectorySequenceBuilder(blue_PreloadPolePos)
+//                        .back(-0.10)
+//                        .splineToLinearHeading(blue_StackPos, Math.toRadians(180), SampleMecanumDrive_R2V2.getVelocityConstraint(60, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+//                                SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
+//                        .build();
+
+        blue_StackToMedPole =
+                drive.trajectorySequenceBuilder(blue_StackPos)
+                        .back(0.10)
+                        .splineToSplineHeading(blue_MedPolePos, Math.toRadians(32), SampleMecanumDrive_R2V2.getVelocityConstraint(60, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+                                SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
+                        .build();
+
 
         blue_StartToPreloadPoleWaypoint =
                 drive.trajectorySequenceBuilder(blue_StartPos)

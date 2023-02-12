@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.commands.auto.R2V2;
 
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.AUTO_LIFT_HIGH_JUNCTION_R2V2;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_HIGH_JUNCTION_R2V2;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_INTAKE_R2V2;
 
@@ -27,9 +28,9 @@ public class R2V2_DeliverPreloadCloseWaypointAutoCommand extends SequentialComma
         this.gripper = gripper;
 
         addCommands(
-                new InstantCommand(() -> {
-                    batwing.deployed();
-                }),
+//                new InstantCommand(() -> {
+//                    batwing.deployed();
+//                }),
 //                new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StartToPreloadPoleWaypoint : R2V2_AutoTrajectories.red_StartToPreloadPoleWaypoint),
 //                new ParallelCommandGroup(
 //                        new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_PreloadPoleWaypointToPreloadPole : R2V2_AutoTrajectories.red_PreloadPoleWaypointToPreloadPole),
@@ -39,8 +40,9 @@ public class R2V2_DeliverPreloadCloseWaypointAutoCommand extends SequentialComma
                 new ParallelCommandGroup(
                         new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StartToPreloadPole : R2V2_AutoTrajectories.red_StartToPreloadPole),
                         new SequentialCommandGroup(
-                                new WaitCommand(2000),
-                                new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_HIGH_JUNCTION_R2V2, 0, "delivery")
+                                new InstantCommand(batwing::storage),
+                                new WaitCommand(1000),
+                                new RobotToStateCommand(lift, arm, wrist, gripper, batwing, AUTO_LIFT_HIGH_JUNCTION_R2V2, 0, "delivery")
                         )
                 ),
                 new InstantCommand(gripper::open),

@@ -58,7 +58,7 @@ public class BatWing extends SubsystemBase {
     } //this is deployed to align to a pole/junction --> parallel to the ground
     public void deployedLowJunction() {
         if (!isBarney) servo.setPosition(BATWING_DEPLOYED_LOW_JUNCTION_R2V2);
-    } //this is deployed to align to a pole/junction --> parallel to the ground
+    } //this is deployed to align to a low junction --> parallel to the ground
 
     public void retract() {
         if(!isBarney) servo.setPosition(RETRACTED_POSITION);

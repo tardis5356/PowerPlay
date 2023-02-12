@@ -24,6 +24,7 @@ import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_DeliverPreloadClos
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_FollowTrajectoryCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_GrabFromStackCloseWaypointCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_GrabFromStackCommand;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_StackToMediumPoleAutoCommand;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
@@ -88,6 +89,7 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
     private R2V2_DeliverPreloadAutoCommand deliverPreloadAutoCommand;
     private R2V2_GrabFromStackCommand grabFromStackCommand;
 
+    private R2V2_StackToMediumPoleAutoCommand stackToMediumPoleAutoCommand;
     private R2V2_CycleToMediumPoleAutoCommand cycleToMediumPoleAutoCommand;
     private R2V2_CycleToStackCloseWaypointAutoCommand cycleToStackCloseWaypointAutoCommand;
     private R2V2_DeliverPreloadCloseWaypointAutoCommand deliverPreloadCWAutoCommand;
@@ -140,6 +142,7 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
 
 
         cycleToMediumPoleAutoCommand = new R2V2_CycleToMediumPoleAutoCommand(drive, lift, arm, wrist, gripper, batwing, true);
+        stackToMediumPoleAutoCommand = new R2V2_StackToMediumPoleAutoCommand(drive, lift, arm, wrist, gripper, batwing, true);
         cycleToStackCloseWaypointAutoCommand = new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, stackIndex, true);
         deliverPreloadCWAutoCommand = new R2V2_DeliverPreloadCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, stackIndex, true);
         grabFromStackCWCommand = new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, stackIndex, true);
@@ -169,18 +172,22 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
                 deliverPreloadCWAutoCommand,
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 4, true),
+//                stackToMediumPoleAutoCommand,
                 cycleToMediumPoleAutoCommand,
                 new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 3, true),
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 3, true),
+//                stackToMediumPoleAutoCommand,
                 cycleToMediumPoleAutoCommand,
                 new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 2, true),
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 2, true),
+//                stackToMediumPoleAutoCommand,
                 cycleToMediumPoleAutoCommand,
                 new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 1, true),
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 1, true),
+//                stackToMediumPoleAutoCommand,
                 cycleToMediumPoleAutoCommand,
                 new R2V2_CycleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 0, true)
 
@@ -274,7 +281,7 @@ public class R2V2_Blue_Cycle extends LinearOpMode {
                     }
                     schedule(
 //                            new InstantCommand(gripper::open, gripper),
-                            new RobotToStateCommand(lift, arm, wrist, gripper, batwing, 100, 0, "delivery"),
+                            new RobotToStateCommand(lift, arm, wrist, gripper, batwing, 100, 0, "travel"),
                             parkTrajectoryCommand
                     );
                     parking = true;

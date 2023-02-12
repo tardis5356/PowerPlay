@@ -157,14 +157,14 @@ public class Gen2_TeleOp extends CommandOpMode {
                 .cancelWhenActive(liftToIntakeCommand);
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.Y)) // extend to medium junction and slow drive base on Y button
                 .whenActive(liftToMediumJunctionCommand)
-                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER)
+//                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
                 .cancelWhenActive(liftToTravelPositionCommand)
                 .cancelWhenActive(liftToIntakeCommand);
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.B)) // extend to high junction and slow drive base on X button
                 .whenActive(liftToHighJunctionCommand)
-                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER)
+//                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
                 .cancelWhenActive(liftToTravelPositionCommand)
@@ -217,8 +217,8 @@ public class Gen2_TeleOp extends CommandOpMode {
                 .whileActiveContinuous(() -> tapeMeasure.stop());
 
 
-        new Trigger(() -> driver.getButton(GamepadKeys.Button.LEFT_BUMPER)) // move beacon arm to loading position
-                .whenActive(() -> gripper.open()).whenInactive(() -> batwing.retract());
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.LEFT_BUMPER)) //
+                .whenActive(dropConeCommand);
 
         new Trigger(() -> driver.getButton(GamepadKeys.Button.A))
                 .whenActive(() -> {
