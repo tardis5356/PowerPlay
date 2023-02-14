@@ -66,6 +66,16 @@ public class RobotToStateCommand extends ParallelCommandGroup {
                         })
                 );
                 break;
+            case "autoEnd":
+                addCommands(
+                        new LiftToPositionCommand(lift, -5, 25),
+                        new InstantCommand(() -> {
+                            arm.toAutoEndPosition();
+                            wrist.toInitPosition();
+                            batwing.storage();
+                        })
+                );
+                break;
         }
 
     }

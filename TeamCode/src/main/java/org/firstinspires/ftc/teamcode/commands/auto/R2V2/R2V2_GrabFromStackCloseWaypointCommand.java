@@ -29,15 +29,15 @@ public class R2V2_GrabFromStackCloseWaypointCommand extends SequentialCommandGro
         addCommands(
                 new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_AUTO_R2V2, stackIndex, "intake"),
                 new InstantCommand(gripper::open),
-                new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StackCloseWaypointToStack : R2V2_AutoTrajectories.red_StackCloseWaypointToStack), //TODO: speed up
+                new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StackWaypointToStack : R2V2_AutoTrajectories.red_StackWaypointToStack), //TODO: speed up
                 new InstantCommand(() -> gripper.close()),
-//                new WaitCommand(500)
-                new ParallelCommandGroup(
-                        new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StackToStackWaypoint : R2V2_AutoTrajectories.red_StackToStackWaypoint),
-                        new SequentialCommandGroup(
-                                new WaitCommand(100),
-                                new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_AUTO_R2V2, 0, "travel"))
-                )
+                new WaitCommand(500)
+//                new ParallelCommandGroup(
+//                        new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StackToStackWaypoint : R2V2_AutoTrajectories.red_StackToStackWaypoint),
+//                        new SequentialCommandGroup(
+//                                new WaitCommand(100),
+//                                new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_AUTO_R2V2, 0, "travel"))
+//                )
         );
     }
 

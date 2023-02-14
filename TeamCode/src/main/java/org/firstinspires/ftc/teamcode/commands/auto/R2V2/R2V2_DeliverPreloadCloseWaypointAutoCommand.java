@@ -47,7 +47,7 @@ public class R2V2_DeliverPreloadCloseWaypointAutoCommand extends SequentialComma
                 ),
                 new InstantCommand(gripper::open),
                 new ParallelCommandGroup(
-                        new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_PreloadPoleToStackCloseWaypoint : R2V2_AutoTrajectories.red_PreloadPoleToStackCloseWaypoint),
+                        new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_PreloadPoleToStackWaypoint : R2V2_AutoTrajectories.red_PreloadPoleToStackWaypoint),
                         new SequentialCommandGroup(
                                 new WaitCommand(1000),
                                 new InstantCommand(() -> {

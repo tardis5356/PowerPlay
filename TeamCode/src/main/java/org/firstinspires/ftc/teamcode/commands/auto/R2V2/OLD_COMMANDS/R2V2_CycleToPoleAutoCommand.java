@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.commands.auto.R2V2;
+package org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS;
 
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_HIGH_JUNCTION_R2V2;
 
@@ -10,6 +10,8 @@ import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
 //import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_AutoTrajectories;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_FollowTrajectoryCommand;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_AUTO_END_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_AUTO_END_R2V2;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_DELIVERY_Barney;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_DELIVERY_R2V2;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_INIT_Barney;
@@ -71,6 +73,11 @@ public class Arm extends SubsystemBase {
     public void toTravelPosition() {
         servoPosition = isBarney ? ARM_TRAVEL_Barney : ARM_TRAVEL_R2V2;
         servo.setPosition(isBarney ? ARM_TRAVEL_Barney : ARM_TRAVEL_R2V2);
+    }
+
+    public void toAutoEndPosition() {
+        servoPosition = isBarney ? ARM_AUTO_END_Barney : ARM_AUTO_END_R2V2;
+        servo.setPosition(isBarney ? ARM_AUTO_END_Barney : ARM_AUTO_END_R2V2);
     }
 
     public double getArmPosition() {

@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 
 
-public class R2V2_StackToMediumPoleAutoCommand extends ParallelCommandGroup {
+public class R2V2_StackToMediumPoleAutoCommand extends SequentialCommandGroup {
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
     private Gripper gripper;
@@ -27,15 +27,16 @@ public class R2V2_StackToMediumPoleAutoCommand extends ParallelCommandGroup {
         this.gripper = gripper;
 
         addCommands(
-                new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StackToMedPole : R2V2_AutoTrajectories.red_StackToStackWaypoint),
-//                        new SequentialCommandGroup(
-////                                new WaitCommand(100),
-//                                new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_AUTO_R2V2, 0, "travel"),
-//                                new WaitCommand(500),
-                new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_MEDIUM_JUNCTION_R2V2, 0, "delivery")
-//                        )
+                new ParallelCommandGroup(
+                        new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StackToMedPole : R2V2_AutoTrajectories.red_StackToMedPole),
+                        new SequentialCommandGroup(
+                                new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_AUTO_R2V2, 0, "travel"),
+                                new WaitCommand(250),
+                                new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_MEDIUM_JUNCTION_R2V2, 0, "delivery")
+                        )
+                ),
+                new InstantCommand(gripper::open)
         );
-
     }
 
     @Override
