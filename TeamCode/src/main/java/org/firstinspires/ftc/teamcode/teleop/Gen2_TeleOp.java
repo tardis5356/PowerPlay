@@ -50,6 +50,7 @@ public class Gen2_TeleOp extends CommandOpMode {
     private double ANTI_TIP_WEIGHTED_POWER_MULTIPLIER = 0;
     private double ADAPTIVE_SPEED_POWER_MULTIPLIER_OFFSET = 0;
     public static double SLOW_POWER_MULTIPLIER = 0.5;
+    public double MEDIUM_POWER_MULTIPLIER = 0.75;
     public double FAST_POWER_MULTIPLIER = 1.0;
     private boolean manualModeOn = false;
 
@@ -123,13 +124,14 @@ public class Gen2_TeleOp extends CommandOpMode {
         //driver = gamepad 1
 
         new Trigger(() -> driver.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5)
-                .whenActive(() -> {
-                    CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER;
-                });
+                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER);
         new Trigger(() -> driver.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5)
-                .whenActive(() -> {
-                    CURRENT_BASE_POWER_MULTIPLIER = FAST_POWER_MULTIPLIER;
-                });
+                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = MEDIUM_POWER_MULTIPLIER);
+
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.RIGHT_BUMPER))
+                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = FAST_POWER_MULTIPLIER);
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.LEFT_BUMPER))
+                .whenActive(dropConeCommand);
 
         //teleOp manual mode
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_UP))
@@ -181,7 +183,7 @@ public class Gen2_TeleOp extends CommandOpMode {
 
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_DOWN)) // retract to intake and speed up drive base on DOWN button
                 .whenActive(liftToIntakeCommand)
-                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = FAST_POWER_MULTIPLIER)
+                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = MEDIUM_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
@@ -202,12 +204,12 @@ public class Gen2_TeleOp extends CommandOpMode {
 //                    batwing.retract();
 //                });
 
-        new Trigger(() -> driver.getButton(GamepadKeys.Button.LEFT_BUMPER)) // move beacon arm to loading position
-                .toggleWhenActive(() -> beaconArm.toLoadingPosition(), () -> beaconArm.toDeliveryPosition());
+//        new Trigger(() -> driver.getButton(GamepadKeys.Button.LEFT_BUMPER)) // move beacon arm to loading position
+//                .toggleWhenActive(() -> beaconArm.toLoadingPosition(), () -> beaconArm.toDeliveryPosition());
         //new Trigger(() -> driver.getButton(GamepadKeys.Button.RIGHT_BUMPER)) // move beacon arm to scoring position
         //.whenActive(() -> beaconArm.toTravelPosition());
-        new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_UP)) // move beacon arm to storage position
-                .whenActive(() -> beaconArm.toStoragePosition());
+//        new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_UP)) // move beacon arm to storage position
+//                .whenActive(() -> beaconArm.toStoragePosition());
 
         new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_LEFT))
                 .whileActiveContinuous(() -> tapeMeasure.retract());
@@ -216,9 +218,6 @@ public class Gen2_TeleOp extends CommandOpMode {
         new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_DOWN))
                 .whileActiveContinuous(() -> tapeMeasure.stop());
 
-
-        new Trigger(() -> driver.getButton(GamepadKeys.Button.LEFT_BUMPER)) //
-                .whenActive(dropConeCommand);
 
         new Trigger(() -> driver.getButton(GamepadKeys.Button.A))
                 .whenActive(() -> {
