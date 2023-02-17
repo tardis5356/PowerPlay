@@ -33,7 +33,7 @@ public class RobotToStateCommand extends ParallelCommandGroup {
                         new SequentialCommandGroup(
                                 new LiftToPositionCommand(lift, height, 25),
                                 new WaitCommand(1000),//TODO: this doesn't appear to be doing anything
-                                new InstantCommand(() -> Gen2_TeleOp.CURRENT_BASE_POWER_MULTIPLIER = Gen2_TeleOp.SLOW_POWER_MULTIPLIER )
+                                new InstantCommand(() -> Gen2_TeleOp.CURRENT_BASE_POWER_MULTIPLIER = Gen2_TeleOp.SLOW_POWER_MULTIPLIER)
                         ),
                         new InstantCommand(() -> {
                             arm.toDeliverPosition();
@@ -44,6 +44,20 @@ public class RobotToStateCommand extends ParallelCommandGroup {
                                 batwing.deployed();
                             }
                         })
+                );
+                break;
+            case "autoDelivery":
+                addCommands(
+                        new SequentialCommandGroup(
+                                new LiftToPositionCommand(lift, height, 25),
+                                new InstantCommand(() -> Gen2_TeleOp.CURRENT_BASE_POWER_MULTIPLIER = Gen2_TeleOp.SLOW_POWER_MULTIPLIER)
+                        ),
+                        new SequentialCommandGroup(
+                                new InstantCommand(arm::toDeliverPosition),
+                                new WaitCommand(250),
+                                new InstantCommand(wrist::toDeliverPosition)
+                        ),
+                        new InstantCommand(batwing::deployed)
                 );
                 break;
             case "travel":
