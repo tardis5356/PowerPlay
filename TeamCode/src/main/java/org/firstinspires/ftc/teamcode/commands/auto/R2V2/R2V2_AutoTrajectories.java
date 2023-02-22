@@ -11,14 +11,14 @@ public class R2V2_AutoTrajectories {
     public static final Pose2d blue_StartPos = new Pose2d(-30.5, 64, Math.toRadians(90));
     public static final Pose2d blue_PreloadPolePos = new Pose2d(-25, 7, Math.toRadians(140));//-35//130
     public static final Pose2d blue_MedPreloadPolePos = new Pose2d(-28, 29, Math.toRadians(140));//-35//130
-    public static final Pose2d blue_MedPolePos = new Pose2d(-32, 21, Math.toRadians(220));
+    public static final Pose2d blue_MedPolePos = new Pose2d(-30.5, 21, Math.toRadians(220)); //-30.5, 21
     public static final Pose2d blue_StackWaypointPos = new Pose2d(-50, 12, Math.toRadians(180));
-    public static final Pose2d blue_StackPos = new Pose2d(-59.5, 12, Math.toRadians(180));//-63
+    public static final Pose2d blue_StackPos = new Pose2d(-59, 12, Math.toRadians(180));//-63 //(-59.5, 12)
 
     public static final Pose2d red_StartPos = new Pose2d(40.5, 64, Math.toRadians(90));
     public static final Pose2d red_PreloadPolePos = new Pose2d(32, 4, Math.toRadians(40)); //(32, 2)
     public static final Pose2d red_MedPreloadPolePos = new Pose2d(28, 29, Math.toRadians(90)); // (30, 16.5) //332
-    public static final Pose2d red_MedPolePos = new Pose2d(32, 20, Math.toRadians(328)); // (30, 16.5) //332 //TODO: -32?
+    public static final Pose2d red_MedPolePos = new Pose2d(33, 19, Math.toRadians(328)); // (30, 16.5) //332 // (32, 20)  //TODO: -32?
     public static final Pose2d red_StackWaypointPos = new Pose2d(50, 12, Math.toRadians(0)); // (50, 9)
     public static final Pose2d red_StackPos = new Pose2d(62.5, 12, Math.toRadians(0)); // (62.5, 9)
 
@@ -81,10 +81,10 @@ public class R2V2_AutoTrajectories {
 //                        .lineTo(blue_StackFarWaypointPos.vec())
                         .build();
 
-        blue_StackWaypointToMedPole =
+        blue_StackWaypointToMedPole = //HERE
                 drive.trajectorySequenceBuilder(blue_StackWaypointPos)
                         .back(0.10)
-                        .splineToSplineHeading(blue_MedPolePos, Math.toRadians(45), SampleMecanumDrive_R2V2.getVelocityConstraint(40, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+                        .splineToSplineHeading(blue_MedPolePos, Math.toRadians(30), SampleMecanumDrive_R2V2.getVelocityConstraint(20, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                                 SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
                         .build();
 
@@ -149,7 +149,7 @@ public class R2V2_AutoTrajectories {
         red_StackToMedPole =
                 drive.trajectorySequenceBuilder(red_StackPos)
                         .back(0.10)
-                        .splineToSplineHeading(red_MedPolePos, Math.toRadians(148), SampleMecanumDrive_R2V2.getVelocityConstraint(40, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+                        .splineToSplineHeading(red_MedPolePos, Math.toRadians(148), SampleMecanumDrive_R2V2.getVelocityConstraint(35, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                                 SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
                         .build();
 
@@ -164,7 +164,7 @@ public class R2V2_AutoTrajectories {
         blue_StackToMedPole =
                 drive.trajectorySequenceBuilder(blue_StackPos)
                         .back(0.10)
-                        .splineToSplineHeading(blue_MedPolePos, Math.toRadians(32), SampleMecanumDrive_R2V2.getVelocityConstraint(40, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+                        .splineToSplineHeading(blue_MedPolePos, Math.toRadians(32), SampleMecanumDrive_R2V2.getVelocityConstraint(30, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                                 SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
                         .build();
 
