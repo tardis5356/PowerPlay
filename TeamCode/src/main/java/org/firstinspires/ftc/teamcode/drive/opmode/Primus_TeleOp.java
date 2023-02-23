@@ -64,6 +64,8 @@ public class Primus_TeleOp extends BaseClass_PP {    // LinearOpMode {
             double rightTrigger2 = gamepad2.right_trigger;
             double leftTrigger2 = gamepad2.left_trigger;
             double rightY2 = gamepad2.right_stick_y;
+            boolean aButton = gamepad2.a;
+            boolean bButton = gamepad2.b;
 
 
             //Drivetrain controls
@@ -103,7 +105,19 @@ public class Primus_TeleOp extends BaseClass_PP {    // LinearOpMode {
 //
 //            }
 //            mArm.setPower(leftY2);
-
+            if (aButton) {
+                if (mBR.getCurrentPosition() > 1020) {
+                    mArm.setPower(-1);
+                } else if (mBR.getCurrentPosition() < 980) {
+                    mArm.setPower(1);
+                } else if (mBR.getCurrentPosition() > 980 && mBR.getCurrentPosition() < 1020) {
+                    mArm.setPower(0);
+                }
+            }
+            if (bButton) {
+                mBR.setTargetPosition(1000);
+            }
+            
             if (rightTrigger2 != 0) {
                 //sL.setPosition(0.3);
                 sR.setPosition(0.3);

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.commands.auto.R2V2;
 
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.AUTO_LIFT_HIGH_JUNCTION_R2V2;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_INTAKE_R2V2;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_MEDIUM_JUNCTION_R2V2;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.arcrobotics.ftclib.command.InstantCommand;
@@ -41,10 +42,11 @@ public class R2V2_DeliverMediumPreloadAutoCommand extends SequentialCommandGroup
                         new SequentialCommandGroup(
                                 new InstantCommand(batwing::storage),
                                 new WaitCommand(1000),
-                                new RobotToStateCommand(lift, arm, wrist, gripper, batwing, AUTO_LIFT_HIGH_JUNCTION_R2V2, 0, "delivery")
+                                new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_MEDIUM_JUNCTION_R2V2, 0, "delivery")
                         )
                 ),
                 new InstantCommand(gripper::open),
+                new WaitCommand(500),
                 new ParallelCommandGroup(
                         new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_MedPreloadPoleToStackWaypoint : R2V2_AutoTrajectories.red_MedPreloadPoleToStackWaypoint),
                         new SequentialCommandGroup(
@@ -52,7 +54,7 @@ public class R2V2_DeliverMediumPreloadAutoCommand extends SequentialCommandGroup
                                 new InstantCommand(() -> {
                                     batwing.retract();
                                 }),
-                                new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_R2V2, 4, "intake")
+                                new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_R2V2, 4, "intakeWaypoint")
                         )
                 )
         );

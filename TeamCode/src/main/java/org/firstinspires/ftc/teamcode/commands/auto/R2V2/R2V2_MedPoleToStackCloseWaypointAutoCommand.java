@@ -16,13 +16,14 @@ import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 import org.firstinspires.ftc.teamcode.subsystems.BatWing;
 import org.firstinspires.ftc.teamcode.subsystems.BotPositions;
 
-public class R2V2_CycleToStackCloseWaypointAutoCommand extends ParallelCommandGroup {
+public class R2V2_MedPoleToStackCloseWaypointAutoCommand extends ParallelCommandGroup {
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
     private Gripper gripper;
 
-    public R2V2_CycleToStackCloseWaypointAutoCommand(SampleMecanumDrive_R2V2 drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, BatWing batwing, int stackIndex, boolean isBlue) {
+    public R2V2_MedPoleToStackCloseWaypointAutoCommand(SampleMecanumDrive_R2V2 drive, Lift lift, Arm arm, Wrist wrist, Gripper gripper, BatWing batwing, int stackIndex, boolean isBlue) {
         this.gripper = gripper;
+
 
         addCommands(
                 new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_MedPoleToStackWaypoint : R2V2_AutoTrajectories.red_MedPoleToStackWaypoint), //TODO: speed up a lot

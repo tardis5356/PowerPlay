@@ -6,6 +6,7 @@ import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_INTAKE_
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_INTAKE_R2V2;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_TRAVEL_Barney;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_TRAVEL_R2V2;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_AUTO_INTAKE_WAYPOINT_R2V2;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_DELIVERY_Barney;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_DELIVERY_R2V2;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_INIT_Barney;
@@ -60,6 +61,11 @@ public class Wrist extends SubsystemBase {
     public void toIntakePosition() {
         servo.setPosition(isBarney ? WRIST_INTAKE_Barney : WRIST_INTAKE_R2V2);
         servoPositionWrist = isBarney ? WRIST_INTAKE_Barney : WRIST_INTAKE_R2V2;
+    }
+
+    public void toIntakeWaypointPosition() {
+        servo.setPosition(isBarney ? WRIST_INTAKE_Barney : WRIST_AUTO_INTAKE_WAYPOINT_R2V2);
+        servoPositionWrist = isBarney ? WRIST_INTAKE_Barney : WRIST_AUTO_INTAKE_WAYPOINT_R2V2;
     }
 
     public void toDeliverPosition() {

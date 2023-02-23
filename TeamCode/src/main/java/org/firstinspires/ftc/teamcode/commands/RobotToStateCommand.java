@@ -28,6 +28,33 @@ public class RobotToStateCommand extends ParallelCommandGroup {
                         })
                 );
                 break;
+            case "intakeAuto":
+                addCommands(
+                        new SequentialCommandGroup(
+                                new ParallelCommandGroup(
+                                        new LiftToPositionCommand(lift, STACK_POSITIONS_R2V2[stackIndex], 11),
+                                        new InstantCommand(() -> {
+                                            arm.toIntakePosition();
+                                            batwing.storage();
+                                        })
+                                ),
+                                new WaitCommand(50),
+                                new InstantCommand(wrist::toIntakePosition)
+                        )
+                );
+                break;
+            case "intakeWaypoint":
+                addCommands(
+                        new ParallelCommandGroup(
+                                new LiftToPositionCommand(lift, STACK_POSITIONS_R2V2[stackIndex], 11),
+                                new InstantCommand(() -> {
+                                    arm.toIntakeWaypointPosition();
+                                    wrist.toIntakeWaypointPosition();
+//                                    batwing.retract();
+                                })
+                        )
+                );
+                break;
             case "delivery":
                 addCommands(
                         new SequentialCommandGroup(
