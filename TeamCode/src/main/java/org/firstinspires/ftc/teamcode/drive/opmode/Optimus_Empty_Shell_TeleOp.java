@@ -32,31 +32,35 @@ public class Optimus_Empty_Shell_TeleOp extends BaseClass_PP {
 //////////////////////GAMEPAD VARIABLES//////////////////////////////
 
     //ex. double leftY1 = gamepad1.left_stick_y
-
-
-double leftY1 = gamepad1.left_stick_y;
-
-
-double rightY1 = gamepad1.right_stick_y;
-
-double leftY2 = gamepad2.left_stick_y;
-
+float rightTrigger1 = gamepad1.right_trigger;
+float leftTrigger1 = gamepad1.left_trigger;
 float rightTrigger2 = gamepad2.right_trigger;
-/////////////////////////DRIVE FUNCTIONS///////////////////////////////////
+float leftTrigger2 = gamepad2.left_trigger;  /////////////////////////DRIVE FUNCTIONS///////////////////////////////////
+ boolean CardieB = gamepad1.a;
 
-mR.setPower(leftY1);
-mL.setPower(rightY1);
-mA.setPower(leftY2);
+
+
 //////////////////////IF STATEMENTS////////////////////////////////////////
+
             //if(i eat an orange || i go outside) {
             // i am healthy;
             //}else{
             //i won't have enough vitamins; }
-if(rightTrigger2 != 0){
-    sG.setPosition(1);
-}else{
-    sG.setPosition(0);
-}
+            if (rightTrigger1 > 0) {
+                mL.setPower(1);
+            } else if (leftTrigger1>0) {
+                              mL.setPower(-1);
+            }         else{
+                mL.setPower(0);
+            }
+
+                if (rightTrigger2 > 0) {
+                    mR.setPower(1);
+                } else if (leftTrigger2>0) {
+                                  mR.setPower(-1);
+                }         else{
+                    mR.setPower(0);
+                }
 
 
             // Show the elapsed game time and wheel power.

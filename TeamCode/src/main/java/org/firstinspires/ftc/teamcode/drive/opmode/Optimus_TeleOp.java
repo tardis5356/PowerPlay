@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 
-@Disabled
+//@Disabled
 @TeleOp(name = "Optimus_TeleOp", group = "Linear Opmode")
 public class Optimus_TeleOp extends BaseClass_PP {
 
