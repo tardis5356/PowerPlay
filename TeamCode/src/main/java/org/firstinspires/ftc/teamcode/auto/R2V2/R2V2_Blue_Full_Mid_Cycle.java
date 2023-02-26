@@ -247,7 +247,7 @@ public class R2V2_Blue_Full_Mid_Cycle extends LinearOpMode {
             telemetry.addData("lift pos", lift.getLiftPosition());
             telemetry.addData("lift target", lift.getLiftTargetPosition());
             telemetry.addData("lift power", lift.getLiftPower());
-
+//was 28
             if (runtime.seconds() > 28) {
                 if (!parking) {
                     CommandScheduler.getInstance().cancelAll();

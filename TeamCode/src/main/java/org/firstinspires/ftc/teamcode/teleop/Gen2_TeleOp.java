@@ -122,16 +122,31 @@ public class Gen2_TeleOp extends CommandOpMode {
 
         // driver triggers
         //driver = gamepad 1
+//
+//        new Trigger(() -> driver.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5)
+//                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER);
+//        new Trigger(() -> driver.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5)
+//                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = MEDIUM_POWER_MULTIPLIER);
+//
+//        new Trigger(() -> driver.getButton(GamepadKeys.Button.RIGHT_BUMPER))
+//                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = FAST_POWER_MULTIPLIER);
 
         new Trigger(() -> driver.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5)
-                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER);
+                .whenActive(liftToLowJunctionCommand);
         new Trigger(() -> driver.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5)
-                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = MEDIUM_POWER_MULTIPLIER);
+                .whenActive(liftToMediumJunctionCommand);
 
         new Trigger(() -> driver.getButton(GamepadKeys.Button.RIGHT_BUMPER))
-                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = FAST_POWER_MULTIPLIER);
+                .whenActive(liftToHighJunctionCommand);
         new Trigger(() -> driver.getButton(GamepadKeys.Button.LEFT_BUMPER))
                 .whenActive(dropConeCommand);
+
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.X))
+                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER);
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.Y))
+                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = MEDIUM_POWER_MULTIPLIER);
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.B))
+                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = FAST_POWER_MULTIPLIER);
 
         //teleOp manual mode
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_UP))
@@ -145,14 +160,14 @@ public class Gen2_TeleOp extends CommandOpMode {
         //manipulator = gamepad 2
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.A)) // extend to ground junction and slow drive base on A button
                 .whenActive(liftToTravelPositionCommand)
-                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = FAST_POWER_MULTIPLIER)
+//                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = FAST_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
                 .cancelWhenActive(liftToIntakeCommand);
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.X)) // extend to low junction and slow drive base on B button
                 .whenActive(liftToLowJunctionCommand)
-                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER)
+//                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToTravelPositionCommand)
@@ -183,7 +198,7 @@ public class Gen2_TeleOp extends CommandOpMode {
 
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_DOWN)) // retract to intake and speed up drive base on DOWN button
                 .whenActive(liftToIntakeCommand)
-                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = MEDIUM_POWER_MULTIPLIER)
+//                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = MEDIUM_POWER_MULTIPLIER)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)

@@ -19,6 +19,7 @@ public class BatWing extends SubsystemBase {
     private NormalizedColorSensor colorSensor;
 
     public static double DEPLOYED_POSITION = BotPositions.BATWING_DEPLOYED_R2V2, DEPLOYED_LOW_JUNCTION_POSITION = BATWING_DEPLOYED_LOW_JUNCTION_R2V2, RETRACTED_POSITION = BotPositions.BATWING_RETRACTED_R2V2, STORAGE_POSITION = BotPositions.BATWING_STORAGE_R2V2;
+    public static String state = "STORAGE";
 
     public BatWing(HardwareMap hardwareMap) {
         if (!isBarney) {
@@ -53,19 +54,31 @@ public class BatWing extends SubsystemBase {
         return 0;
     }
 
+    public String getState() {
+        if(!isBarney) return state;
+        return "";
+    }
+
+
     public void deployed() {
         if (!isBarney) servo.setPosition(DEPLOYED_POSITION);
+        state = "DEPLOYED";
     } //this is deployed to align to a pole/junction --> parallel to the ground
     public void deployedLowJunction() {
         if (!isBarney) servo.setPosition(BATWING_DEPLOYED_LOW_JUNCTION_R2V2);
+        state = "DEPLOYED";
     } //this is deployed to align to a low junction --> parallel to the ground
 
     public void retract() {
-        if(!isBarney) servo.setPosition(RETRACTED_POSITION);
+        if(!isBarney && state != "STORAGE") {
+            servo.setPosition(RETRACTED_POSITION);
+            state = "RETRACT";
+        }
     } //used after dropping a cone --> retracts DOWN
 
     public void storage() {
         if(!isBarney) servo.setPosition(STORAGE_POSITION);
+        state = "STORAGE";
     } //used while driving around --> retracts UP
 
     public double getBatWingPosition() {

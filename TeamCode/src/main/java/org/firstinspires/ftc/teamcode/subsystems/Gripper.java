@@ -49,7 +49,7 @@ public class Gripper extends SubsystemBase {
     public boolean hasCone(){
         double distance = ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM);
         boolean closed = false;
-        if (distance < 2) {
+        if (distance < 4) {
            // servo.setPosition(isBarney ? GRIPPER_CLOSED_Barney : GRIPPER_CLOSED_R2V2);
             closed = true;
         } else {

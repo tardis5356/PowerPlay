@@ -85,7 +85,8 @@ public class SampleMecanumDrive_R2V2 extends MecanumDrive {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
-                new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
+                //below is the tolerance values for this PID
+                new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5); //all 0.5 originally (except angle was 5)
 
         LynxModuleUtil.ensureMinimumFirmwareVersion(hardwareMap);
 

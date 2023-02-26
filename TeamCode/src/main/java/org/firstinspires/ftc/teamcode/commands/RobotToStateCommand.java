@@ -57,11 +57,11 @@ public class RobotToStateCommand extends ParallelCommandGroup {
                 break;
             case "delivery":
                 addCommands(
-                        new SequentialCommandGroup(
+//                        new SequentialCommandGroup(
                                 new LiftToPositionCommand(lift, height, 25),
-                                new WaitCommand(1000),//TODO: this doesn't appear to be doing anything
-                                new InstantCommand(() -> Gen2_TeleOp.CURRENT_BASE_POWER_MULTIPLIER = Gen2_TeleOp.SLOW_POWER_MULTIPLIER)
-                        ),
+//                                new WaitCommand(1000),//TODO: this doesn't appear to be doing anything
+//                                new InstantCommand(() -> Gen2_TeleOp.CURRENT_BASE_POWER_MULTIPLIER = Gen2_TeleOp.SLOW_POWER_MULTIPLIER)
+//                        ),
                         new InstantCommand(() -> {
                             arm.toDeliverPosition();
                             wrist.toDeliverPosition();
@@ -75,10 +75,10 @@ public class RobotToStateCommand extends ParallelCommandGroup {
                 break;
             case "autoDelivery":
                 addCommands(
-                        new SequentialCommandGroup(
+//                        new SequentialCommandGroup(
                                 new LiftToPositionCommand(lift, height, 25),
-                                new InstantCommand(() -> Gen2_TeleOp.CURRENT_BASE_POWER_MULTIPLIER = Gen2_TeleOp.SLOW_POWER_MULTIPLIER)
-                        ),
+//                                new InstantCommand(() -> Gen2_TeleOp.CURRENT_BASE_POWER_MULTIPLIER = Gen2_TeleOp.SLOW_POWER_MULTIPLIER)
+//                        ),
                         new SequentialCommandGroup(
                                 new InstantCommand(arm::toDeliverPosition),
                                 new WaitCommand(250),

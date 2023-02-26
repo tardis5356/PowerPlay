@@ -266,7 +266,7 @@ public class Lift extends SubsystemBase {
     public double getLiftPosition() {
         double currentPos = 0;
         if (isBarney) currentPos = mL_Barney.getCurrentPosition();
-        if (!isBarney) currentPos = mL_R2V2.getCurrentPosition();
+        if (!isBarney) currentPos = target; //mL_R2V2.getCurrentPosition();
         return currentPos;
     }
 
