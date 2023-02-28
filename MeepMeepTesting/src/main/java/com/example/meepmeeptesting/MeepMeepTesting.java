@@ -15,18 +15,17 @@ public class MeepMeepTesting {
         MeepMeep meepMeep = new MeepMeep(750);
         final Pose2d blue_StartPos = new Pose2d(-30.5, 64, Math.toRadians(90));
         final Pose2d blue_PreloadPolePos = new Pose2d(-25, 7, Math.toRadians(140));//-35//130
-        final Pose2d blue_MedPreloadPolePos = new Pose2d(-28, 29, Math.toRadians(140));//-35//130
-        final Pose2d blue_MedPolePos = new Pose2d(-30.5, 22, Math.toRadians(220));
-        final Pose2d blue_StackWaypointPos = new Pose2d(-50, 12, Math.toRadians(180));
-        final Pose2d blue_StackPos = new Pose2d(-59.5, 12, Math.toRadians(180));//-63
+        final Pose2d blue_MedPreloadPolePos = new Pose2d(-25.5, 33, Math.toRadians(140));//-35//130
+        final Pose2d blue_MedPolePos = new Pose2d(-30.5, 21, Math.toRadians(220)); //-30.5, 21
+        final Pose2d blue_StackWaypointPos = new Pose2d(-50, 13, Math.toRadians(180));
+        final Pose2d blue_StackPos = new Pose2d(-59.5, 13, Math.toRadians(180));//-63 //(-59.5, 12)
 
         final Pose2d red_StartPos = new Pose2d(40.5, 64, Math.toRadians(90));
-//        final Pose2d red_PreloadPolePos = new Pose2d(25, 7, Math.toRadians(40)); //(32, 2)
-        final Pose2d red_PreloadPolePos = new Pose2d(25, 7, Math.toRadians(90)); //(32, 2)
+        final Pose2d red_PreloadPolePos = new Pose2d(32, 4, Math.toRadians(40)); //(32, 2)
         final Pose2d red_MedPreloadPolePos = new Pose2d(28, 29, Math.toRadians(90)); // (30, 16.5) //332
-        final Pose2d red_MedPolePos = new Pose2d(30.5, 22, Math.toRadians(320)); // (30, 16.5) //332 //TODO: -32?
+        final Pose2d red_MedPolePos = new Pose2d(33, 19, Math.toRadians(328)); // (30, 16.5) //332 // (32, 20)  //TODO: -32?
         final Pose2d red_StackWaypointPos = new Pose2d(50, 12, Math.toRadians(0)); // (50, 9)
-        final Pose2d red_StackPos = new Pose2d(59.5, 12, Math.toRadians(0)); // (62.5, 9)
+        final Pose2d red_StackPos = new Pose2d(62.5, 12, Math.toRadians(0)); // (62.5, 9)
 
         RoadRunnerBotEntity blueBot = new DefaultBotBuilder(meepMeep)
 //        RoadRunnerBotEntity myBot = new customBotBuilder(meepMeep)
@@ -51,7 +50,7 @@ public class MeepMeepTesting {
 
                                 // single spline med
                                 .lineTo(new Vector2d(-33, 62))
-                                .lineTo(new Vector2d(-33, 60))
+                                .lineTo(new Vector2d(-33, 61))
                                 .splineTo(blue_MedPreloadPolePos.vec(), Math.toRadians(300))
                                 .setReversed(false)
 
@@ -60,7 +59,7 @@ public class MeepMeepTesting {
 //                                .splineToLinearHeading(blue_StackWaypointPos, Math.toRadians(180))
 
                                 // med
-                                .lineToLinearHeading(new Pose2d(-32, 20, Math.toRadians(210)))
+                                .lineToLinearHeading(new Pose2d(-40, 15, Math.toRadians(210)))
                                 .splineToSplineHeading(blue_StackWaypointPos, Math.toRadians(180))
 
 

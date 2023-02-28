@@ -15,15 +15,8 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.auto.apriltags.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.commands.LiftToPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS.R2V2_CycleToPoleAutoCommand;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS.R2V2_CycleToStackWaypointAutoCommand;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS.R2V2_DeliverPreloadAutoCommand;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS.R2V2_GrabFromStackCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_AutoTrajectories;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_CycleToMediumPoleAutoCommand;
-
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_DeliverMediumPreloadAutoCommand;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_DeliverPreloadCloseWaypointAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_FollowTrajectoryCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_GrabFromStackCloseWaypointCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_MedPoleToStackCloseWaypointAutoCommand;
@@ -44,8 +37,8 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@Autonomous(group = "drive", name = "\uD83D\uDFE6 R2V2 Blue Mid Cycle \uD83D\uDFE6")
-public class R2V2_Blue_Full_Mid_Cycle extends LinearOpMode {
+@Autonomous(group = "drive", name = "\uD83D\uDFE5 R2V2 Red Mid Cycle \uD83D\uDFE5")
+public class R2V2_Red_Full_Mid_Cycle extends LinearOpMode {
     ElapsedTime runtime = new ElapsedTime();
 
     OpenCvCamera camera;
@@ -132,35 +125,35 @@ public class R2V2_Blue_Full_Mid_Cycle extends LinearOpMode {
         R2V2_AutoTrajectories.generateTrajectories(drive);
 
         // declare commands
-        deliverMediumPreloadAutoCommand = new R2V2_DeliverMediumPreloadAutoCommand(drive, lift, arm, wrist, gripper, batwing, 0, true);
-        grabFromStackCloseWaypointCommand = new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 0, true);
-        stackToMediumPoleAutoCommand = new R2V2_StackToMediumPoleAutoCommand(drive, lift, arm, wrist, gripper, batwing, true);
-        medPoleToStackCloseWaypointAutoCommand = new R2V2_MedPoleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 0, true);
+        deliverMediumPreloadAutoCommand = new R2V2_DeliverMediumPreloadAutoCommand(drive, lift, arm, wrist, gripper, batwing, 0, false);
+        grabFromStackCloseWaypointCommand = new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 0, false);
+        stackToMediumPoleAutoCommand = new R2V2_StackToMediumPoleAutoCommand(drive, lift, arm, wrist, gripper, batwing, false);
+        medPoleToStackCloseWaypointAutoCommand = new R2V2_MedPoleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 0, false);
         liftToPositionCommand = new LiftToPositionCommand(lift, 50, 25);
 
         gripper.close();
         ////////////////////////////DEFINING PARK TRAJECTORIES//////////////////////////////
         parkTrajectory1 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StackFarWaypointPos)
                 .setReversed(true)
-                .lineTo(new Vector2d(-36, 12), SampleMecanumDrive_R2V2.getVelocityConstraint(20, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+                .lineTo(new Vector2d(36, 12), SampleMecanumDrive_R2V2.getVelocityConstraint(20, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                         SampleMecanumDrive_R2V2.getAccelerationConstraint(30))
-                .lineToLinearHeading(new Pose2d(-12, 16, Math.toRadians(270)), SampleMecanumDrive_R2V2.getVelocityConstraint(50, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+                .lineToLinearHeading(new Pose2d(12, 16, Math.toRadians(270)), SampleMecanumDrive_R2V2.getVelocityConstraint(50, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                         SampleMecanumDrive_R2V2.getAccelerationConstraint(50))
                 .build();
 
         parkTrajectory2 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StackFarWaypointPos)
                 .setReversed(true)
-                .lineTo(new Vector2d(-36, 12), SampleMecanumDrive_R2V2.getVelocityConstraint(20, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+                .lineTo(new Vector2d(36, 12), SampleMecanumDrive_R2V2.getVelocityConstraint(20, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                         SampleMecanumDrive_R2V2.getAccelerationConstraint(30))
-                .lineToLinearHeading(new Pose2d(-36, 16, Math.toRadians(270)), SampleMecanumDrive_R2V2.getVelocityConstraint(50, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+                .lineToLinearHeading(new Pose2d(36, 16, Math.toRadians(270)), SampleMecanumDrive_R2V2.getVelocityConstraint(50, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                         SampleMecanumDrive_R2V2.getAccelerationConstraint(50))
                 .build();
 
         parkTrajectory3 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StackFarWaypointPos)
                 .setReversed(true)
-                .lineTo(new Vector2d(-36, 12), SampleMecanumDrive_R2V2.getVelocityConstraint(20, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+                .lineTo(new Vector2d(36, 12), SampleMecanumDrive_R2V2.getVelocityConstraint(20, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                         SampleMecanumDrive_R2V2.getAccelerationConstraint(30))
-                .lineToLinearHeading(new Pose2d(-58, 16, Math.toRadians(270)), SampleMecanumDrive_R2V2.getVelocityConstraint(50, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+                .lineToLinearHeading(new Pose2d(58, 16, Math.toRadians(270)), SampleMecanumDrive_R2V2.getVelocityConstraint(50, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                         SampleMecanumDrive_R2V2.getAccelerationConstraint(50))
                 .build();
         ////////////////////////////////////DONE DEFINING PARK TRAJECTORIES///////////////////////////////////////
@@ -266,7 +259,6 @@ public class R2V2_Blue_Full_Mid_Cycle extends LinearOpMode {
                             parkTrajectoryCommand = new R2V2_FollowTrajectoryCommand(drive, parkTrajectory1);
                             telemetry.addLine("park traj 1");
                             break;
-                        default:
                         case 2:
                             parkTrajectoryCommand = new R2V2_FollowTrajectoryCommand(drive, parkTrajectory2);
                             telemetry.addLine("park traj 2");

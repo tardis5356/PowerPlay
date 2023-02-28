@@ -24,6 +24,8 @@ public class Gripper extends SubsystemBase {
 
     public double servoPosition = 0;
 
+    public static boolean continueAuto = true; // default true, if false (cone not in gripper after grab) abort auto and park
+
     public Gripper(HardwareMap hardwareMap) {
         servo = hardwareMap.get(Servo.class, "sG");
         colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorGripper");
@@ -58,7 +60,6 @@ public class Gripper extends SubsystemBase {
         }
         return closed;
     }
-
 
     public double getDistance(){
         if (!isBarney) return ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM);

@@ -15,6 +15,9 @@ public class TapeMeasure extends SubsystemBase {
 
     private boolean isGen1;
 
+    public static double extendPower = -1;
+    public static double retractPower = 1;
+
     public TapeMeasure(HardwareMap hardwareMap) {
          if (isBarney) {
              servo = hardwareMap.get(CRServo.class, "sTMT");
@@ -33,7 +36,7 @@ public class TapeMeasure extends SubsystemBase {
         if (isGen1) {
             servo.setPower(-1);
         } else {
-            dcMotor.setPower(-1);
+            dcMotor.setPower(extendPower);
         }
     }
 
@@ -41,8 +44,7 @@ public class TapeMeasure extends SubsystemBase {
         if (isGen1) {
             servo.setPower(1);
         } else {
-
-            dcMotor.setPower(1);
+            dcMotor.setPower(retractPower);
         }
     }
 

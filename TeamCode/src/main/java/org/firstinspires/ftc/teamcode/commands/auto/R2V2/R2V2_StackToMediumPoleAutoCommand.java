@@ -32,6 +32,9 @@ public class R2V2_StackToMediumPoleAutoCommand extends SequentialCommandGroup {
                         new SequentialCommandGroup(
 //                                new WaitCommand(200),
                                 new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_AUTO_R2V2, 0, "travel"),
+                                new InstantCommand(() -> {
+                                    if (!gripper.hasCone()) gripper.continueAuto = false;
+                                }),
                                 new WaitCommand(500),
                                 new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_MEDIUM_JUNCTION_R2V2, 0, "delivery")
                         )
