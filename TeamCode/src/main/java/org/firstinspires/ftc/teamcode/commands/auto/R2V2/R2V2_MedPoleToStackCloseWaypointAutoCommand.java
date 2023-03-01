@@ -28,11 +28,11 @@ public class R2V2_MedPoleToStackCloseWaypointAutoCommand extends ParallelCommand
         addCommands(
                 new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_MedPoleToStackWaypoint : R2V2_AutoTrajectories.red_MedPoleToStackWaypoint), //TODO: speed up a lot
                 new SequentialCommandGroup(
-                        new WaitCommand(500),
-                        new InstantCommand((() -> {
-                            batwing.retract();
-                        })),
-                        // new LiftToPositionCommand(lift, 50, 25))
+                        new InstantCommand(arm::toTravelPosition),
+                        new InstantCommand(wrist::toTravelPosition),
+//                        new WaitCommand(250),
+                        new InstantCommand(batwing::retract),
+                        new WaitCommand(400),
                         new RobotToStateCommand(lift, arm, wrist, gripper, batwing, BotPositions.LIFT_INTAKE_R2V2, stackIndex, "travel")
                 ));
 

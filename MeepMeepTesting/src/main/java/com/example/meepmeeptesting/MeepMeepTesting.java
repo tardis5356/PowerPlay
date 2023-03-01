@@ -59,7 +59,7 @@ public class MeepMeepTesting {
 //                                .splineToLinearHeading(blue_StackWaypointPos, Math.toRadians(180))
 
                                 // med
-                                .lineToLinearHeading(new Pose2d(-40, 15, Math.toRadians(210)))
+                                .lineToLinearHeading(new Pose2d(-40, 15, Math.toRadians(200)))
                                 .splineToSplineHeading(blue_StackWaypointPos, Math.toRadians(180))
 
 
@@ -114,7 +114,7 @@ public class MeepMeepTesting {
 //                                        .splineToLinearHeading(red_StackWaypointPos, Math.toRadians(0)) //TODO: test 90 end tangent
 
                                         // med
-                                        .lineToLinearHeading(new Pose2d(32, 20, Math.toRadians(330)))
+                                        .lineToLinearHeading(new Pose2d(32, 20, Math.toRadians(340)))
                                         .splineToSplineHeading(red_StackWaypointPos, Math.toRadians(0))
 
                                         .back(-0.10)

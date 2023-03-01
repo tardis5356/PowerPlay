@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.BatWing;
+import org.firstinspires.ftc.teamcode.subsystems.BotPositions;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
@@ -49,12 +50,14 @@ public class R2V2_DeliverMediumPreloadAutoCommand extends SequentialCommandGroup
                 new WaitCommand(500),
                 new ParallelCommandGroup(
                         new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_MedPreloadPoleToStackWaypoint : R2V2_AutoTrajectories.red_MedPreloadPoleToStackWaypoint),
-                        new SequentialCommandGroup(
+                        new SequentialCommandGroup(new InstantCommand(arm::toTravelPosition),
+                                new InstantCommand(wrist::toTravelPosition),
+//                        new WaitCommand(250),
+                                new InstantCommand(batwing::retract),
+                                new WaitCommand(400),
+                                new RobotToStateCommand(lift, arm, wrist, gripper, batwing, BotPositions.LIFT_INTAKE_R2V2, stackIndex, "intakeWaypoint"),
                                 new WaitCommand(250),
-                                new InstantCommand(() -> {
-                                    batwing.retract();
-                                }),
-                                new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_R2V2, 4, "intakeWaypoint")
+                                new InstantCommand(batwing::storage)
                         )
                 )
         );
