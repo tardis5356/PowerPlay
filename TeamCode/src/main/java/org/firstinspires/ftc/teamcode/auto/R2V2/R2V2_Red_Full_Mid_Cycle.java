@@ -285,7 +285,7 @@ public class R2V2_Red_Full_Mid_Cycle extends LinearOpMode {
             telemetry.addData("lift power", lift.getLiftPower());
             telemetry.addData("continueAuto", gripper.continueAuto);
 //was 28
-            if (runtime.seconds() > 26 && gripper.continueAuto || !gripper.continueAuto) {
+            if (runtime.seconds() > 28 && gripper.continueAuto || !gripper.continueAuto) {
                 if (!parking) {
                     CommandScheduler.getInstance().cancelAll();
                     if(tagOfInterest.id != 1 && tagOfInterest.id != 2 && tagOfInterest.id != 3) tagOfInterest.id = 2; //if value is read as null, set default trajectory to middle (2)

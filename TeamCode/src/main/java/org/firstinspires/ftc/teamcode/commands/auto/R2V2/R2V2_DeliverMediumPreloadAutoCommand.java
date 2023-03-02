@@ -47,7 +47,7 @@ public class R2V2_DeliverMediumPreloadAutoCommand extends SequentialCommandGroup
                         )
                 ),
                 new InstantCommand(gripper::open),
-                new WaitCommand(500),
+                new WaitCommand(200),
                 new ParallelCommandGroup(
                         new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_MedPreloadPoleToStackWaypoint : R2V2_AutoTrajectories.red_MedPreloadPoleToStackWaypoint),
                         new SequentialCommandGroup(new InstantCommand(arm::toTravelPosition),
