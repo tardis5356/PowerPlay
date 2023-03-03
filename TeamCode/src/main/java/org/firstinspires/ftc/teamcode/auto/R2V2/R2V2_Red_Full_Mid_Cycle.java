@@ -20,7 +20,9 @@ import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_AutoTrajectories;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_DeliverMediumPreloadAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_FollowTrajectoryCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_GrabFromStackCloseWaypointCommand;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_GrabFromStackCloseWaypointLastConeCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_MedPoleToStackCloseWaypointAutoCommand;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_MedPoleToStackCloseWaypointLastConeAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_StackToMediumPoleAutoCommand;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants_R2V2;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
@@ -198,6 +200,15 @@ public class R2V2_Red_Full_Mid_Cycle extends LinearOpMode {
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 2, false),
                 stackToMediumPoleAutoCommand,
+                medPoleToStackCloseWaypointAutoCommand,
+
+                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 1, false),
+                stackToMediumPoleAutoCommand,
+                new R2V2_MedPoleToStackCloseWaypointLastConeAutoCommand(drive, lift, arm, wrist, gripper, batwing, 0, false),
+
+                new R2V2_GrabFromStackCloseWaypointLastConeCommand(drive, lift, arm, wrist, gripper, batwing, 0, false),
+                stackToMediumPoleAutoCommand,
+
 
                 // release final cone
                 new InstantCommand(arm::toTravelPosition),

@@ -205,6 +205,14 @@ public class R2V2_Blue_Full_Mid_Cycle extends LinearOpMode {
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 2, true),
                 stackToMediumPoleAutoCommand,
+                medPoleToStackCloseWaypointAutoCommand,
+
+                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 1, true),
+                stackToMediumPoleAutoCommand,
+                medPoleToStackCloseWaypointAutoCommand,
+
+                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 1, true),
+                stackToMediumPoleAutoCommand,
 
                 // drop final cone
                 new InstantCommand(arm::toTravelPosition),
@@ -292,7 +300,7 @@ public class R2V2_Blue_Full_Mid_Cycle extends LinearOpMode {
             telemetry.addData("lift power", lift.getLiftPower());
             telemetry.addData("continueAuto", gripper.continueAuto);
 //was 28
-            if (runtime.seconds() > 26 && gripper.continueAuto || !gripper.continueAuto) {
+            if (runtime.seconds() > 28 && gripper.continueAuto || !gripper.continueAuto) {
                 if (!parking) {
                     CommandScheduler.getInstance().cancelAll();
                     if (tagOfInterest.id != 1 && tagOfInterest.id != 2 && tagOfInterest.id != 3)
