@@ -37,7 +37,7 @@ public class R2V2_StackToMediumPoleAutoCommand extends SequentialCommandGroup {
                         )
                 ),
                 new InstantCommand(() -> {
-//                    if (!gripper.hasCone()) gripper.continueAuto = false;
+                    if (!gripper.continueAuto) gripper.abortAuto = true;
                 }),
                 new InstantCommand(gripper::open)
         );

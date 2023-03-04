@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -21,6 +22,7 @@ import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_DeliverMediumPrelo
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_FollowTrajectoryCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_GrabFromStackCloseWaypointCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_GrabFromStackCloseWaypointLastConeCommand;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_MedPoleToStackAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_MedPoleToStackCloseWaypointAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_MedPoleToStackCloseWaypointLastConeAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_StackToMediumPoleAutoCommand;
@@ -50,7 +52,7 @@ public class R2V2_Red_Full_Mid_Cycle extends LinearOpMode {
 
     static final double FEET_PER_METER = 3.28084;
 
-    TrajectorySequence parkTrajectory1FromPole, parkTrajectory2FromPole, parkTrajectory3FromPole,  parkTrajectory1FromStack, parkTrajectory2FromStack, parkTrajectory3FromStack;
+    TrajectorySequence parkTrajectory1FromPole, parkTrajectory2FromPole, parkTrajectory3FromPole, parkTrajectory1FromStack, parkTrajectory2FromStack, parkTrajectory3FromStack;
     //private SampleMecanumDrive_R2V2 drive;
 
     boolean parking = false;
@@ -188,19 +190,19 @@ public class R2V2_Red_Full_Mid_Cycle extends LinearOpMode {
 
 
         schedule(new SequentialCommandGroup(
-               deliverMediumPreloadAutoCommand,
+                deliverMediumPreloadAutoCommand,
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 4, false),
                 stackToMediumPoleAutoCommand,
-                medPoleToStackCloseWaypointAutoCommand,
+                new R2V2_MedPoleToStackAutoCommand(drive, lift, arm, wrist, gripper, batwing, 3, false, false),
 //
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 3, false),
                 stackToMediumPoleAutoCommand,
-                medPoleToStackCloseWaypointAutoCommand,
+                new R2V2_MedPoleToStackAutoCommand(drive, lift, arm, wrist, gripper, batwing, 2, false, false),
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 2, false),
                 stackToMediumPoleAutoCommand,
-                medPoleToStackCloseWaypointAutoCommand,
+                new R2V2_MedPoleToStackAutoCommand(drive, lift, arm, wrist, gripper, batwing, 1, false, true),
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 1, false),
                 stackToMediumPoleAutoCommand,
@@ -213,6 +215,7 @@ public class R2V2_Red_Full_Mid_Cycle extends LinearOpMode {
                 // release final cone
                 new InstantCommand(arm::toTravelPosition),
                 new InstantCommand(wrist::toTravelPosition),
+                new InstantCommand(gripper::open),
                 new InstantCommand(batwing::retract),
                 new WaitCommand(400),
                 new RobotToStateCommand(lift, arm, wrist, gripper, batwing, BotPositions.LIFT_INTAKE_R2V2, stackIndex, "travel")
@@ -295,11 +298,13 @@ public class R2V2_Red_Full_Mid_Cycle extends LinearOpMode {
             telemetry.addData("lift target", lift.getLiftTargetPosition());
             telemetry.addData("lift power", lift.getLiftPower());
             telemetry.addData("continueAuto", gripper.continueAuto);
+            telemetry.addData("continueAuto", gripper.abortAuto);
 //was 28
-            if (runtime.seconds() > 28 && gripper.continueAuto || !gripper.continueAuto) {
+            if (runtime.seconds() > 28 && !gripper.abortAuto || gripper.abortAuto) {
                 if (!parking) {
                     CommandScheduler.getInstance().cancelAll();
-                    if(tagOfInterest.id != 1 && tagOfInterest.id != 2 && tagOfInterest.id != 3) tagOfInterest.id = 2; //if value is read as null, set default trajectory to middle (2)
+                    if (tagOfInterest.id != 1 && tagOfInterest.id != 2 && tagOfInterest.id != 3)
+                        tagOfInterest.id = 2; //if value is read as null, set default trajectory to middle (2)
                     switch (tagOfInterest.id) {
                         case 1:
 //                            if(gripper.continueAuto) parkTrajectoryCommand = new R2V2_FollowTrajectoryCommand(drive, parkTrajectory1FromPole);
@@ -321,11 +326,17 @@ public class R2V2_Red_Full_Mid_Cycle extends LinearOpMode {
                             break;
                     }
                     schedule(
-                            new RobotToStateCommand(lift, arm, wrist, gripper, batwing, 100, 0, "autoEnd"),
-                            parkTrajectoryCommand,
-                            new InstantCommand(() ->{
-                                gripper.continueAuto = true;
-                            })
+                            new ParallelCommandGroup(
+                                    new InstantCommand(gripper::open),
+                                    parkTrajectoryCommand,
+                                    new SequentialCommandGroup(
+                                            new WaitCommand(750),
+                                            new RobotToStateCommand(lift, arm, wrist, gripper, batwing, 100, 0, "autoEnd")
+                                    ),
+                                    new InstantCommand(() -> {
+                                        gripper.continueAuto = true;
+                                    })
+                            )
                     );
                     parking = true;
                 }

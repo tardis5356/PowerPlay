@@ -24,7 +24,8 @@ public class Gripper extends SubsystemBase {
 
     public double servoPosition = 0;
 
-    public static boolean continueAuto = true; // default true, if false (cone not in gripper after grab) abort auto and park
+    public static boolean continueAuto = true; // default true, false if cone not in gripper during grab
+    public static boolean abortAuto = false; // default false, true when !continueAuto and at pole position, ready for park
 
     public Gripper(HardwareMap hardwareMap) {
         servo = hardwareMap.get(Servo.class, "sG");

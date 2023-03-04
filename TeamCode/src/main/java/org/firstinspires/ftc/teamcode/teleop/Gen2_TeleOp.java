@@ -55,7 +55,7 @@ public class Gen2_TeleOp extends CommandOpMode {
     public double FAST_POWER_MULTIPLIER = 1.0;
     private boolean manualModeOn = false;
 
-    public int activeStackHeight = 4;
+    public static int activeStackHeight = 4;
 
     public float roll = 0.001f, rollOffset = 0, measuredMaxRoll = 0;
 
@@ -197,10 +197,10 @@ public class Gen2_TeleOp extends CommandOpMode {
                 .cancelWhenActive(liftToMediumJunctionCommand)
                 .cancelWhenActive(liftToLowJunctionCommand)
                 .cancelWhenActive(liftToTravelPositionCommand);
-        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_LEFT))
-                .whenActive(new IterateAutoStackHeight(activeStackHeight, 1));
-        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_RIGHT))
-                .whenActive(new IterateAutoStackHeight(activeStackHeight, -1));
+//        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_LEFT))
+//                .whenActive(new IterateAutoStackHeight(lift, activeStackHeight, 1));
+//        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_RIGHT))
+//                .whenActive(new IterateAutoStackHeight(lift, activeStackHeight, -1));
 
         //gripper will close if left trigger is pressed or cone is in gripper
         //if right trigger is held down, it will override and open the gripper

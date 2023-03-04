@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandScheduler;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -27,7 +28,10 @@ import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_DeliverMediumPrelo
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_DeliverPreloadCloseWaypointAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_FollowTrajectoryCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_GrabFromStackCloseWaypointCommand;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_GrabFromStackCloseWaypointLastConeCommand;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_MedPoleToStackAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_MedPoleToStackCloseWaypointAutoCommand;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_MedPoleToStackCloseWaypointLastConeAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_StackToMediumPoleAutoCommand;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants_R2V2;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
@@ -197,26 +201,27 @@ public class R2V2_Blue_Full_Mid_Cycle extends LinearOpMode {
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 4, true),
                 stackToMediumPoleAutoCommand,
-                medPoleToStackCloseWaypointAutoCommand,
+                new R2V2_MedPoleToStackAutoCommand(drive, lift, arm, wrist, gripper, batwing, 3, true, false),
 //
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 3, true),
                 stackToMediumPoleAutoCommand,
-                medPoleToStackCloseWaypointAutoCommand,
+                new R2V2_MedPoleToStackAutoCommand(drive, lift, arm, wrist, gripper, batwing, 2, true, false),
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 2, true),
                 stackToMediumPoleAutoCommand,
-                medPoleToStackCloseWaypointAutoCommand,
+                new R2V2_MedPoleToStackAutoCommand(drive, lift, arm, wrist, gripper, batwing, 1, true, true),
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 1, true),
                 stackToMediumPoleAutoCommand,
-                medPoleToStackCloseWaypointAutoCommand,
+                new R2V2_MedPoleToStackCloseWaypointLastConeAutoCommand(drive, lift, arm, wrist, gripper, batwing, 0, true),
 
-                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 1, true),
+                new R2V2_GrabFromStackCloseWaypointLastConeCommand(drive, lift, arm, wrist, gripper, batwing, 0, true),
                 stackToMediumPoleAutoCommand,
 
                 // drop final cone
                 new InstantCommand(arm::toTravelPosition),
                 new InstantCommand(wrist::toTravelPosition),
+                new InstantCommand(gripper::open),
                 new InstantCommand(batwing::retract),
                 new WaitCommand(400),
                 new RobotToStateCommand(lift, arm, wrist, gripper, batwing, BotPositions.LIFT_INTAKE_R2V2, stackIndex, "travel")
@@ -299,8 +304,9 @@ public class R2V2_Blue_Full_Mid_Cycle extends LinearOpMode {
             telemetry.addData("lift target", lift.getLiftTargetPosition());
             telemetry.addData("lift power", lift.getLiftPower());
             telemetry.addData("continueAuto", gripper.continueAuto);
+            telemetry.addData("continueAuto", gripper.abortAuto);
 //was 28
-            if (runtime.seconds() > 28 && gripper.continueAuto || !gripper.continueAuto) {
+            if (runtime.seconds() > 28 && !gripper.abortAuto || gripper.abortAuto) {
                 if (!parking) {
                     CommandScheduler.getInstance().cancelAll();
                     if (tagOfInterest.id != 1 && tagOfInterest.id != 2 && tagOfInterest.id != 3)
@@ -326,11 +332,17 @@ public class R2V2_Blue_Full_Mid_Cycle extends LinearOpMode {
                             break;
                     }
                     schedule(
-                            new RobotToStateCommand(lift, arm, wrist, gripper, batwing, 100, 0, "autoEnd"),
-                            parkTrajectoryCommand,
-                            new InstantCommand(() -> {
-                                gripper.continueAuto = true;
-                            })
+                            new ParallelCommandGroup(
+                                    new InstantCommand(gripper::open),
+                                    parkTrajectoryCommand,
+                                    new SequentialCommandGroup(
+                                            new WaitCommand(750),
+                                            new RobotToStateCommand(lift, arm, wrist, gripper, batwing, 100, 0, "autoEnd")
+                                    ),
+                                    new InstantCommand(() -> {
+                                        gripper.continueAuto = true;
+                                    })
+                            )
                     );
                     parking = true;
                 }

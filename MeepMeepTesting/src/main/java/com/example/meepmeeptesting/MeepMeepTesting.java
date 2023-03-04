@@ -13,7 +13,7 @@ import java.util.Vector;
 public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(750);
-        final Pose2d blue_StartPos = new Pose2d(-30.5, 64, Math.toRadians(90));
+        final Pose2d blue_StartPos = new Pose2d(-40.5, 64, Math.toRadians(90));
         final Pose2d blue_PreloadPolePos = new Pose2d(-25, 7, Math.toRadians(140));//-35//130
         final Pose2d blue_MedPreloadPolePos = new Pose2d(-25.5, 33, Math.toRadians(140));//-35//130
         final Pose2d blue_MedPolePos = new Pose2d(-30.5, 21, Math.toRadians(220)); //-30.5, 21
@@ -49,9 +49,9 @@ public class MeepMeepTesting {
 //                                .setReversed(false)
 
                                 // single spline med
-                                .lineTo(new Vector2d(-33, 62))
-                                .lineTo(new Vector2d(-33, 61))
-                                .splineTo(blue_MedPreloadPolePos.vec(), Math.toRadians(300))
+                                .lineTo(new Vector2d(-38, 62))
+                                .lineTo(new Vector2d(-38, 60))
+                                .splineTo(blue_MedPreloadPolePos.vec(), Math.toRadians(310))
                                 .setReversed(false)
 
                                 .back(-0.10)

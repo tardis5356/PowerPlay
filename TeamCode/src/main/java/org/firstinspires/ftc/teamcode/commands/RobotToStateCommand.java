@@ -50,7 +50,7 @@ public class RobotToStateCommand extends ParallelCommandGroup {
                                 new InstantCommand(() -> {
                                     arm.toIntakeWaypointPosition();
                                     wrist.toIntakeWaypointPosition();
-//                                    batwing.retract();
+                                    batwing.storage();
                                 })
                         )
                 );
@@ -111,6 +111,7 @@ public class RobotToStateCommand extends ParallelCommandGroup {
                 addCommands(
                         new LiftToPositionCommand(lift, -5, 25),
                         new InstantCommand(() -> {
+                            gripper.open();
                             arm.toAutoEndPosition();
                             wrist.toInitPosition();
                             batwing.storage();
