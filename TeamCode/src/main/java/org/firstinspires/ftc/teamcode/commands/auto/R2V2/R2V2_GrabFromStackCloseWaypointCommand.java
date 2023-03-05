@@ -33,7 +33,7 @@ public class R2V2_GrabFromStackCloseWaypointCommand extends SequentialCommandGro
                 new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_AUTO_R2V2, stackIndex, "intakeAuto"),
                 new WaitCommand(600),
                 new InstantCommand(() -> {
-                    if (!gripper.hasCone()) gripper.continueAuto = false;
+                    if (!gripper.hasConeAuto()) gripper.continueAuto = false;
                 }),
                 new InstantCommand(() -> gripper.close())//,
 //                new WaitCommand(50)

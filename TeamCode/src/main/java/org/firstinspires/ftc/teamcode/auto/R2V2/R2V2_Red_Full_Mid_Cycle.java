@@ -298,7 +298,8 @@ public class R2V2_Red_Full_Mid_Cycle extends LinearOpMode {
             telemetry.addData("lift target", lift.getLiftTargetPosition());
             telemetry.addData("lift power", lift.getLiftPower());
             telemetry.addData("continueAuto", gripper.continueAuto);
-            telemetry.addData("continueAuto", gripper.abortAuto);
+            telemetry.addData("abortAuto", gripper.abortAuto);
+            telemetry.addData("gripper distance", gripper.getDistance());
 //was 28
             if (runtime.seconds() > 28 && !gripper.abortAuto || gripper.abortAuto) {
                 if (!parking) {
@@ -335,6 +336,7 @@ public class R2V2_Red_Full_Mid_Cycle extends LinearOpMode {
                                     ),
                                     new InstantCommand(() -> {
                                         gripper.continueAuto = true;
+                                        gripper.abortAuto = false;
                                     })
                             )
                     );

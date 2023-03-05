@@ -341,6 +341,7 @@ public class R2V2_Blue_Full_Mid_Cycle extends LinearOpMode {
                                     ),
                                     new InstantCommand(() -> {
                                         gripper.continueAuto = true;
+                                        gripper.abortAuto = false;
                                     })
                             )
                     );
