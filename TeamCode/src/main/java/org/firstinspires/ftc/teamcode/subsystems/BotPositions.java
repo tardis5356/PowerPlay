@@ -31,7 +31,8 @@ public class BotPositions {
     public static int LIFT_INTAKE_AUTO_R2V2 = 25, LIFT_INTAKE_R2V2 = -10, LIFT_TRAVEL_R2V2 = -10, LIFT_LOW_JUNCTION_R2V2 = 340, LIFT_MEDIUM_JUNCTION_R2V2 = 740, LIFT_HIGH_JUNCTION_R2V2 = 1130, AUTO_LIFT_HIGH_JUNCTION_R2V2 = 1100;//1175
 
 //    public static int[] STACK_POSITIONS_R2V2 = {-10, 65, 85, 140, 180, 210};//0 = bottom cone, 4 = top cone
-    public static int[] STACK_POSITIONS_R2V2 = {-10, 0, 65, 130, 170, 200};//0 = bottom cone, 4 = top cone
+//public static int[] STACK_POSITIONS_R2V2 = {-10, 0, 65, 130, 170, 200};//0 = bottom cone, 4 = top cone EXC CHAMPS
+    public static int[] STACK_POSITIONS_R2V2 = {-10, 90, 150, 220, 255, 285};//0 = bottom cone, 4 = top cone MTI SUBMISSION
 
     public static double LIFT_p_R2V2 = 0.01, LIFT_i_R2V2 = 0, LIFT_d_R2V2 = 0.0001;
 
