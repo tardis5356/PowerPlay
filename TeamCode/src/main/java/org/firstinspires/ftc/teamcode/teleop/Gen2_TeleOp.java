@@ -87,10 +87,10 @@ public class Gen2_TeleOp extends CommandOpMode {
         // Motors and Other Stuff
         //defineComponents
         mFR = hardwareMap.get(DcMotorEx.class, "mFR");
-        mLEnc = hardwareMap.get(DcMotorEx.class, "mFL ");
+        mLEnc = hardwareMap.get(DcMotorEx.class, "mFL");
         mBR = hardwareMap.get(DcMotorEx.class, "mBR");
         mBL = hardwareMap.get(DcMotorEx.class, "mBL");
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu = hardwareMap.get(BNO055IMU.class, "adafruitIMU");
         // Behaviors
         mLEnc.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -105,7 +105,7 @@ public class Gen2_TeleOp extends CommandOpMode {
         telemetry.addData("Ready to start!", getRuntime());
         telemetry.update();
 
-        Drivetrain = new Drivetrain(hardwareMap);
+//        Drivetrain = new Drivetrain(hardwareMap);
 //        defining subsystems
         gripper = new Gripper(hardwareMap);
         lift = new Lift(hardwareMap);
@@ -234,7 +234,7 @@ public class Gen2_TeleOp extends CommandOpMode {
         Orientation botOrientationRadians = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
 
         //Add the angle offset to be able to reset the 0 heading, and normalize it back to -pi to pi
-        double heading = AngleUnit.normalizeRadians(botOrientationRadians.firstAngle - offset);
+        double heading = AngleUnit.normalizeRadians(botOrientationRadians.firstAngle - offset); //
 
         double ly = -gamepad1.left_stick_y;
         double lx = gamepad1.left_stick_x;
@@ -325,24 +325,28 @@ public class Gen2_TeleOp extends CommandOpMode {
 //
 //        telemetry.addData("weightedPowerMultiplier", weightedPowerMultiplier);
 //        telemetry.addData("powerMultiplier", powerMultiplier);
-        telemetry.addData("lift pos", lift.getLiftPosition());
-        telemetry.addData("lift power", lift.getLiftPower());
-        telemetry.addData("lift target", lift.target);
-        telemetry.addData("lift pid", lift.getLiftPID());
-        telemetry.addData("lift ff", lift.getLiftFF());
+//        telemetry.addData("lift pos", lift.getLiftPosition());
+//        telemetry.addData("lift power", lift.getLiftPower());
+//        telemetry.addData("lift target", lift.target);
+//        telemetry.addData("lift pid", lift.getLiftPID());
+//        telemetry.addData("lift ff", lift.getLiftFF());
+//
+//        telemetry.addData("liftbase", lift.getLiftBase());
+//        telemetry.addData("liftbaseResets", lift.getLiftBaseResets());
+//
+//        telemetry.addData("activeStackHeight", activeStackHeight);
 
-        telemetry.addData("liftbase", lift.getLiftBase());
-        telemetry.addData("liftbaseResets", lift.getLiftBaseResets());
+//        telemetry.addData("pole distance", batwing.getDistance());
+//        telemetry.addData("gripper distance", gripper.getDistance());
 
-        telemetry.addData("activeStackHeight", activeStackHeight);
-
-        telemetry.addData("pole distance", batwing.getDistance());
-        telemetry.addData("gripper distance", gripper.getDistance());
-
-        telemetry.addData("arm pos", arm.getArmPosition());
-        telemetry.addData("gripper pos", gripper.getGripperPosition());
+        telemetry.addData("raw", imu.getAngularOrientation().firstAngle);
+        telemetry.addData("raw heading", botOrientationRadians.firstAngle*(180/Math.PI));
+        telemetry.addData("offset", offset*(180/Math.PI));
+        telemetry.addData("offset heading", heading*(180/Math.PI));
+//        telemetry.addData("arm pos", arm.getArmPosition());
+//        telemetry.addData("gripper pos", gripper.getGripperPosition());
 //        telemetry.addData("beacon pos", beaconArm.getBeaconArmPosition());
-        telemetry.addData("wrist pos", String.format("%.2f", wrist.getWristPosition()));
+//        telemetry.addData("wrist pos", String.format("%.2f", wrist.getWristPosition()));
 
 //        telemetry.addData("manual mode is", manualModeOn);
 //
