@@ -14,11 +14,16 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.button.Trigger;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.arcrobotics.ftclib.hardware.GyroEx;
+import com.arcrobotics.ftclib.hardware.RevIMU;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -59,7 +64,13 @@ public class Gen2_TeleOp extends CommandOpMode {
 
     public float roll = 0.001f, rollOffset = 0, measuredMaxRoll = 0;
 
-    private Drivetrain Drivetrain;
+    private GamepadEx driver;
+    private GamepadEx manipulator;
+
+    private MecanumDrive mecanumDrive;
+    private RevIMU revIMU;
+    private GyroEx adafruitIMU;
+
     private Lift lift;
     private Arm arm;
     private Wrist wrist;
@@ -80,8 +91,8 @@ public class Gen2_TeleOp extends CommandOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         // Object declarations
-        GamepadEx driver = new GamepadEx(gamepad1);
-        GamepadEx manipulator = new GamepadEx(gamepad2);
+        driver = new GamepadEx(gamepad1);
+        manipulator = new GamepadEx(gamepad2);
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
         // Motors and Other Stuff
@@ -90,7 +101,10 @@ public class Gen2_TeleOp extends CommandOpMode {
         mLEnc = hardwareMap.get(DcMotorEx.class, "mFL");
         mBR = hardwareMap.get(DcMotorEx.class, "mBR");
         mBL = hardwareMap.get(DcMotorEx.class, "mBL");
+
         imu = hardwareMap.get(BNO055IMU.class, "adafruitIMU");
+//        adafruitIMU = hardwareMap.get(BNO055IMU.class, "adafruitIMU");
+
         // Behaviors
         mLEnc.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -99,6 +113,17 @@ public class Gen2_TeleOp extends CommandOpMode {
 
         mLEnc.setDirection(DcMotorSimple.Direction.REVERSE);
         mBL.setDirection(DcMotorSimple.Direction.REVERSE);
+
+//        mecanumDrive = new MecanumDrive(
+//                new Motor(hardwareMap, "mFL", Motor.GoBILDA.RPM_435),
+//                new Motor(hardwareMap, "mFR", Motor.GoBILDA.RPM_435),
+//                new Motor(hardwareMap, "mBR", Motor.GoBILDA.RPM_435),
+//                new Motor(hardwareMap, "mBL", Motor.GoBILDA.RPM_435)
+////                -mLEnc,
+////                mFR,
+////                mBR,
+////                mBL
+//                );
 
         imu.initialize(parameters);
 
@@ -231,10 +256,12 @@ public class Gen2_TeleOp extends CommandOpMode {
     public void run() {
         super.run();
         //FIELDCENTRIC
+        Orientation botOrientationDegrees = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         Orientation botOrientationRadians = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
 
         //Add the angle offset to be able to reset the 0 heading, and normalize it back to -pi to pi
         double heading = AngleUnit.normalizeRadians(botOrientationRadians.firstAngle - offset); //
+//        double headingDegrees = AngleUnit.normalizeDegrees(botOrientationDegrees.firstAngle - offset); //
 
         double ly = -gamepad1.left_stick_y;
         double lx = gamepad1.left_stick_x;
@@ -251,6 +278,13 @@ public class Gen2_TeleOp extends CommandOpMode {
         mBL.setPower((ly - lx + rx) / normalize * CURRENT_POWER_MULTIPLIER);
         mFR.setPower((ly - lx - rx) / normalize * CURRENT_POWER_MULTIPLIER);
         mBR.setPower((ly + lx - rx) / normalize * CURRENT_POWER_MULTIPLIER);
+//        mecanumDrive.driveFieldCentric(
+//                driver.getLeftX(),
+//                driver.getLeftY(),
+//                driver.getRightX(),
+//                headingDegrees,   // gyro value passed in here must be in degrees
+//                false
+//        );
 
         if (manualModeOn) {
 
@@ -340,9 +374,10 @@ public class Gen2_TeleOp extends CommandOpMode {
 //        telemetry.addData("gripper distance", gripper.getDistance());
 
         telemetry.addData("raw", imu.getAngularOrientation().firstAngle);
-        telemetry.addData("raw heading", botOrientationRadians.firstAngle*(180/Math.PI));
-        telemetry.addData("offset", offset*(180/Math.PI));
-        telemetry.addData("offset heading", heading*(180/Math.PI));
+        telemetry.addData("raw heading", botOrientationDegrees.firstAngle);
+        telemetry.addData("offset", offset);
+        telemetry.addData("offset heading", heading);
+//        telemetry.addData("offset heading", headingDegrees);
 //        telemetry.addData("arm pos", arm.getArmPosition());
 //        telemetry.addData("gripper pos", gripper.getGripperPosition());
 //        telemetry.addData("beacon pos", beaconArm.getBeaconArmPosition());

@@ -43,6 +43,18 @@ public class RobotToStateCommand extends ParallelCommandGroup {
                         )
                 );
                 break;
+            case "intakeWaypointFirst":
+                addCommands(
+                        new ParallelCommandGroup(
+                                new LiftToPositionCommand(lift, STACK_POSITIONS_R2V2[stackIndex], 11),
+                                new InstantCommand(() -> {
+                                    arm.toIntakeWaypointPosition();
+                                    wrist.toIntakeWaypointPosition();
+//                                    batwing.storage();
+                                })
+                        )
+                );
+                break;
             case "intakeWaypoint":
                 addCommands(
                         new ParallelCommandGroup(

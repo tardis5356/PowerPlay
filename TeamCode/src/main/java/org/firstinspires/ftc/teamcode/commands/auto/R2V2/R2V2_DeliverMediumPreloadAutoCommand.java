@@ -55,8 +55,8 @@ public class R2V2_DeliverMediumPreloadAutoCommand extends SequentialCommandGroup
 //                        new WaitCommand(250),
                                 new InstantCommand(batwing::retract),
                                 new WaitCommand(400),
-                                new RobotToStateCommand(lift, arm, wrist, gripper, batwing, BotPositions.LIFT_INTAKE_R2V2, stackIndex, "intakeWaypoint"),
-                                new WaitCommand(250),
+                                new RobotToStateCommand(lift, arm, wrist, gripper, batwing, BotPositions.LIFT_INTAKE_R2V2, stackIndex, "intakeWaypointFirst"),
+                                new WaitCommand(350),
                                 new InstantCommand(batwing::storage)
                         )
                 )
