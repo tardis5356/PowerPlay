@@ -12,30 +12,26 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.button.Trigger;
+import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.GyroEx;
 import com.arcrobotics.ftclib.hardware.RevIMU;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.commands.DropConeCommand;
-import org.firstinspires.ftc.teamcode.commands.IterateAutoStackHeight;
 import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
-import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
 import org.firstinspires.ftc.teamcode.subsystems.BatWing;
-import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
+import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.TapeMeasure;
@@ -43,8 +39,8 @@ import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 
 import java.text.DecimalFormat;
 
-@TeleOp(name = "Gen2_TeleOp")
-public class Gen2_TeleOp extends CommandOpMode {
+@TeleOp(name = "Gen2_TeleOp_RC")
+public class Gen2_TeleOp_RC extends CommandOpMode {
     private DcMotorEx mFR, mLEnc, mBR, mBL;
     private BNO055IMU imu;
 
@@ -256,28 +252,47 @@ public class Gen2_TeleOp extends CommandOpMode {
     public void run() {
         super.run();
         //FIELDCENTRIC
-        Orientation botOrientationDegrees = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        Orientation botOrientationRadians = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+//        Orientation botOrientationDegrees = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+//        Orientation botOrientationRadians = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+//
+//        //Add the angle offset to be able to reset the 0 heading, and normalize it back to -pi to pi
+//        double heading = AngleUnit.normalizeRadians(botOrientationRadians.firstAngle - offset); //
+////        double headingDegrees = AngleUnit.normalizeDegrees(botOrientationDegrees.firstAngle - offset); //
+//
+//        double ly = -gamepad1.left_stick_y;
+//        double lx = gamepad1.left_stick_x;
+//        double rx = gamepad1.right_stick_x;
+//
+//        // Rotate by the heading of the robot
+//        Vector2d vector = new Vector2d(lx, ly).rotated(-heading);
+//        lx = vector.getX();
+//        ly = vector.getY();
+//
+//        double normalize = Math.max(abs(ly) + abs(lx) + abs(rx), 1.0);
+//
+//        mLEnc.setPower((ly + lx + rx) / normalize * CURRENT_POWER_MULTIPLIER);
+//        mBL.setPower((ly - lx + rx) / normalize * CURRENT_POWER_MULTIPLIER);
+//        mFR.setPower((ly - lx - rx) / normalize * CURRENT_POWER_MULTIPLIER);
+//        mBR.setPower((ly + lx - rx) / normalize * CURRENT_POWER_MULTIPLIER);
 
-        //Add the angle offset to be able to reset the 0 heading, and normalize it back to -pi to pi
-        double heading = AngleUnit.normalizeRadians(botOrientationRadians.firstAngle - offset); //
-//        double headingDegrees = AngleUnit.normalizeDegrees(botOrientationDegrees.firstAngle - offset); //
-
-        double ly = -gamepad1.left_stick_y;
-        double lx = gamepad1.left_stick_x;
+        double y = -gamepad1.left_stick_y; // Remember, this is reversed!
+        double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
         double rx = gamepad1.right_stick_x;
 
-        // Rotate by the heading of the robot
-        Vector2d vector = new Vector2d(lx, ly).rotated(-heading);
-        lx = vector.getX();
-        ly = vector.getY();
+        // Denominator is the largest motor power (absolute value) or 1
+        // This ensures all the powers maintain the same ratio, but only when
+        // at least one is out of the range [-1, 1]
+        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+        double frontLeftPower = (y + x + rx) / denominator * CURRENT_POWER_MULTIPLIER;
+        double backLeftPower = (y - x + rx) / denominator * CURRENT_POWER_MULTIPLIER;
+        double frontRightPower = (y - x - rx) / denominator * CURRENT_POWER_MULTIPLIER;
+        double backRightPower = (y + x - rx) / denominator * CURRENT_POWER_MULTIPLIER;
 
-        double normalize = Math.max(abs(ly) + abs(lx) + abs(rx), 1.0);
+        mLEnc.setPower(frontLeftPower);
+        mBL.setPower(backLeftPower);
+        mFR.setPower(frontRightPower);
+        mBR.setPower(backRightPower);
 
-        mLEnc.setPower((ly + lx + rx) / normalize * CURRENT_POWER_MULTIPLIER);
-        mBL.setPower((ly - lx + rx) / normalize * CURRENT_POWER_MULTIPLIER);
-        mFR.setPower((ly - lx - rx) / normalize * CURRENT_POWER_MULTIPLIER);
-        mBR.setPower((ly + lx - rx) / normalize * CURRENT_POWER_MULTIPLIER);
 //        mecanumDrive.driveFieldCentric(
 //                driver.getLeftX(),
 //                driver.getLeftY(),
@@ -373,10 +388,10 @@ public class Gen2_TeleOp extends CommandOpMode {
 //        telemetry.addData("pole distance", batwing.getDistance());
 //        telemetry.addData("gripper distance", gripper.getDistance());
 
-        telemetry.addData("raw", imu.getAngularOrientation().firstAngle);
-        telemetry.addData("raw heading", botOrientationDegrees.firstAngle);
-        telemetry.addData("offset", offset);
-        telemetry.addData("offset heading", heading);
+//        telemetry.addData("raw", imu.getAngularOrientation().firstAngle);
+//        telemetry.addData("raw heading", botOrientationDegrees.firstAngle);
+//        telemetry.addData("offset", offset);
+//        telemetry.addData("offset heading", heading);
 //        telemetry.addData("offset heading", headingDegrees);
 //        telemetry.addData("arm pos", arm.getArmPosition());
 //        telemetry.addData("gripper pos", gripper.getGripperPosition());

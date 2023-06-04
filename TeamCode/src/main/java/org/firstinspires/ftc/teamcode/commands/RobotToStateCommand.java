@@ -13,7 +13,6 @@ import org.firstinspires.ftc.teamcode.subsystems.BatWing;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
-import org.firstinspires.ftc.teamcode.teleop.Gen2_TeleOp;
 
 public class RobotToStateCommand extends ParallelCommandGroup {
     public RobotToStateCommand(Lift lift, Arm arm, Wrist wrist, Gripper gripper, BatWing batwing, int height, int stackIndex, String state) {
