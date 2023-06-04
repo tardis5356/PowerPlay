@@ -102,7 +102,7 @@ public class Gen2_TeleOp extends CommandOpMode {
         mBR = hardwareMap.get(DcMotorEx.class, "mBR");
         mBL = hardwareMap.get(DcMotorEx.class, "mBL");
 
-        imu = hardwareMap.get(BNO055IMU.class, "adafruitIMU");
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
 //        adafruitIMU = hardwareMap.get(BNO055IMU.class, "adafruitIMU");
 
         // Behaviors

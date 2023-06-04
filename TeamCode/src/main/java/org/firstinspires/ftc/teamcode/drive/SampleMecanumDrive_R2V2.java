@@ -61,7 +61,7 @@ public class SampleMecanumDrive_R2V2 extends MecanumDrive {
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(10,0,0);//(10, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(6,0,0);//(6, 0, 0);
 
-    public static double LATERAL_MULTIPLIER = 1;
+    public static double LATERAL_MULTIPLIER = 1 * 1.08597285;
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;

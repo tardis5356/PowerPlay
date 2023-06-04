@@ -47,6 +47,10 @@ public class Lift extends SubsystemBase {
 //        retractController = new PIDController(pR, iR, dR);
 //        telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry());
 
+
+        mL_R2V2 = hardwareMap.get(DcMotorEx.class, "mL");
+        mL2_R2V2 = hardwareMap.get(DcMotorEx.class, "mL2");
+
         if (isBarney) {
             controller = new PIDController(pE_Barney, i_Barney, d_Barney);
 
@@ -63,8 +67,6 @@ public class Lift extends SubsystemBase {
 
             liftBase = hardwareMap.get(TouchSensor.class, "liftBase");
 
-            mL_R2V2 = hardwareMap.get(DcMotorEx.class, "mL");
-            mL2_R2V2 = hardwareMap.get(DcMotorEx.class, "mL2");
 
             mL_R2V2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             mL_R2V2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

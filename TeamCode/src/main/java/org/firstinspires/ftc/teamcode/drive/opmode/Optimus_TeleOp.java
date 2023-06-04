@@ -86,6 +86,12 @@ public class Optimus_TeleOp extends BaseClass_PP {
             wristPosition = Range.clip(wristPosition, 0, 1);
             sW.setPosition(wristPosition);
 
+//            if (leftY2 > 0){
+//                wristPosition += .010;
+//            } else if(leftY2 < 0){
+//                wristPosition -= .010;
+//            }
+
             mA.setPower(-rightY2);
 
 
