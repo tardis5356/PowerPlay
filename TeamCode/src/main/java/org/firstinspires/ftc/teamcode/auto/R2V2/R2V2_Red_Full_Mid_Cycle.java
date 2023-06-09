@@ -159,7 +159,7 @@ public class R2V2_Red_Full_Mid_Cycle extends LinearOpMode {
                 .setReversed(true)
 //                .lineTo(new Vector2d(36, 12), SampleMecanumDrive_R2V2.getVelocityConstraint(20, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
 //                        SampleMecanumDrive_R2V2.getAccelerationConstraint(30))
-                .lineToLinearHeading(new Pose2d(10, 14, Math.toRadians(270)), SampleMecanumDrive_R2V2.getVelocityConstraint(50, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
+                .lineToLinearHeading(new Pose2d(12, 12, Math.toRadians(270)), SampleMecanumDrive_R2V2.getVelocityConstraint(50, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                         SampleMecanumDrive_R2V2.getAccelerationConstraint(50))
                 .build();
 
@@ -206,10 +206,10 @@ public class R2V2_Red_Full_Mid_Cycle extends LinearOpMode {
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 1, false),
                 stackToMediumPoleAutoCommand,
-                new R2V2_MedPoleToStackCloseWaypointLastConeAutoCommand(drive, lift, arm, wrist, gripper, batwing, 0, false),
-
-                new R2V2_GrabFromStackCloseWaypointLastConeCommand(drive, lift, arm, wrist, gripper, batwing, 0, false),
-                stackToMediumPoleAutoCommand,
+//                new R2V2_MedPoleToStackCloseWaypointLastConeAutoCommand(drive, lift, arm, wrist, gripper, batwing, 0, false),
+//
+//                new R2V2_GrabFromStackCloseWaypointLastConeCommand(drive, lift, arm, wrist, gripper, batwing, 0, false),
+//                stackToMediumPoleAutoCommand,
 
 
                 // release final cone

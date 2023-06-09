@@ -213,10 +213,10 @@ public class R2V2_Blue_Full_Mid_Cycle extends LinearOpMode {
 
                 new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 1, true),
                 stackToMediumPoleAutoCommand,
-                new R2V2_MedPoleToStackCloseWaypointLastConeAutoCommand(drive, lift, arm, wrist, gripper, batwing, 0, true),
-
-                new R2V2_GrabFromStackCloseWaypointLastConeCommand(drive, lift, arm, wrist, gripper, batwing, 0, true),
-                stackToMediumPoleAutoCommand,
+//                new R2V2_MedPoleToStackCloseWaypointLastConeAutoCommand(drive, lift, arm, wrist, gripper, batwing, 0, true),
+//
+//                new R2V2_GrabFromStackCloseWaypointLastConeCommand(drive, lift, arm, wrist, gripper, batwing, 0, true),
+//                stackToMediumPoleAutoCommand,
 
                 // drop final cone
                 new InstantCommand(arm::toTravelPosition),

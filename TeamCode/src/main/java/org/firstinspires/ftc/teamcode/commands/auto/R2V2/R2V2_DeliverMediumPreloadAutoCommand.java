@@ -46,6 +46,7 @@ public class R2V2_DeliverMediumPreloadAutoCommand extends SequentialCommandGroup
                                 new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_MEDIUM_JUNCTION_R2V2, 0, "delivery")
                         )
                 ),
+                new WaitCommand(200),
                 new InstantCommand(gripper::open),
                 new WaitCommand(100),
                 new ParallelCommandGroup(

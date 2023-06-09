@@ -29,9 +29,9 @@ public class R2V2_MedPoleToStackAutoCommand extends ParallelCommandGroup {
                 new SequentialCommandGroup(
                         new InstantCommand(arm::toTravelPosition),
                         new InstantCommand(wrist::toTravelPosition),
-//                        new WaitCommand(250),
-                        new InstantCommand(batwing::retract),
                         new WaitCommand(250),
+                        new InstantCommand(batwing::retract),
+//                        new WaitCommand(250),
                         new RobotToStateCommand(lift, arm, wrist, gripper, batwing, BotPositions.LIFT_INTAKE_R2V2, stackIndex, "intakeWaypoint"),
                         new InstantCommand(gripper::open)
                 ));
