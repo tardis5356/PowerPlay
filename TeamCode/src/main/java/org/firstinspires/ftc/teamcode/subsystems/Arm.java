@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_AUTO_END_Barney;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_AUTO_END_R2V2;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_AUTO_INTAKE_WAYPOINT_Barney;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_AUTO_INTAKE_WAYPOINT_R2V2;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_DELIVERY_Barney;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_DELIVERY_R2V2;
@@ -32,10 +33,16 @@ import org.firstinspires.ftc.teamcode.subsystems.BotPositions;
 @Config
 public class Arm extends SubsystemBase {
     private Servo servo;
+    private Servo servo2;
     public double servoPosition;
 
     public Arm(HardwareMap hardwareMap) {
-        servo = hardwareMap.get(Servo.class, "sA");
+        if(isBarney) {
+            servo = hardwareMap.get(Servo.class, "sAR");
+            servo2 = hardwareMap.get(Servo.class, "sAL");
+        }else{
+            servo = hardwareMap.get(Servo.class, "sA");
+        }
         toInitPosition();
     }
 
@@ -58,32 +65,62 @@ public class Arm extends SubsystemBase {
 
     public void toInitPosition() {
         servoPosition = isBarney ? ARM_INIT_Barney : ARM_INIT_R2V2;
-        servo.setPosition(isBarney ? ARM_INIT_Barney : ARM_INIT_R2V2);
+        if(isBarney){
+            servo.setPosition(ARM_INIT_Barney);
+            servo2.setPosition(ARM_INIT_Barney);
+        }else{
+            servo.setPosition(ARM_INIT_R2V2);
+        }
     }
 
     public void toIntakePosition() {
         servoPosition = isBarney ? ARM_INTAKE_Barney : ARM_INTAKE_R2V2;
-        servo.setPosition(isBarney ? ARM_INTAKE_Barney : ARM_INTAKE_R2V2);
+        if(isBarney){
+            servo.setPosition(ARM_INTAKE_Barney);
+            servo2.setPosition(ARM_INTAKE_Barney);
+        }else{
+            servo.setPosition(ARM_INTAKE_R2V2);
+        }
     }
 
     public void toIntakeWaypointPosition() {
-        servoPosition = isBarney ? ARM_INTAKE_Barney : ARM_INTAKE_R2V2;
-        servo.setPosition(isBarney ? ARM_INTAKE_Barney : ARM_AUTO_INTAKE_WAYPOINT_R2V2);
+        servoPosition = isBarney ? ARM_AUTO_INTAKE_WAYPOINT_Barney : ARM_AUTO_INTAKE_WAYPOINT_R2V2;
+        if(isBarney){
+            servo.setPosition(ARM_AUTO_INTAKE_WAYPOINT_Barney);
+            servo2.setPosition(ARM_AUTO_INTAKE_WAYPOINT_Barney);
+        }else{
+            servo.setPosition(ARM_AUTO_INTAKE_WAYPOINT_R2V2);
+        }
     }
 
     public void toDeliverPosition() {
         servoPosition = isBarney ? ARM_DELIVERY_Barney : ARM_DELIVERY_R2V2;
-        servo.setPosition(isBarney ? ARM_DELIVERY_Barney : ARM_DELIVERY_R2V2);
+        if(isBarney){
+            servo.setPosition(ARM_DELIVERY_Barney);
+            servo2.setPosition(ARM_DELIVERY_Barney);
+        }else{
+            servo.setPosition(ARM_DELIVERY_R2V2);
+        }
     }
 
     public void toTravelPosition() {
         servoPosition = isBarney ? ARM_TRAVEL_Barney : ARM_TRAVEL_R2V2;
-        servo.setPosition(isBarney ? ARM_TRAVEL_Barney : ARM_TRAVEL_R2V2);
+        if(isBarney){
+            servo.setPosition(ARM_TRAVEL_Barney);
+            servo2.setPosition(ARM_TRAVEL_Barney);
+        }else{
+            servo.setPosition(ARM_TRAVEL_R2V2);
+        }
     }
 
     public void toAutoEndPosition() {
         servoPosition = isBarney ? ARM_AUTO_END_Barney : ARM_AUTO_END_R2V2;
-        servo.setPosition(isBarney ? ARM_AUTO_END_Barney : ARM_AUTO_END_R2V2);
+        if(isBarney){
+            servo.setPosition(ARM_AUTO_END_Barney);
+            servo2.setPosition(ARM_AUTO_END_Barney);
+        }else{
+            servo.setPosition(ARM_AUTO_END_R2V2);
+        }
     }
 
     public double getArmPosition() {

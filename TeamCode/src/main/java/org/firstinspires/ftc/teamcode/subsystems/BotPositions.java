@@ -13,19 +13,23 @@ import java.util.Arrays;
 public class BotPositions {
     public static boolean isBarney = false;
     //true = Barney
-    //false = R2V2
+    //false = R2V2/V3PO
 
-    public static int LIFT_FULL_RETRACTION_Barney = 0, LIFT_INTAKE_Barney = 50, LIFT_TRAVEL_Barney = 100, LIFT_LOW_JUNCTION_Barney = 275, LIFT_MEDIUM_JUNCTION_Barney = 550, LIFT_HIGH_JUNCTION_Barney = 800;
+    public static int LIFT_INTAKE_AUTO_Barney = 25, LIFT_INTAKE_Barney = -10, LIFT_TRAVEL_Barney = -10, LIFT_LOW_JUNCTION_Barney = 350, LIFT_MEDIUM_JUNCTION_Barney = 770, LIFT_HIGH_JUNCTION_Barney = 1150, AUTO_LIFT_HIGH_JUNCTION_Barney = 1100;//1175
 
-    public static double LIFT_pE_Barney = 0.01, LIFT_pR_Barney = 0.0001, LIFT_i_Barney = 0, LIFT_d_Barney = 0;
+    public static int[] STACK_POSITIONS_Barney = {-10, 45, 100, 170, 210, 250};//0 = bottom cone, 4 = top cone MTI SUBMISSION
 
-    public static double ARM_INIT_Barney = 0.6, ARM_INTAKE_Barney = 0.76, ARM_DELIVERY_Barney = 0.4, ARM_TRAVEL_Barney = 0.65, ARM_AUTO_END_Barney = 0.5;
+    public static double LIFT_p_Barney = 0.01, LIFT_i_Barney = 0, LIFT_d_Barney = 0.0001;
 
-    public static double WRIST_INIT_Barney = 0.8, WRIST_INTAKE_Barney = 0.2, WRIST_DELIVERY_Barney = 0.9, WRIST_TRAVEL_Barney = 0.1;
+    public static double ARM_INIT_Barney = 0.565, ARM_INTAKE_Barney = 0.1, ARM_AUTO_INTAKE_WAYPOINT_Barney = 0.60, ARM_DELIVERY_Barney = 0.8, ARM_TRAVEL_Barney = 0.53, ARM_STORAGE_Barney = 0.5, ARM_AUTO_END_Barney = 0.48; //old deliver 0.365
 
-    public static double GRIPPER_OPEN_Barney = 0.5, GRIPPER_CLOSED_Barney = 0.20; // 0.55, 0.3 // 0.62, 0.73
+    public static double WRIST_INIT_Barney = 0.78, WRIST_INTAKE_Barney = 0.35, WRIST_AUTO_INTAKE_WAYPOINT_Barney = 0.05, WRIST_DELIVERY_Barney = 0.95, WRIST_TRAVEL_Barney = 0.3;
 
-    public static double BEACON_ARM_LOAD_Barney = 0.99, BEACON_ARM_STORAGE_Barney = 0.5, BEACON_ARM_DELIVERY_Barney = 0.75, BEACON_ARM_TRAVEL_Barney = 0.55;
+    public static double GRIPPER_OPEN_Barney = 0.5, GRIPPER_CLOSED_Barney = 0.16, GRIPPER_OPEN_AUTO_Barney = 0.6;
+
+    public static double BEACON_ARM_LOAD_Barney = 1, BEACON_ARM_STORAGE_Barney = 0.6, BEACON_ARM_DELIVERY_Barney = 0.8;
+
+    public static double BATWING_DEPLOYED_Barney = 0.58, BATWING_RETRACTED_Barney = 0.8, BATWING_STORAGE_Barney = 0.2, BATWING_DEPLOYED_LOW_JUNCTION_Barney = 0.62;
 
 
     public static int LIFT_INTAKE_AUTO_R2V2 = 25, LIFT_INTAKE_R2V2 = -10, LIFT_TRAVEL_R2V2 = -10, LIFT_LOW_JUNCTION_R2V2 = 350, LIFT_MEDIUM_JUNCTION_R2V2 = 770, LIFT_HIGH_JUNCTION_R2V2 = 1150, AUTO_LIFT_HIGH_JUNCTION_R2V2 = 1100;//1175
