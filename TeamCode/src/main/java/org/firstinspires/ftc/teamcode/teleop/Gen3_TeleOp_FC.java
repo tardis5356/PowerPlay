@@ -39,7 +39,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 
 import java.text.DecimalFormat;
 
-@TeleOp(name = "Gen2_TeleOp")
+@TeleOp(name = "Gen3_TeleOp_FC")
 public class Gen3_TeleOp_FC extends CommandOpMode {
     private DcMotorEx mFR, mFL, mBR, mBL;
     private BNO055IMU imu;
