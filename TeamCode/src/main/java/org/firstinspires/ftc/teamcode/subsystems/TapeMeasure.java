@@ -19,12 +19,12 @@ public class TapeMeasure extends SubsystemBase {
     public static double retractPower = 1;
 
     public TapeMeasure(HardwareMap hardwareMap) {
-         if (isBarney) {
-             servo = hardwareMap.get(CRServo.class, "sTMT");
-        } else{
+//         if (isBarney) {
+//             servo = hardwareMap.get(CRServo.class, "sTMT");
+//        } else{
              dcMotor = hardwareMap.get(DcMotor.class, "sTMT");
-         }
-        isGen1 = isBarney;
+//         }
+//        isGen1 = isBarney;
     }
 
     @Override
@@ -33,36 +33,36 @@ public class TapeMeasure extends SubsystemBase {
     }
 
     public void extend() {
-        if (isGen1) {
-            servo.setPower(-1);
-        } else {
+//        if (isGen1) {
+//            servo.setPower(-1);
+//        } else {
             dcMotor.setPower(extendPower);
-        }
+//        }
     }
 
     public void retract() {
-        if (isGen1) {
-            servo.setPower(1);
-        } else {
+//        if (isGen1) {
+//            servo.setPower(1);
+//        } else {
             dcMotor.setPower(retractPower);
-        }
+//        }
     }
 
     public void stop() {
-        if (isGen1) {
-            servo.setPower(0);
-        } else {
+//        if (isGen1) {
+//            servo.setPower(0);
+//        } else {
 
             dcMotor.setPower(0);
-        }
+//        }
     }
 
     public double getTapeMeasurePower() {
-        if (isGen1) {
-            return servo.getPower();
-        } else {
+//        if (isGen1) {
+//            return servo.getPower();
+//        } else {
             return dcMotor.getPower();
-        }
+//        }
 
     }
 }

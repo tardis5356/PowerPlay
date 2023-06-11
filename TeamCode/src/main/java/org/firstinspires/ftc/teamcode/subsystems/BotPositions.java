@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 @Config
 public class BotPositions {
-    public static boolean isBarney = false;
+    public static boolean isBarney = true;
     //true = Barney
     //false = R2V2/V3PO
 
@@ -21,11 +21,11 @@ public class BotPositions {
 
     public static double LIFT_p_Barney = 0.01, LIFT_i_Barney = 0, LIFT_d_Barney = 0.0001;
 
-    public static double ARM_INIT_Barney = 0.565, ARM_INTAKE_Barney = 0.1, ARM_AUTO_INTAKE_WAYPOINT_Barney = 0.60, ARM_DELIVERY_Barney = 0.8, ARM_TRAVEL_Barney = 0.53, ARM_STORAGE_Barney = 0.5, ARM_AUTO_END_Barney = 0.48; //old deliver 0.365
+    public static double ARM_INIT_Barney = 0.5, ARM_INTAKE_Barney = 0.08, ARM_AUTO_INTAKE_WAYPOINT_Barney = 0.60, ARM_DELIVERY_Barney = 0.78, ARM_DELIVERY_DROP_Barney = 0.9, ARM_TRAVEL_Barney = 0.53, ARM_STORAGE_Barney = 0.5, ARM_AUTO_END_Barney = 0.48; //old deliver 0.365
 
-    public static double WRIST_INIT_Barney = 0.78, WRIST_INTAKE_Barney = 0.35, WRIST_AUTO_INTAKE_WAYPOINT_Barney = 0.05, WRIST_DELIVERY_Barney = 0.95, WRIST_TRAVEL_Barney = 0.3;
+    public static double WRIST_INIT_Barney = 0.78, WRIST_INTAKE_Barney = 1, WRIST_AUTO_INTAKE_WAYPOINT_Barney = 0.05, WRIST_DELIVERY_Barney = 0.3, WRIST_TRAVEL_Barney = 0.3;
 
-    public static double GRIPPER_OPEN_Barney = 0.5, GRIPPER_CLOSED_Barney = 0.16, GRIPPER_OPEN_AUTO_Barney = 0.6;
+    public static double GRIPPER_OPEN_Barney = 0.6, GRIPPER_CLOSED_Barney = 0.4, GRIPPER_OPEN_AUTO_Barney = 0.6;
 
     public static double BEACON_ARM_LOAD_Barney = 1, BEACON_ARM_STORAGE_Barney = 0.6, BEACON_ARM_DELIVERY_Barney = 0.8;
 

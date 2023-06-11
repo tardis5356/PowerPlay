@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.isBarney;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.controller.PIDController;
@@ -18,10 +19,10 @@ public class Lift extends SubsystemBase {
     private DcMotorEx mL, mL2;
 
     private TouchSensor liftBase;
-    public static double pE_Barney = BotPositions.LIFT_p_Barney, i_Barney = BotPositions.LIFT_i_Barney, d_Barney = BotPositions.LIFT_d_R2V2;
+    public static double pE_Barney = BotPositions.LIFT_p_Barney, i_Barney = BotPositions.LIFT_i_Barney, d_Barney = BotPositions.LIFT_d_Barney;
     public static double pE_R2V2 = BotPositions.LIFT_p_R2V2, i_R2V2 = BotPositions.LIFT_i_R2V2, d_R2V2 = BotPositions.LIFT_d_R2V2;
 
-    public static double f_Barney = 0.2;
+    public static double f_Barney = 0.1;
     public static double f_R2V2 = 0.22;
 
     public static int target = 0;
@@ -54,8 +55,7 @@ public class Lift extends SubsystemBase {
 
         if (isBarney) {
             controller = new PIDController(pE_Barney, i_Barney, d_Barney);
-        }
-        if (!isBarney) {
+        } else {
             controller = new PIDController(pE_R2V2, i_R2V2, d_R2V2);
         }
 
@@ -67,6 +67,10 @@ public class Lift extends SubsystemBase {
         mL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         mL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         mL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        if(isBarney){
+            mL.setDirection(DcMotorSimple.Direction.REVERSE);
+            mL2.setDirection(DcMotorSimple.Direction.REVERSE);
+        }
         target = -10;
     }
 

@@ -31,7 +31,7 @@ public class Wrist extends SubsystemBase {
 
     public Wrist(HardwareMap hardwareMap) {
         servo = hardwareMap.get(Servo.class, "sW");
-        toInitPosition();
+        toDeliverPosition();
     }
 
     @Override

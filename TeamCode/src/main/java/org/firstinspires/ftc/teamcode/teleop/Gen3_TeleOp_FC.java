@@ -17,16 +17,20 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.GyroEx;
 import com.arcrobotics.ftclib.hardware.RevIMU;
+import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.commands.DropConeCommand;
 import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
@@ -42,7 +46,7 @@ import java.text.DecimalFormat;
 @TeleOp(name = "Gen3_TeleOp_FC")
 public class Gen3_TeleOp_FC extends CommandOpMode {
     private DcMotorEx mFR, mFL, mBR, mBL;
-    private BNO055IMU imu;
+    private BHI260IMU imu;
 
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
@@ -68,7 +72,7 @@ public class Gen3_TeleOp_FC extends CommandOpMode {
     private Wrist wrist;
     private Gripper gripper;
     private BeaconArm beaconArm;
-    private TapeMeasure tapeMeasure;
+    //    private TapeMeasure tapeMeasure;
     private BatWing batwing;
 
     private RobotToStateCommand liftToTravelPositionCommand, liftToLowJunctionCommand, liftToMediumJunctionCommand, liftToHighJunctionCommand;
@@ -85,7 +89,6 @@ public class Gen3_TeleOp_FC extends CommandOpMode {
         // Object declarations
         driver = new GamepadEx(gamepad1);
         manipulator = new GamepadEx(gamepad2);
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
         // Motors and Other Stuff
         //defineComponents
@@ -94,7 +97,7 @@ public class Gen3_TeleOp_FC extends CommandOpMode {
         mBR = hardwareMap.get(DcMotorEx.class, "mBR");
         mBL = hardwareMap.get(DcMotorEx.class, "mBL");
 
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu = hardwareMap.get(BHI260IMU.class, "imu");
 
         // Behaviors
         mFL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -102,10 +105,13 @@ public class Gen3_TeleOp_FC extends CommandOpMode {
         mFR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mBR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+//        mFR.setDirection(DcMotorSimple.Direction.REVERSE);
+//        mBR.setDirection(DcMotorSimple.Direction.REVERSE);
         mFL.setDirection(DcMotorSimple.Direction.REVERSE);
         mBL.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        imu.initialize(parameters);
+        imu.initialize(new IMU.Parameters(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.RIGHT, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD)));
+        imu.resetYaw();
 
         telemetry.addData("Ready to start!", getRuntime());
         telemetry.update();
@@ -117,7 +123,7 @@ public class Gen3_TeleOp_FC extends CommandOpMode {
         arm = new Arm(hardwareMap);
         wrist = new Wrist(hardwareMap);
         beaconArm = new BeaconArm(hardwareMap);
-        tapeMeasure = new TapeMeasure(hardwareMap);
+//        tapeMeasure = new TapeMeasure(hardwareMap);
         batwing = new BatWing(hardwareMap);
 
         liftToIntakeCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_R2V2, 0, "intake");
@@ -126,7 +132,7 @@ public class Gen3_TeleOp_FC extends CommandOpMode {
         liftToMediumJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_MEDIUM_JUNCTION_R2V2, 0, "delivery");
         liftToHighJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_HIGH_JUNCTION_R2V2, 0, "delivery");
 
-        dropConeCommand = new DropConeCommand(gripper, batwing);
+        dropConeCommand = new DropConeCommand(gripper, batwing, arm);
 
         // driver triggers
         //driver = gamepad 1
@@ -138,14 +144,23 @@ public class Gen3_TeleOp_FC extends CommandOpMode {
         new Trigger(() -> driver.getButton(GamepadKeys.Button.RIGHT_BUMPER))
                 .whenActive(liftToHighJunctionCommand);
         new Trigger(() -> driver.getButton(GamepadKeys.Button.LEFT_BUMPER))
-                .whenActive(dropConeCommand);
+                .whenActive(liftToIntakeCommand);
 
         new Trigger(() -> driver.getButton(GamepadKeys.Button.X))
-                .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = SLOW_POWER_MULTIPLIER);
+                .whenActive(() -> gripper.open());
         new Trigger(() -> driver.getButton(GamepadKeys.Button.Y))
                 .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = MEDIUM_POWER_MULTIPLIER);
         new Trigger(() -> driver.getButton(GamepadKeys.Button.B))
                 .whenActive(() -> CURRENT_BASE_POWER_MULTIPLIER = FAST_POWER_MULTIPLIER);
+
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.A))
+                .whenActive(() -> gripper.close());
+
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.BACK))
+                .whenActive(() -> imu.resetYaw());
+        new Trigger(() -> driver.getButton(GamepadKeys.Button.START))
+                .whenActive(dropConeCommand);
+
 
         //teleOp manual mode
 //        new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_UP))
@@ -219,45 +234,89 @@ public class Gen3_TeleOp_FC extends CommandOpMode {
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.LEFT_BUMPER) && batwing.atPole()) // opens gripper on right bumper and atPole
                 .whenActive(dropConeCommand);
 
-        new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_LEFT))
-                .whileActiveContinuous(() -> tapeMeasure.retract());
-        new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_RIGHT))
-                .whileActiveContinuous(() -> tapeMeasure.extend());
-        new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_DOWN))
-                .whileActiveContinuous(() -> tapeMeasure.stop());
+//        new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_LEFT))
+//                .whileActiveContinuous(() -> tapeMeasure.retract());
+//        new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_RIGHT))
+//                .whileActiveContinuous(() -> tapeMeasure.extend());
+//        new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_DOWN))
+//                .whileActiveContinuous(() -> tapeMeasure.stop());
 
-        new Trigger(() -> driver.getButton(GamepadKeys.Button.A))
-                .whenActive(() -> {
-                    offset = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle;
-                });
+
+        //        new Trigger(() -> driver.getButton(GamepadKeys.Button.A))
+//                .whenActive(() -> {
+//                    YawPitchRollAngles robotOrientation = imu.getRobotYawPitchRollAngles();
+//                    offset = robotOrientation.getYaw(AngleUnit.RADIANS);
+////                    offset = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS).firstAngle;
+//                });
     }
 
     @Override
     public void run() {
         super.run();
         //FIELDCENTRIC
-        Orientation botOrientationDegrees = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        Orientation botOrientationRadians = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
+//        YawPitchRollAngles robotOrientation = imu.getRobotYawPitchRollAngles();
+//
+//        double heading = AngleUnit.normalizeRadians(robotOrientation.getYaw(AngleUnit.RADIANS) - offset);
+//
+//        double ly = -gamepad1.left_stick_y;
+//        double lx = gamepad1.left_stick_x;
+//        double rx = gamepad1.right_stick_x;
+//
+//        // Rotate by the heading of the robot
+//        Vector2d vector = new Vector2d(lx, ly).rotated(-heading);
+//        lx = vector.getX();
+//        ly = vector.getY();
+//
+//        double normalize = Math.max(abs(ly) + abs(lx) + abs(rx), 1.0);
+//
+//        mFL.setPower((ly + lx + rx) / normalize * CURRENT_POWER_MULTIPLIER);
+//        mBL.setPower((ly - lx + rx) / normalize * CURRENT_POWER_MULTIPLIER);
+//        mFR.setPower((ly - lx - rx) / normalize * CURRENT_POWER_MULTIPLIER);
+//        mBR.setPower((ly + lx - rx) / normalize * CURRENT_POWER_MULTIPLIER);
 
-        //Add the angle offset to be able to reset the 0 heading, and normalize it back to -pi to pi
-        double heading = AngleUnit.normalizeRadians(botOrientationRadians.firstAngle - offset); //
-//        double headingDegrees = AngleUnit.normalizeDegrees(botOrientationDegrees.firstAngle - offset); //
-
-        double ly = -gamepad1.left_stick_y;
-        double lx = gamepad1.left_stick_x;
+        double y = -gamepad1.left_stick_y; // Remember, this is reversed!
+        double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
         double rx = gamepad1.right_stick_x;
 
-        // Rotate by the heading of the robot
-        Vector2d vector = new Vector2d(lx, ly).rotated(-heading);
-        lx = vector.getX();
-        ly = vector.getY();
+        double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
-        double normalize = Math.max(abs(ly) + abs(lx) + abs(rx), 1.0);
+        // Rotate the movement direction counter to the bot's rotation
+        double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
+        double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
 
-        mFL.setPower((ly + lx + rx) / normalize * CURRENT_POWER_MULTIPLIER);
-        mBL.setPower((ly - lx + rx) / normalize * CURRENT_POWER_MULTIPLIER);
-        mFR.setPower((ly - lx - rx) / normalize * CURRENT_POWER_MULTIPLIER);
-        mBR.setPower((ly + lx - rx) / normalize * CURRENT_POWER_MULTIPLIER);
+        // Denominator is the largest motor power (absolute value) or 1
+        // This ensures all the powers maintain the same ratio, but only when
+        // at least one is out of the range [-1, 1]
+        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+        double frontLeftPower = (rotY + rotX + rx) / denominator;
+        double backLeftPower = (rotY - rotX + rx) / denominator;
+        double frontRightPower = (rotY - rotX - rx) / denominator;
+        double backRightPower = (rotY + rotX - rx) / denominator;
+
+        mFL.setPower(frontLeftPower);
+        mBL.setPower(backLeftPower);
+        mFR.setPower(frontRightPower);
+        mBR.setPower(backRightPower);
+
+//        double y = -gamepad1.left_stick_y; // Remember, this is reversed!
+//        double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
+//        double rx = gamepad1.right_stick_x;
+//
+//        // Denominator is the largest motor power (absolute value) or 1
+//        // This ensures all the powers maintain the same ratio, but only when
+//        // at least one is out of the range [-1, 1]
+//        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+//        double frontLeftPower = (y + x + rx) / denominator;
+//        double backLeftPower = (y - x + rx) / denominator;
+//        double frontRightPower = (y - x - rx) / denominator;
+//        double backRightPower = (y + x - rx) / denominator;
+//
+//        mFL.setPower(frontLeftPower);
+//        mBL.setPower(backLeftPower);
+//        mFR.setPower(frontRightPower);
+//        mBR.setPower(backRightPower);
+
+
 //        mecanumDrive.driveFieldCentric(
 //                driver.getLeftX(),
 //                driver.getLeftY(),
@@ -353,17 +412,16 @@ public class Gen3_TeleOp_FC extends CommandOpMode {
 //        telemetry.addData("pole distance", batwing.getDistance());
 //        telemetry.addData("gripper distance", gripper.getDistance());
 
-        telemetry.addData("raw", imu.getAngularOrientation().firstAngle);
-        telemetry.addData("raw heading", botOrientationDegrees.firstAngle);
+        telemetry.addData("raw", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
         telemetry.addData("offset", offset);
-        telemetry.addData("offset heading", heading);
+//        telemetry.addData("offset heading", botHeading);
 //        telemetry.addData("offset heading", headingDegrees);
-//        telemetry.addData("arm pos", arm.getArmPosition());
-//        telemetry.addData("gripper pos", gripper.getGripperPosition());
+        telemetry.addData("arm pos", arm.getArmPosition());
+        telemetry.addData("gripper pos", gripper.getGripperPosition());
 //        telemetry.addData("beacon pos", beaconArm.getBeaconArmPosition());
-//        telemetry.addData("wrist pos", String.format("%.2f", wrist.getWristPosition()));
+        telemetry.addData("wrist pos", String.format("%.2f", wrist.getWristPosition()));
 
-//        telemetry.addData("manual mode is", manualModeOn);
+//        telemetry.addData("atDelivery", );
 //
         telemetry.addLine("odometers");
         telemetry.addData("right: ", mFR.getCurrentPosition());

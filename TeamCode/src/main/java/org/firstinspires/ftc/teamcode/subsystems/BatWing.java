@@ -33,7 +33,7 @@ public class BatWing extends SubsystemBase {
             colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorPole");
             storage();
         } else {
-            servo = hardwareMap.get(Servo.class, "sBA");
+            servo = hardwareMap.get(Servo.class, "sPA");
             storage();
         }
 

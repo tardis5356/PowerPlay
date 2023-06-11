@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_AUTO_EN
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_AUTO_INTAKE_WAYPOINT_Barney;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_AUTO_INTAKE_WAYPOINT_R2V2;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_DELIVERY_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_DELIVERY_DROP_Barney;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_DELIVERY_R2V2;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_INIT_Barney;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_INIT_R2V2;
@@ -35,6 +36,8 @@ public class Arm extends SubsystemBase {
     private Servo servo;
     private Servo servo2;
     public double servoPosition;
+
+    private double servoOffset = 1.02;
 
     public Arm(HardwareMap hardwareMap) {
         if(isBarney) {
@@ -67,7 +70,7 @@ public class Arm extends SubsystemBase {
         servoPosition = isBarney ? ARM_INIT_Barney : ARM_INIT_R2V2;
         if(isBarney){
             servo.setPosition(ARM_INIT_Barney);
-            servo2.setPosition(ARM_INIT_Barney);
+            servo2.setPosition(servoOffset-ARM_INIT_Barney);
         }else{
             servo.setPosition(ARM_INIT_R2V2);
         }
@@ -77,7 +80,7 @@ public class Arm extends SubsystemBase {
         servoPosition = isBarney ? ARM_INTAKE_Barney : ARM_INTAKE_R2V2;
         if(isBarney){
             servo.setPosition(ARM_INTAKE_Barney);
-            servo2.setPosition(ARM_INTAKE_Barney);
+            servo2.setPosition(servoOffset-ARM_INTAKE_Barney);
         }else{
             servo.setPosition(ARM_INTAKE_R2V2);
         }
@@ -87,7 +90,7 @@ public class Arm extends SubsystemBase {
         servoPosition = isBarney ? ARM_AUTO_INTAKE_WAYPOINT_Barney : ARM_AUTO_INTAKE_WAYPOINT_R2V2;
         if(isBarney){
             servo.setPosition(ARM_AUTO_INTAKE_WAYPOINT_Barney);
-            servo2.setPosition(ARM_AUTO_INTAKE_WAYPOINT_Barney);
+            servo2.setPosition(servoOffset-ARM_AUTO_INTAKE_WAYPOINT_Barney);
         }else{
             servo.setPosition(ARM_AUTO_INTAKE_WAYPOINT_R2V2);
         }
@@ -97,7 +100,16 @@ public class Arm extends SubsystemBase {
         servoPosition = isBarney ? ARM_DELIVERY_Barney : ARM_DELIVERY_R2V2;
         if(isBarney){
             servo.setPosition(ARM_DELIVERY_Barney);
-            servo2.setPosition(ARM_DELIVERY_Barney);
+            servo2.setPosition(servoOffset-ARM_DELIVERY_Barney);
+        }else{
+            servo.setPosition(ARM_DELIVERY_R2V2);
+        }
+    }
+    public void toDeliverDropPosition() {
+        servoPosition = isBarney ? ARM_DELIVERY_DROP_Barney : ARM_DELIVERY_R2V2;
+        if(isBarney){
+            servo.setPosition(ARM_DELIVERY_DROP_Barney);
+            servo2.setPosition(servoOffset-ARM_DELIVERY_DROP_Barney);
         }else{
             servo.setPosition(ARM_DELIVERY_R2V2);
         }
@@ -107,7 +119,7 @@ public class Arm extends SubsystemBase {
         servoPosition = isBarney ? ARM_TRAVEL_Barney : ARM_TRAVEL_R2V2;
         if(isBarney){
             servo.setPosition(ARM_TRAVEL_Barney);
-            servo2.setPosition(ARM_TRAVEL_Barney);
+            servo2.setPosition(servoOffset-ARM_TRAVEL_Barney);
         }else{
             servo.setPosition(ARM_TRAVEL_R2V2);
         }
@@ -117,7 +129,7 @@ public class Arm extends SubsystemBase {
         servoPosition = isBarney ? ARM_AUTO_END_Barney : ARM_AUTO_END_R2V2;
         if(isBarney){
             servo.setPosition(ARM_AUTO_END_Barney);
-            servo2.setPosition(ARM_AUTO_END_Barney);
+            servo2.setPosition(servoOffset-ARM_AUTO_END_Barney);
         }else{
             servo.setPosition(ARM_AUTO_END_R2V2);
         }
