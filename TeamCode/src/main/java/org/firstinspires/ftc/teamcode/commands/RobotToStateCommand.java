@@ -74,6 +74,7 @@ public class RobotToStateCommand extends ParallelCommandGroup {
                 break;
             case "delivery":
                 addCommands(
+                        new InstantCommand(() -> lift.setTargetButNotTheOtherOne(height)),
                         new LiftToPositionCommand(lift, height, 25),
                         new SequentialCommandGroup(
                                 new InstantCommand(()->{

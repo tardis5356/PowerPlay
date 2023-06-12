@@ -146,7 +146,7 @@ public class Gen2_TeleOp extends CommandOpMode {
         liftToMediumJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_MEDIUM_JUNCTION_R2V2, 0, "delivery");
         liftToHighJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_HIGH_JUNCTION_R2V2, 0, "delivery");
 
-        dropConeCommand = new DropConeCommand(gripper, batwing, arm);
+        dropConeCommand = new DropConeCommand(gripper, batwing, arm, lift, wrist,200);
 
         // driver triggers
         //driver = gamepad 1

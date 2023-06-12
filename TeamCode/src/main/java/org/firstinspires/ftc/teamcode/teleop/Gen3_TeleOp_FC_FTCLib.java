@@ -1,22 +1,17 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
-import static com.qualcomm.hardware.bosch.BNO055IMU.SensorMode.IMU;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_HIGH_JUNCTION_Barney;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_INTAKE_Barney;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_LOW_JUNCTION_Barney;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_MEDIUM_JUNCTION_Barney;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_TRAVEL_Barney;
-import static java.lang.Math.abs;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.button.Trigger;
-import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import com.arcrobotics.ftclib.hardware.GyroEx;
 import com.arcrobotics.ftclib.hardware.RevIMU;
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -28,10 +23,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.commands.DropConeCommand;
 import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
@@ -39,15 +30,14 @@ import org.firstinspires.ftc.teamcode.subsystems.BatWing;
 import org.firstinspires.ftc.teamcode.subsystems.BeaconArm;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
-import org.firstinspires.ftc.teamcode.subsystems.TapeMeasure;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 
 import java.text.DecimalFormat;
 
-@TeleOp(name = "Gen3_TeleOp_FC")
-public class Gen3_TeleOp_FC extends CommandOpMode {
+@TeleOp(name = "Gen3_TeleOp_FC_FTCLib")
+public class Gen3_TeleOp_FC_FTCLib extends CommandOpMode {
     private DcMotorEx mFR, mFL, mBR, mBL;
-    private BHI260IMU imu;
+    private RevIMU imu;
 
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
@@ -101,8 +91,6 @@ public class Gen3_TeleOp_FC extends CommandOpMode {
         mBR = hardwareMap.get(DcMotorEx.class, "mBR");
         mBL = hardwareMap.get(DcMotorEx.class, "mBL");
 
-        imu = hardwareMap.get(BHI260IMU.class, "imu");
-
         // Behaviors
         mFL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -114,8 +102,15 @@ public class Gen3_TeleOp_FC extends CommandOpMode {
         mFL.setDirection(DcMotorSimple.Direction.REVERSE);
         mBL.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        imu.initialize(new IMU.Parameters(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.RIGHT, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD)));
-        imu.resetYaw();
+        //IMU
+        // Retrieve the IMU from the hardware map
+        imu = (RevIMU) hardwareMap.get(BNO055IMU.class, "imu2");
+        // this is making a new object called 'parameters' that we use to hold the angle the imu is at
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        // Technically this is the default, however specifying it is clearer
+        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
+        // Without this, data retrieving from the IMU throws an exception
+        imu.init();
 
         telemetry.addData("Ready to start!", getRuntime());
         telemetry.update();
@@ -136,7 +131,7 @@ public class Gen3_TeleOp_FC extends CommandOpMode {
         liftToMediumJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_MEDIUM_JUNCTION_Barney, 0, "delivery");
         liftToHighJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_HIGH_JUNCTION_Barney, 0, "delivery");
 
-        dropConeCommand = new DropConeCommand(gripper, batwing, arm, lift, wrist,200);
+        dropConeCommand = new DropConeCommand(gripper, batwing, arm, lift, wrist, 200);
 
         // driver triggers
         //driver = gamepad 1
@@ -164,7 +159,7 @@ public class Gen3_TeleOp_FC extends CommandOpMode {
                 .whenActive(() -> gripper.close());
 
         new Trigger(() -> driver.getButton(GamepadKeys.Button.BACK))
-                .whenActive(() -> imu.resetYaw());
+                .whenActive(() -> imu.reset());
 //        new Trigger(() -> driver.getButton(GamepadKeys.Button.START))
 //                .whenActive(new DropConeCommand(gripper, batwing, arm, lift, lift.getTargetButNotTheOtherOne()));
 
@@ -239,7 +234,7 @@ public class Gen3_TeleOp_FC extends CommandOpMode {
         new Trigger(() -> manipulator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5) // opens gripper on right trigger
                 .whenActive(gripper::open);
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.LEFT_BUMPER)) // && batwing.atPole()) // opens gripper on right bumper and atPole
-                .whenActive(new DropConeCommand(gripper, batwing, arm, lift,wrist, lift.getTargetButNotTheOtherOne()));
+                .whenActive(new DropConeCommand(gripper, batwing, arm, lift, wrist, lift.getTargetButNotTheOtherOne()));
 
 //        new Trigger(() -> driver.getButton(GamepadKeys.Button.DPAD_LEFT))
 //                .whileActiveContinuous(() -> tapeMeasure.retract());
@@ -285,7 +280,7 @@ public class Gen3_TeleOp_FC extends CommandOpMode {
         double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
         double rx = gamepad1.right_stick_x;
 
-        double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double botHeading = Math.toRadians(imu.getHeading());
 
         // Rotate the movement direction counter to the bot's rotation
         double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
@@ -333,7 +328,7 @@ public class Gen3_TeleOp_FC extends CommandOpMode {
 //        );
 
         if(gamepad1.start){
-            schedule(new DropConeCommand(gripper, batwing, arm, lift,wrist, lift.getTargetButNotTheOtherOne()));
+            schedule(new DropConeCommand(gripper, batwing, arm, lift, wrist, lift.getTargetButNotTheOtherOne()));
         }
 //        new Trigger(() -> driver.getButton(GamepadKeys.Button.START))
 //                .whenActive(new DropConeCommand(gripper, batwing, arm, lift, lift.getTargetButNotTheOtherOne()));
@@ -427,7 +422,7 @@ public class Gen3_TeleOp_FC extends CommandOpMode {
 //        telemetry.addData("pole distance", batwing.getDistance());
 //        telemetry.addData("gripper distance", gripper.getDistance());
 
-        telemetry.addData("raw", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
+        telemetry.addData("raw", imu.getHeading());
         telemetry.addData("offset", offset);
 //        telemetry.addData("offset heading", botHeading);
 //        telemetry.addData("offset heading", headingDegrees);

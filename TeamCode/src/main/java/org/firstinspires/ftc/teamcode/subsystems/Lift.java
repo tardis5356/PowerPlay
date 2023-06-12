@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.isBarney;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.acmerobotics.dashboard.config.Config;
@@ -26,6 +25,8 @@ public class Lift extends SubsystemBase {
     public static double f_R2V2 = 0.22;
 
     public static int target = 0;
+
+    public static int liftTargetPosButNotTheOtherOne = 0;
 
     public static int tolerance = 25;
 
@@ -107,6 +108,14 @@ public class Lift extends SubsystemBase {
         else retract = false; // set retraction to false
         updatePIDValues();
         manualActive = false;
+    }
+
+    public void setTargetButNotTheOtherOne(int targetPos) {
+        liftTargetPosButNotTheOtherOne = targetPos;
+    }
+
+    public int getTargetButNotTheOtherOne() {
+        return liftTargetPosButNotTheOtherOne;
     }
 
     public void setTolerance(int targetTolerance) {

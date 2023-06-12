@@ -15,7 +15,7 @@ public class BotPositions {
     //true = Barney
     //false = R2V2/V3PO
 
-    public static int LIFT_INTAKE_AUTO_Barney = 25, LIFT_INTAKE_Barney = -10, LIFT_TRAVEL_Barney = -10, LIFT_LOW_JUNCTION_Barney = 350, LIFT_MEDIUM_JUNCTION_Barney = 770, LIFT_HIGH_JUNCTION_Barney = 1150, AUTO_LIFT_HIGH_JUNCTION_Barney = 1100;//1175
+    public static int LIFT_INTAKE_AUTO_Barney = 25, LIFT_INTAKE_Barney = -10, LIFT_TRAVEL_Barney = -10, LIFT_LOW_JUNCTION_Barney = 200, LIFT_MEDIUM_JUNCTION_Barney = 640, LIFT_HIGH_JUNCTION_Barney = 1050, AUTO_LIFT_HIGH_JUNCTION_Barney = 1100;//1175
 
     public static int[] STACK_POSITIONS_Barney = {-10, 45, 100, 170, 210, 250};//0 = bottom cone, 4 = top cone MTI SUBMISSION
 
@@ -25,7 +25,7 @@ public class BotPositions {
 
     public static double WRIST_INIT_Barney = 0.78, WRIST_INTAKE_Barney = 1, WRIST_AUTO_INTAKE_WAYPOINT_Barney = 0.05, WRIST_DELIVERY_Barney = 0.3, WRIST_TRAVEL_Barney = 0.3;
 
-    public static double GRIPPER_OPEN_Barney = 0.6, GRIPPER_CLOSED_Barney = 0.4, GRIPPER_OPEN_AUTO_Barney = 0.6;
+    public static double GRIPPER_OPEN_Barney = 0.6, GRIPPER_CLOSED_Barney = 0.35, GRIPPER_OPEN_AUTO_Barney = 0.6;
 
     public static double BEACON_ARM_LOAD_Barney = 1, BEACON_ARM_STORAGE_Barney = 0.6, BEACON_ARM_DELIVERY_Barney = 0.8;
 
