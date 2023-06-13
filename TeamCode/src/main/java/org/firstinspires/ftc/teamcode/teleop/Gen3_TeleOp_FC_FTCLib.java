@@ -37,7 +37,7 @@ import java.text.DecimalFormat;
 @TeleOp(name = "Gen3_TeleOp_FC_FTCLib")
 public class Gen3_TeleOp_FC_FTCLib extends CommandOpMode {
     private DcMotorEx mFR, mFL, mBR, mBL;
-    private RevIMU imu;
+    RevIMU imu;
 
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
@@ -103,14 +103,25 @@ public class Gen3_TeleOp_FC_FTCLib extends CommandOpMode {
         mBL.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //IMU
-        // Retrieve the IMU from the hardware map
-        imu = (RevIMU) hardwareMap.get(BNO055IMU.class, "imu2");
-        // this is making a new object called 'parameters' that we use to hold the angle the imu is at
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        // Technically this is the default, however specifying it is clearer
-        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
-        // Without this, data retrieving from the IMU throws an exception
+//        // Retrieve the IMU from the hardware map
+//        imu = (RevIMU) hardwareMap.get(BNO055IMU.class, "imu2");
+//        // this is making a new object called 'parameters' that we use to hold the angle the imu is at
+//        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+//        // Technically this is the default, however specifying it is clearer
+//        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
+//        // Without this, data retrieving from the IMU throws an exception
+//        imu.init();
+
+        imu = new RevIMU(hardwareMap);
         imu.init();
+
+//        imu = hardwareMap.get(BHI260IMU.class, "imu");
+//        imu.initialize(
+//                new IMU.Parameters(
+//                        new RevHubOrientationOnRobot(
+//                                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
+//                                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD)));
+//        imu.resetYaw();
 
         telemetry.addData("Ready to start!", getRuntime());
         telemetry.update();
@@ -280,7 +291,7 @@ public class Gen3_TeleOp_FC_FTCLib extends CommandOpMode {
         double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
         double rx = gamepad1.right_stick_x;
 
-        double botHeading = Math.toRadians(imu.getHeading());
+        double botHeading = imu.getRotation2d().getRadians();
 
         // Rotate the movement direction counter to the bot's rotation
         double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
@@ -327,7 +338,7 @@ public class Gen3_TeleOp_FC_FTCLib extends CommandOpMode {
 //                false
 //        );
 
-        if(gamepad1.start){
+        if (gamepad1.start) {
             schedule(new DropConeCommand(gripper, batwing, arm, lift, wrist, lift.getTargetButNotTheOtherOne()));
         }
 //        new Trigger(() -> driver.getButton(GamepadKeys.Button.START))
@@ -413,7 +424,7 @@ public class Gen3_TeleOp_FC_FTCLib extends CommandOpMode {
         telemetry.addData("lift target", lift.target);
 //        telemetry.addData("lift pid", lift.getLiftPID());
 //        telemetry.addData("lift ff", lift.getLiftFF());
-//
+
         telemetry.addData("liftbase", lift.getLiftBase());
 //        telemetry.addData("liftbaseResets", lift.getLiftBaseResets());
 //
@@ -422,7 +433,7 @@ public class Gen3_TeleOp_FC_FTCLib extends CommandOpMode {
 //        telemetry.addData("pole distance", batwing.getDistance());
 //        telemetry.addData("gripper distance", gripper.getDistance());
 
-        telemetry.addData("raw", imu.getHeading());
+        telemetry.addData("raw", imu.getRotation2d().getDegrees());
         telemetry.addData("offset", offset);
 //        telemetry.addData("offset heading", botHeading);
 //        telemetry.addData("offset heading", headingDegrees);

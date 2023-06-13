@@ -101,7 +101,6 @@ public class Gen3_TeleOp_FC extends CommandOpMode {
         mBR = hardwareMap.get(DcMotorEx.class, "mBR");
         mBL = hardwareMap.get(DcMotorEx.class, "mBL");
 
-        imu = hardwareMap.get(BHI260IMU.class, "imu");
 
         // Behaviors
         mFL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -114,6 +113,7 @@ public class Gen3_TeleOp_FC extends CommandOpMode {
         mFL.setDirection(DcMotorSimple.Direction.REVERSE);
         mBL.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        imu = hardwareMap.get(BHI260IMU.class, "imu");
         imu.initialize(new IMU.Parameters(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.RIGHT, RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD)));
         imu.resetYaw();
 
