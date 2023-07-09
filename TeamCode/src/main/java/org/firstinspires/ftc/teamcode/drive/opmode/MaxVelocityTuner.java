@@ -11,8 +11,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.drive.DriveConstants_Barney;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Barney;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants_Gen3;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Gen3;
 
 import java.util.Objects;
 
@@ -25,7 +25,6 @@ import java.util.Objects;
  * Further fine tuning of kF may be desired.
  */
 @Config
-@Disabled
 @Autonomous(group = "drive")
 public class MaxVelocityTuner extends LinearOpMode {
     public static double RUNTIME = 2.0;
@@ -37,7 +36,7 @@ public class MaxVelocityTuner extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        SampleMecanumDrive_Barney drive = new SampleMecanumDrive_Barney(hardwareMap);
+        SampleMecanumDrive_Gen3 drive = new SampleMecanumDrive_Gen3(hardwareMap);
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -69,7 +68,7 @@ public class MaxVelocityTuner extends LinearOpMode {
 
         drive.setDrivePower(new Pose2d());
 
-        double effectiveKf = DriveConstants_Barney.getMotorVelocityF(veloInchesToTicks(maxVelocity));
+        double effectiveKf = DriveConstants_Gen3.getMotorVelocityF(veloInchesToTicks(maxVelocity));
 
         telemetry.addData("Max Velocity", maxVelocity);
         telemetry.addData("Voltage Compensated kF", effectiveKf * batteryVoltageSensor.getVoltage() / 12);
@@ -79,6 +78,6 @@ public class MaxVelocityTuner extends LinearOpMode {
     }
 
     private double veloInchesToTicks(double inchesPerSec) {
-        return inchesPerSec / (2 * Math.PI * DriveConstants_Barney.WHEEL_RADIUS) / DriveConstants_Barney.GEAR_RATIO * DriveConstants_Barney.TICKS_PER_REV;
+        return inchesPerSec / (2 * Math.PI * DriveConstants_Gen3.WHEEL_RADIUS) / DriveConstants_Gen3.GEAR_RATIO * DriveConstants_Gen3.TICKS_PER_REV;
     }
 }
