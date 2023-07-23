@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.commands.auto.R2V2;
 
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.AUTO_LIFT_HIGH_JUNCTION_R2V2;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_HIGH_JUNCTION_R2V2;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_INTAKE_R2V2;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -38,7 +37,7 @@ public class R2V2_DeliverPreloadCloseWaypointAutoCommand extends SequentialComma
 //
 //                ),
                 new ParallelCommandGroup(
-                        new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StartToPreloadPole : R2V2_AutoTrajectories.red_StartToPreloadPole),
+                        new V3PO_FollowTrajectoryCommand(drive, isBlue ? V3PO_AutoTrajectories.blue_StartToPreloadPole : V3PO_AutoTrajectories.red_StartToPreloadPole),
                         new SequentialCommandGroup(
                                 new InstantCommand(batwing::storage),
                                 new WaitCommand(1000),
@@ -47,7 +46,7 @@ public class R2V2_DeliverPreloadCloseWaypointAutoCommand extends SequentialComma
                 ),
                 new InstantCommand(gripper::open),
                 new ParallelCommandGroup(
-                        new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_PreloadPoleToStackWaypoint : R2V2_AutoTrajectories.red_PreloadPoleToStackWaypoint),
+                        new V3PO_FollowTrajectoryCommand(drive, isBlue ? V3PO_AutoTrajectories.blue_PreloadPoleToStackWaypoint : V3PO_AutoTrajectories.red_PreloadPoleToStackWaypoint),
                         new SequentialCommandGroup(
                                 new WaitCommand(1000),
                                 new InstantCommand(() -> {

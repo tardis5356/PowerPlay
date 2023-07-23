@@ -9,11 +9,11 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.commands.LiftToPositionCommand;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_AutoTrajectories;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.V3PO_AutoTrajectories;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS.R2V2_CycleToPoleAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS.R2V2_CycleToStackWaypointAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS.R2V2_DeliverPreloadAutoCommand;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_FollowTrajectoryCommand;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.V3PO_FollowTrajectoryCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS.R2V2_GrabFromStackCommand;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
@@ -49,7 +49,7 @@ public class Blue_Cycle_R2V2_NO_CV extends CommandOpMode {
     private R2V2_CycleToStackWaypointAutoCommand cycleToStackWaypointAutoCommand;
     private R2V2_DeliverPreloadAutoCommand deliverPreloadAutoCommand;
     private R2V2_GrabFromStackCommand grabFromStackCommand;
-    private R2V2_FollowTrajectoryCommand parkTrajectoryCommand;
+    private V3PO_FollowTrajectoryCommand parkTrajectoryCommand;
     private LiftToPositionCommand liftToPositionCommand;
 
     TrajectorySequence parkTrajectory;
@@ -103,8 +103,8 @@ public class Blue_Cycle_R2V2_NO_CV extends CommandOpMode {
         liftToPositionCommand = new LiftToPositionCommand(lift, 50, 25);
 
         // declare trajectories
-        drive.setPoseEstimate(R2V2_AutoTrajectories.blue_StartPos);
-        R2V2_AutoTrajectories.generateTrajectories(drive);
+        drive.setPoseEstimate(V3PO_AutoTrajectories.blue_StartPos);
+        V3PO_AutoTrajectories.generateTrajectories(drive);
 
         gripper.close();
 

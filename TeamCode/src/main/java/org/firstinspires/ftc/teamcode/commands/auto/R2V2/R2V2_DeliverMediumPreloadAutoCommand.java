@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.commands.auto.R2V2;
 
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.AUTO_LIFT_HIGH_JUNCTION_R2V2;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_INTAKE_R2V2;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_MEDIUM_JUNCTION_R2V2;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -39,7 +37,7 @@ public class R2V2_DeliverMediumPreloadAutoCommand extends SequentialCommandGroup
 //
 //                ),
                 new ParallelCommandGroup(
-                        new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StartToMedPreloadPole : R2V2_AutoTrajectories.red_StartToMedPreloadPole),
+                        new V3PO_FollowTrajectoryCommand(drive, isBlue ? V3PO_AutoTrajectories.blue_StartToMedPreloadPole : V3PO_AutoTrajectories.red_StartToMedPreloadPole),
                         new SequentialCommandGroup(
                                 new InstantCommand(batwing::storage),
                                 new WaitCommand(1000),
@@ -49,7 +47,7 @@ public class R2V2_DeliverMediumPreloadAutoCommand extends SequentialCommandGroup
                 new InstantCommand(gripper::open),
                 new WaitCommand(100),
                 new ParallelCommandGroup(
-                        new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_MedPreloadPoleToStack : R2V2_AutoTrajectories.red_MedPreloadPoleToStack),
+                        new V3PO_FollowTrajectoryCommand(drive, isBlue ? V3PO_AutoTrajectories.blue_MedPreloadPoleToStack : V3PO_AutoTrajectories.red_MedPreloadPoleToStack),
                         new SequentialCommandGroup(new InstantCommand(arm::toTravelPosition),
                                 new InstantCommand(wrist::toTravelPosition),
 //                        new WaitCommand(250),

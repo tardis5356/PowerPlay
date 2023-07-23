@@ -1,17 +1,17 @@
 package org.firstinspires.ftc.teamcode.drive;
 
 //make sure these reference the correct robot!! Otherwise, the bot will operate but you will have a snafu
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Gen3.MAX_ACCEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Gen3.MAX_ANG_ACCEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Gen3.MAX_ANG_VEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Gen3.MAX_VEL;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Gen3.MOTOR_VELO_PID;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Gen3.RUN_USING_ENCODER;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Gen3.TRACK_WIDTH;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Gen3.encoderTicksToInches;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Gen3.kA;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Gen3.kStatic;
-import static org.firstinspires.ftc.teamcode.drive.DriveConstants_Gen3.kV;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_V3PO.MAX_ACCEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_V3PO.MAX_ANG_ACCEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_V3PO.MAX_ANG_VEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_V3PO.MAX_VEL;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_V3PO.MOTOR_VELO_PID;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_V3PO.RUN_USING_ENCODER;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_V3PO.TRACK_WIDTH;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_V3PO.encoderTicksToInches;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_V3PO.kA;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_V3PO.kStatic;
+import static org.firstinspires.ftc.teamcode.drive.DriveConstants_V3PO.kV;
 
 import androidx.annotation.NonNull;
 
@@ -54,9 +54,9 @@ import java.util.List;
  * Simple mecanum drive hardware implementation for REV hardware.
  */
 @Config
-public class SampleMecanumDrive_Gen3 extends MecanumDrive {
+public class SampleMecanumDrive_V3PO extends MecanumDrive {
     //make sure these are set to 0 when doing track width tuner//
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(10,0,0);//(10, 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(8,0,0);//(10, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(6,0,0);//(6, 0, 0);
 
     public static double LATERAL_MULTIPLIER = 1;
@@ -79,7 +79,7 @@ public class SampleMecanumDrive_Gen3 extends MecanumDrive {
     private BNO055IMU imu;
     private VoltageSensor batteryVoltageSensor;
 
-    public SampleMecanumDrive_Gen3(HardwareMap hardwareMap) {
+    public SampleMecanumDrive_V3PO(HardwareMap hardwareMap) {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
@@ -165,7 +165,7 @@ public class SampleMecanumDrive_Gen3 extends MecanumDrive {
 
         // TODO: if desired, use setLocalizer() to change the localization method
         // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));
-        setLocalizer(new StandardTrackingWheelLocalizer_Gen3(hardwareMap));
+        setLocalizer(new StandardTrackingWheelLocalizer_V3PO(hardwareMap));
         trajectorySequenceRunner = new TrajectorySequenceRunner(follower, HEADING_PID);
     }
 

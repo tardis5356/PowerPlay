@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_HIGH_JUNCTION_Barney;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_INTAKE_Barney;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_LOW_JUNCTION_Barney;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_MEDIUM_JUNCTION_Barney;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_TRAVEL_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_HIGH_JUNCTION_V3PO;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_INTAKE_V3PO;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_LOW_JUNCTION_V3PO;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_MEDIUM_JUNCTION_V3PO;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_TRAVEL_V3PO;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -136,11 +136,11 @@ public class Gen3_TeleOp_FC_FTCLib extends CommandOpMode {
 //        tapeMeasure = new TapeMeasure(hardwareMap);
         batwing = new BatWing(hardwareMap);
 
-        liftToIntakeCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_Barney, 0, "intake");
-        liftToTravelPositionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_TRAVEL_Barney, 0, "travel");
-        liftToLowJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_LOW_JUNCTION_Barney, 0, "delivery");
-        liftToMediumJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_MEDIUM_JUNCTION_Barney, 0, "delivery");
-        liftToHighJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_HIGH_JUNCTION_Barney, 0, "delivery");
+        liftToIntakeCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_V3PO, 0, "intake");
+        liftToTravelPositionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_TRAVEL_V3PO, 0, "travel");
+        liftToLowJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_LOW_JUNCTION_V3PO, 0, "delivery");
+        liftToMediumJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_MEDIUM_JUNCTION_V3PO, 0, "delivery");
+        liftToHighJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_HIGH_JUNCTION_V3PO, 0, "delivery");
 
         dropConeCommand = new DropConeCommand(gripper, batwing, arm, lift, wrist, 200);
 
@@ -224,7 +224,7 @@ public class Gen3_TeleOp_FC_FTCLib extends CommandOpMode {
 
         // auto stack height grab
         new Trigger(() -> manipulator.getButton(GamepadKeys.Button.DPAD_UP))
-                .whenActive(new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_Barney, activeStackHeight, "intake"))
+                .whenActive(new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_V3PO, activeStackHeight, "intake"))
                 .cancelWhenActive(liftToIntakeCommand)
                 .cancelWhenActive(liftToHighJunctionCommand)
                 .cancelWhenActive(liftToMediumJunctionCommand)

@@ -28,7 +28,7 @@ public class R2V2_StackToMediumPoleAutoCommand extends SequentialCommandGroup {
 
         addCommands(
                 new ParallelCommandGroup(
-                        new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StackToMedPole : R2V2_AutoTrajectories.red_StackToMedPole),
+                        new V3PO_FollowTrajectoryCommand(drive, isBlue ? V3PO_AutoTrajectories.blue_StackToMedPole : V3PO_AutoTrajectories.red_StackToMedPole),
                         new SequentialCommandGroup(
 //                                new WaitCommand(200),
                                 new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_INTAKE_AUTO_R2V2, 0, "travel"),

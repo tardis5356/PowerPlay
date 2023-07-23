@@ -10,11 +10,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.auto.apriltags.AprilTagDetectionPipeline;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_AutoTrajectories;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.V3PO_AutoTrajectories;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS.R2V2_CycleToPoleAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS.R2V2_CycleToStackWaypointAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS.R2V2_DeliverPreloadAutoCommand;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_FollowTrajectoryCommand;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.V3PO_FollowTrajectoryCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS.R2V2_GrabFromStackCommand;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
@@ -97,8 +97,8 @@ public class R2V2_Park_Auto extends CommandOpMode {
 //        deliverPreloadAutoCommand = new R2V2_DeliverPreloadAutoCommand(drive, lift, arm, wrist, gripper, stackIndex);
 //        grabFromStackCommand = new R2V2_GrabFromStackCommand(drive, lift, arm, wrist, gripper, stackIndex);
 
-        drive.setPoseEstimate(R2V2_AutoTrajectories.blue_StartPos);
-        R2V2_AutoTrajectories.generateTrajectories(drive);
+        drive.setPoseEstimate(V3PO_AutoTrajectories.blue_StartPos);
+        V3PO_AutoTrajectories.generateTrajectories(drive);
 
         gripper.close();
 
@@ -186,7 +186,7 @@ public class R2V2_Park_Auto extends CommandOpMode {
 
         switch (tagOfInterest.id) {
             case 1:
-                parkTrajectory = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StartPos)
+                parkTrajectory = drive.trajectorySequenceBuilder(V3PO_AutoTrajectories.blue_StartPos)
                         .setReversed(true)
                         .lineToConstantHeading(new Vector2d(-36, 18))
                         .lineToConstantHeading(new Vector2d(-12, 18))
@@ -194,14 +194,14 @@ public class R2V2_Park_Auto extends CommandOpMode {
                 break;
 
             case 2:
-                parkTrajectory = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StartPos)
+                parkTrajectory = drive.trajectorySequenceBuilder(V3PO_AutoTrajectories.blue_StartPos)
                         .setReversed(true)
                         .lineToConstantHeading(new Vector2d(-36, 18))
                         .build();
                 break;
 
             case 3:
-                parkTrajectory = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StartPos)
+                parkTrajectory = drive.trajectorySequenceBuilder(V3PO_AutoTrajectories.blue_StartPos)
                         .setReversed(true)
                         .lineToConstantHeading(new Vector2d(-36, 18))
                         .lineToConstantHeading(new Vector2d(-55, 15))
@@ -209,7 +209,7 @@ public class R2V2_Park_Auto extends CommandOpMode {
                 break;
 
             default:
-                parkTrajectory = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.blue_StackWaypointPos)
+                parkTrajectory = drive.trajectorySequenceBuilder(V3PO_AutoTrajectories.blue_StackWaypointPos)
                         .setReversed(true)
                         .splineTo(new Vector2d(-36, 66), Math.toRadians(90))
                         .build();
@@ -230,7 +230,7 @@ public class R2V2_Park_Auto extends CommandOpMode {
 //                }),
 //                cycleToPoleAutoCommand,
 //                cycleToStackWaypointAutoCommand,
-                new R2V2_FollowTrajectoryCommand(drive, parkTrajectory)//, grabFromStackCommand,
+                new V3PO_FollowTrajectoryCommand(drive, parkTrajectory)//, grabFromStackCommand,
 //                new InstantCommand(() -> {
 //                    stackIndex--;
 //                }),

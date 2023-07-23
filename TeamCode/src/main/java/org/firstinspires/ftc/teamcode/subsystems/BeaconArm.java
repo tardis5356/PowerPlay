@@ -1,12 +1,12 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_DELIVERY_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_DELIVERY_V3PO;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BEACON_ARM_DELIVERY_R2V2;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BEACON_ARM_LOAD_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BEACON_ARM_LOAD_V3PO;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BEACON_ARM_LOAD_R2V2;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BEACON_ARM_STORAGE_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BEACON_ARM_STORAGE_V3PO;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BEACON_ARM_STORAGE_R2V2;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.isBarney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.isV3PO;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
@@ -35,17 +35,17 @@ public class BeaconArm extends SubsystemBase {
 
 
     public void toLoadingPosition(){
-        //servo.setPosition(isBarney ? BEACON_ARM_LOAD_Barney : BEACON_ARM_LOAD_R2V2);
+        //servo.setPosition(isV3PO ? BEACON_ARM_LOAD_V3PO : BEACON_ARM_LOAD_R2V2);
         loading = true;
     }
 
     public void toDeliveryPosition(){
-        //servo.setPosition(isBarney ? ARM_DELIVERY_Barney : BEACON_ARM_DELIVERY_R2V2);
+        //servo.setPosition(isV3PO ? ARM_DELIVERY_V3PO : BEACON_ARM_DELIVERY_R2V2);
         loading = false;
     }
 
     public void toStoragePosition(){
-       // servo.setPosition(isBarney ? BEACON_ARM_STORAGE_Barney : BEACON_ARM_STORAGE_R2V2);
+       // servo.setPosition(isV3PO ? BEACON_ARM_STORAGE_V3PO : BEACON_ARM_STORAGE_R2V2);
         loading = false;
     }
 

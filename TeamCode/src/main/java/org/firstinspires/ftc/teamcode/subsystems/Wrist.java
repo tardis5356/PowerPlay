@@ -1,21 +1,21 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_DELIVERY_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_DELIVERY_V3PO;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_DELIVERY_R2V2;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_INTAKE_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_INTAKE_V3PO;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_INTAKE_R2V2;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_TRAVEL_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_TRAVEL_V3PO;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.ARM_TRAVEL_R2V2;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_AUTO_INTAKE_WAYPOINT_R2V2;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_DELIVERY_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_DELIVERY_V3PO;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_DELIVERY_R2V2;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_INIT_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_INIT_V3PO;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_INIT_R2V2;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_INTAKE_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_INTAKE_V3PO;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_INTAKE_R2V2;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_TRAVEL_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_TRAVEL_V3PO;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.WRIST_TRAVEL_R2V2;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.isBarney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.isV3PO;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
@@ -54,28 +54,28 @@ public class Wrist extends SubsystemBase {
     }
 
     public void toInitPosition() {
-        servo.setPosition(isBarney ? WRIST_INIT_Barney : WRIST_INIT_R2V2);
-        servoPositionWrist = isBarney ? WRIST_INIT_Barney : WRIST_INIT_R2V2;
+        servo.setPosition(isV3PO ? WRIST_INIT_V3PO : WRIST_INIT_R2V2);
+        servoPositionWrist = isV3PO ? WRIST_INIT_V3PO : WRIST_INIT_R2V2;
     }
 
     public void toIntakePosition() {
-        servo.setPosition(isBarney ? WRIST_INTAKE_Barney : WRIST_INTAKE_R2V2);
-        servoPositionWrist = isBarney ? WRIST_INTAKE_Barney : WRIST_INTAKE_R2V2;
+        servo.setPosition(isV3PO ? WRIST_INTAKE_V3PO : WRIST_INTAKE_R2V2);
+        servoPositionWrist = isV3PO ? WRIST_INTAKE_V3PO : WRIST_INTAKE_R2V2;
     }
 
     public void toIntakeWaypointPosition() {
-        servo.setPosition(isBarney ? WRIST_INTAKE_Barney : WRIST_AUTO_INTAKE_WAYPOINT_R2V2);
-        servoPositionWrist = isBarney ? WRIST_INTAKE_Barney : WRIST_AUTO_INTAKE_WAYPOINT_R2V2;
+        servo.setPosition(isV3PO ? WRIST_INTAKE_V3PO : WRIST_AUTO_INTAKE_WAYPOINT_R2V2);
+        servoPositionWrist = isV3PO ? WRIST_INTAKE_V3PO : WRIST_AUTO_INTAKE_WAYPOINT_R2V2;
     }
 
     public void toDeliverPosition() {
-        servo.setPosition(isBarney ? WRIST_DELIVERY_Barney : WRIST_DELIVERY_R2V2);
-        servoPositionWrist = isBarney ? WRIST_DELIVERY_Barney : WRIST_DELIVERY_R2V2;
+        servo.setPosition(isV3PO ? WRIST_DELIVERY_V3PO : WRIST_DELIVERY_R2V2);
+        servoPositionWrist = isV3PO ? WRIST_DELIVERY_V3PO : WRIST_DELIVERY_R2V2;
     }
 
     public void toTravelPosition() {
-        servo.setPosition(isBarney ? WRIST_TRAVEL_Barney : WRIST_TRAVEL_R2V2);
-        servoPositionWrist = isBarney ? WRIST_TRAVEL_Barney : WRIST_TRAVEL_R2V2;
+        servo.setPosition(isV3PO ? WRIST_TRAVEL_V3PO : WRIST_TRAVEL_R2V2);
+        servoPositionWrist = isV3PO ? WRIST_TRAVEL_V3PO : WRIST_TRAVEL_R2V2;
     }
 
     public double getWristPosition() {

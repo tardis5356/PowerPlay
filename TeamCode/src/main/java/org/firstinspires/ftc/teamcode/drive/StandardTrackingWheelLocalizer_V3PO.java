@@ -27,7 +27,7 @@ import java.util.List;
  *
  */
 @Config
-public class StandardTrackingWheelLocalizer_Gen3 extends ThreeTrackingWheelLocalizer {
+public class StandardTrackingWheelLocalizer_V3PO extends ThreeTrackingWheelLocalizer {
     public static double TICKS_PER_REV = 8192;
     public static double WHEEL_RADIUS = 35/25.4/2; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
@@ -40,7 +40,7 @@ public class StandardTrackingWheelLocalizer_Gen3 extends ThreeTrackingWheelLocal
 
     private Encoder leftEncoder, rightEncoder, frontEncoder;
 
-    public StandardTrackingWheelLocalizer_Gen3(HardwareMap hardwareMap) {
+    public StandardTrackingWheelLocalizer_V3PO(HardwareMap hardwareMap) {
         super(Arrays.asList(
                 new Pose2d(0, LATERAL_DISTANCE / 2, 0), // left
                 new Pose2d(0, -LATERAL_DISTANCE / 2, 0), // right

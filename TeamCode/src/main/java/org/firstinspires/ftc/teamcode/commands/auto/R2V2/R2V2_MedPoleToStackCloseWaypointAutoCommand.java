@@ -26,7 +26,7 @@ public class R2V2_MedPoleToStackCloseWaypointAutoCommand extends ParallelCommand
 
 
         addCommands(
-                new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_MedPoleToStack : R2V2_AutoTrajectories.red_MedPoleToStack), //TODO: speed up a lot
+                new V3PO_FollowTrajectoryCommand(drive, isBlue ? V3PO_AutoTrajectories.blue_MedPoleToStack : V3PO_AutoTrajectories.red_MedPoleToStack), //TODO: speed up a lot
                 new SequentialCommandGroup(
                         new InstantCommand(arm::toTravelPosition),
                         new InstantCommand(wrist::toTravelPosition),

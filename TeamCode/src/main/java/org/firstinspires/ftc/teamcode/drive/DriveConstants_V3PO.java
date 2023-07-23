@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
  * and op modes themselves.
  */
 @Config
-public class DriveConstants_Gen3 {
+public class DriveConstants_V3PO {
 
     /*
      * These are motor constants that should be listed online for your motors.
@@ -54,8 +54,8 @@ public class DriveConstants_Gen3 {
      * motor encoders or have elected not to use them for velocity control, these values should be
      * empirically tuned.
      */
-    public static double kV = 1.0 / rpmToVelocity(MAX_RPM);
-    public static double kA = 0;
+    public static double kV = 0.0185;//1.0 / rpmToVelocity(MAX_RPM);
+    public static double kA = 0.004;
     public static double kStatic = 0;
 
     /*
@@ -65,7 +65,7 @@ public class DriveConstants_Gen3 {
      * small and gradually increase them later after everything is working. All distance units are
      * inches.
      */
-    public static double MAX_VEL = 0.8 * (223 / 60) * 1 * WHEEL_RADIUS * 2 * 3.14;//50; (in/s)   //2022-12-13 52.65   2023-01-06 32
+    public static double MAX_VEL = 40; //0.8 * (223 / 60) * 1 * WHEEL_RADIUS * 2 * 3.14;//50; (in/s)   //2022-12-13 52.65   2023-01-06 32
     public static double MAX_ACCEL = MAX_VEL;//120; //68.7   //2022-12-13 52.65   2023-01-06 32
     public static double MAX_ANG_VEL = Math.toRadians(180);  //2022-12-13 180
     public static double MAX_ANG_ACCEL = Math.toRadians(180);  //2022-12-13 180

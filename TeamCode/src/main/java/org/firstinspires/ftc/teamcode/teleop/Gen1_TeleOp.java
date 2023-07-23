@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_HIGH_JUNCTION_Barney;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_INTAKE_Barney;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_LOW_JUNCTION_Barney;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_MEDIUM_JUNCTION_Barney;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_TRAVEL_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_HIGH_JUNCTION_V3PO;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_INTAKE_V3PO;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_LOW_JUNCTION_V3PO;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_MEDIUM_JUNCTION_V3PO;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.LIFT_TRAVEL_V3PO;
 import static java.lang.Math.abs;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
@@ -106,11 +106,11 @@ public class Gen1_TeleOp extends CommandOpMode {
 //        m_grabCommand = new GrabStone(m_gripper);
 //        m_releaseCommand = new ReleaseStone(m_gripper);
         //defining commands for presets for lift, arm, gripper, wrist
-        liftToIntakeCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_INTAKE_Barney, 0, "intake");
-        liftToTravelPositionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_TRAVEL_Barney, 0, "travel");
-        liftToLowJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_LOW_JUNCTION_Barney, 0, "delivery");
-        liftToMediumJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_MEDIUM_JUNCTION_Barney, 0, "delivery");
-        liftToHighJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_HIGH_JUNCTION_Barney, 0, "delivery");
+        liftToIntakeCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_INTAKE_V3PO, 0, "intake");
+        liftToTravelPositionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_TRAVEL_V3PO, 0, "travel");
+        liftToLowJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_LOW_JUNCTION_V3PO, 0, "delivery");
+        liftToMediumJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_MEDIUM_JUNCTION_V3PO, 0, "delivery");
+        liftToHighJunctionCommand = new RobotToStateCommand(lift, arm, wrist, gripper, coffin, LIFT_HIGH_JUNCTION_V3PO, 0, "delivery");
 
         // driver triggers
         //driver = gamepad 1

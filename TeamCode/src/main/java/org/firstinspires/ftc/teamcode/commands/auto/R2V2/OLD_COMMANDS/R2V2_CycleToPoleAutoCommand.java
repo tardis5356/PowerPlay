@@ -10,8 +10,8 @@ import com.arcrobotics.ftclib.command.WaitCommand;
 
 import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
 //import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_AutoTrajectories;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_FollowTrajectoryCommand;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.V3PO_AutoTrajectories;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.V3PO_FollowTrajectoryCommand;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.Gripper;
@@ -33,7 +33,7 @@ public class R2V2_CycleToPoleAutoCommand extends SequentialCommandGroup {
 //                new LiftToPositionCommand(lift, 400, 50),
                 new WaitCommand(250),
                 new ParallelCommandGroup(
-                        new R2V2_FollowTrajectoryCommand(drive, isBlue ? R2V2_AutoTrajectories.blue_StackWaypointToMedPole : R2V2_AutoTrajectories.red_StackWaypointToMainPole),
+                        new V3PO_FollowTrajectoryCommand(drive, isBlue ? V3PO_AutoTrajectories.blue_StackWaypointToMedPole : V3PO_AutoTrajectories.red_StackWaypointToMainPole),
                         new SequentialCommandGroup(
                                 new WaitCommand(500),
                                 new RobotToStateCommand(lift, arm, wrist, gripper, batwing, LIFT_HIGH_JUNCTION_R2V2, 0, "delivery"),

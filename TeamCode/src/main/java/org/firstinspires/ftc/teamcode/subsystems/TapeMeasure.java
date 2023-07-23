@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.isBarney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.isV3PO;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
@@ -19,12 +19,12 @@ public class TapeMeasure extends SubsystemBase {
     public static double retractPower = 1;
 
     public TapeMeasure(HardwareMap hardwareMap) {
-//         if (isBarney) {
+//         if (isV3PO) {
 //             servo = hardwareMap.get(CRServo.class, "sTMT");
 //        } else{
              dcMotor = hardwareMap.get(DcMotor.class, "sTMT");
 //         }
-//        isGen1 = isBarney;
+//        isGen1 = isV3PO;
     }
 
     @Override

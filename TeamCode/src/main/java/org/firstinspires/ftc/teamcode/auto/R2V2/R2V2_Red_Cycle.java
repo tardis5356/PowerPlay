@@ -4,7 +4,6 @@ package org.firstinspires.ftc.teamcode.auto.R2V2;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandScheduler;
-import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -13,19 +12,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.auto.apriltags.AprilTagDetectionPipeline;
-import org.firstinspires.ftc.teamcode.commands.LiftToPositionCommand;
 import org.firstinspires.ftc.teamcode.commands.RobotToStateCommand;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_AutoTrajectories;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.V3PO_AutoTrajectories;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_CycleToMediumPoleAutoCommand;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS.R2V2_CycleToPoleAutoCommand;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_MedPoleToStackCloseWaypointAutoCommand;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS.R2V2_CycleToStackWaypointAutoCommand;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.V3PO_MedPoleToStackCloseWaypointAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS.R2V2_DeliverPreloadAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_DeliverPreloadCloseWaypointAutoCommand;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_FollowTrajectoryCommand;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_GrabFromStackCloseWaypointCommand;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS.R2V2_GrabFromStackCommand;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_StackToMediumPoleAutoCommand;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.V3PO_FollowTrajectoryCommand;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.V3PO_GrabFromStackCloseWaypointCommand;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.V3PO_StackToMediumPoleAutoCommand;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants_R2V2;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
@@ -91,14 +86,14 @@ public class R2V2_Red_Cycle extends LinearOpMode {
 //    private R2V2_DeliverPreloadAutoCommand deliverPreloadAutoCommand;
 //    private R2V2_GrabFromStackCommand grabFromStackCommand;
 
-    private R2V2_StackToMediumPoleAutoCommand stackToMediumPoleAutoCommand;
+    private V3PO_StackToMediumPoleAutoCommand stackToMediumPoleAutoCommand;
 
     private R2V2_CycleToMediumPoleAutoCommand cycleToMediumPoleAutoCommand;
     //    private R2V2_MedPoleToStackCloseWaypointAutoCommand cycleToStackCloseWaypointAutoCommand;
     private R2V2_DeliverPreloadCloseWaypointAutoCommand deliverPreloadCWAutoCommand;
 //    private R2V2_GrabFromStackCloseWaypointCommand grabFromStackCWCommand;
 
-    private R2V2_FollowTrajectoryCommand parkTrajectoryCommand;
+    private V3PO_FollowTrajectoryCommand parkTrajectoryCommand;
 //    private LiftToPositionCommand liftToPositionCommand;
 
     @Override
@@ -134,8 +129,8 @@ public class R2V2_Red_Cycle extends LinearOpMode {
 //        camera = new Camera(hardwareMap, telemetry2);
 
         //generate trajectories, must do this before you declare commands
-        drive.setPoseEstimate(R2V2_AutoTrajectories.red_StartPos);
-        R2V2_AutoTrajectories.generateTrajectories(drive);
+        drive.setPoseEstimate(V3PO_AutoTrajectories.red_StartPos);
+        V3PO_AutoTrajectories.generateTrajectories(drive);
 
         // declare commands
 //        cycleToPoleAutoCommand = new R2V2_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper, batwing, false);
@@ -145,7 +140,7 @@ public class R2V2_Red_Cycle extends LinearOpMode {
 
 
         cycleToMediumPoleAutoCommand = new R2V2_CycleToMediumPoleAutoCommand(drive, lift, arm, wrist, gripper, batwing, false);
-        stackToMediumPoleAutoCommand = new R2V2_StackToMediumPoleAutoCommand(drive, lift, arm, wrist, gripper, batwing, false);
+        stackToMediumPoleAutoCommand = new V3PO_StackToMediumPoleAutoCommand(drive, lift, arm, wrist, gripper, batwing, false);
 //        cycleToStackCloseWaypointAutoCommand = new R2V2_MedPoleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, stackIndex, false);
         deliverPreloadCWAutoCommand = new R2V2_DeliverPreloadCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, stackIndex, false);
 //        grabFromStackCWCommand = new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, stackIndex, false);
@@ -154,19 +149,19 @@ public class R2V2_Red_Cycle extends LinearOpMode {
 
         gripper.close();
 ////////////////////////////DEFINING PARK TRAJECTORIES//////////////////////////////
-        parkTrajectory1 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.red_StackWaypointPos)
+        parkTrajectory1 = drive.trajectorySequenceBuilder(V3PO_AutoTrajectories.red_StackWaypointPos)
                 .setReversed(true)
                 .lineToLinearHeading(new Pose2d(60, 16, Math.toRadians(270)), SampleMecanumDrive_R2V2.getVelocityConstraint(86, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                         SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
                 .build();
 
-        parkTrajectory2 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.red_StackWaypointPos)
+        parkTrajectory2 = drive.trajectorySequenceBuilder(V3PO_AutoTrajectories.red_StackWaypointPos)
                 .setReversed(true)
                 .lineToLinearHeading(new Pose2d(36, 16, Math.toRadians(270)), SampleMecanumDrive_R2V2.getVelocityConstraint(86, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                         SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
                 .build();
 
-        parkTrajectory3 = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.red_StackWaypointPos)
+        parkTrajectory3 = drive.trajectorySequenceBuilder(V3PO_AutoTrajectories.red_StackWaypointPos)
                 .setReversed(true)
                 .lineToLinearHeading(new Pose2d(12, 16, Math.toRadians(270)), SampleMecanumDrive_R2V2.getVelocityConstraint(86, DriveConstants_R2V2.MAX_ANG_VEL, DriveConstants_R2V2.TRACK_WIDTH),
                         SampleMecanumDrive_R2V2.getAccelerationConstraint(DriveConstants_R2V2.MAX_ACCEL))
@@ -177,22 +172,22 @@ public class R2V2_Red_Cycle extends LinearOpMode {
         schedule(new SequentialCommandGroup(
                 deliverPreloadCWAutoCommand,
 
-                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 4, false),
+                new V3PO_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 4, false),
 //                cycleToMediumPoleAutoCommand,
                 stackToMediumPoleAutoCommand,
-                new R2V2_MedPoleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 3, false),
+                new V3PO_MedPoleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 3, false),
 
-                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 3, false),
+                new V3PO_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 3, false),
 //                cycleToMediumPoleAutoCommand,
                 stackToMediumPoleAutoCommand,
-                new R2V2_MedPoleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 2, false),
+                new V3PO_MedPoleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 2, false),
 
-                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 2, false),
+                new V3PO_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 2, false),
 //                cycleToMediumPoleAutoCommand,
                 stackToMediumPoleAutoCommand,
-                new R2V2_MedPoleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 1, false),
+                new V3PO_MedPoleToStackCloseWaypointAutoCommand(drive, lift, arm, wrist, gripper, batwing, 1, false),
 
-                new R2V2_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 1, false),
+                new V3PO_GrabFromStackCloseWaypointCommand(drive, lift, arm, wrist, gripper, batwing, 1, false),
 //                cycleToMediumPoleAutoCommand,
                 stackToMediumPoleAutoCommand
         ));
@@ -267,16 +262,16 @@ public class R2V2_Red_Cycle extends LinearOpMode {
                     CommandScheduler.getInstance().cancelAll();
                     switch (tagOfInterest.id) {
                         case 1:
-                            parkTrajectoryCommand = new R2V2_FollowTrajectoryCommand(drive, parkTrajectory1);
+                            parkTrajectoryCommand = new V3PO_FollowTrajectoryCommand(drive, parkTrajectory1);
                             telemetry.addLine("park traj 1");
                             break;
                         default:
                         case 2:
-                            parkTrajectoryCommand = new R2V2_FollowTrajectoryCommand(drive, parkTrajectory2);
+                            parkTrajectoryCommand = new V3PO_FollowTrajectoryCommand(drive, parkTrajectory2);
                             telemetry.addLine("park traj 2");
                             break;
                         case 3:
-                            parkTrajectoryCommand = new R2V2_FollowTrajectoryCommand(drive, parkTrajectory3);
+                            parkTrajectoryCommand = new V3PO_FollowTrajectoryCommand(drive, parkTrajectory3);
                             telemetry.addLine("park traj 3");
                             break;
                     }

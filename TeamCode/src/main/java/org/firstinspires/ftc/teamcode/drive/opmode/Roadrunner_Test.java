@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Barney;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_V3PO;
 @Config
 @Disabled
 @Autonomous(name = "Roadrunner_Test", group = "Autonomous")
@@ -17,7 +17,7 @@ public abstract class Roadrunner_Test extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        SampleMecanumDrive_Barney drive = new SampleMecanumDrive_Barney(hardwareMap);
+        SampleMecanumDrive_V3PO drive = new SampleMecanumDrive_V3PO(hardwareMap);
 
 
         waitForStart();

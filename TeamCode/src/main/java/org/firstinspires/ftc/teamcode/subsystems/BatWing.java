@@ -1,14 +1,14 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BATWING_DEPLOYED_Barney;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BATWING_DEPLOYED_LOW_JUNCTION_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BATWING_DEPLOYED_V3PO;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BATWING_DEPLOYED_LOW_JUNCTION_V3PO;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BATWING_DEPLOYED_LOW_JUNCTION_R2V2;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BATWING_DEPLOYED_R2V2;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BATWING_RETRACTED_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BATWING_RETRACTED_V3PO;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BATWING_RETRACTED_R2V2;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BATWING_STORAGE_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BATWING_STORAGE_V3PO;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.BATWING_STORAGE_R2V2;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.isBarney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.isV3PO;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
@@ -28,7 +28,7 @@ public class BatWing extends SubsystemBase {
     public static String state = "STORAGE";
 
     public BatWing(HardwareMap hardwareMap) {
-        if (!isBarney) {
+        if (!isV3PO) {
             servo = hardwareMap.get(Servo.class, "sBW");
             colorSensor = hardwareMap.get(NormalizedColorSensor.class, "colorPole");
             storage();
@@ -49,29 +49,29 @@ public class BatWing extends SubsystemBase {
         double distance = ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM);
         boolean closed = false;
         if (distance < 4) {
-            // servo.setPosition(isBarney ? GRIPPER_CLOSED_Barney : GRIPPER_CLOSED_R2V2);
+            // servo.setPosition(isV3PO ? GRIPPER_CLOSED_V3PO : GRIPPER_CLOSED_R2V2);
             closed = true;
         } else {
-            //servo.setPosition(isBarney ? GRIPPER_OPEN_Barney : GRIPPER_OPEN_R2V2);
+            //servo.setPosition(isV3PO ? GRIPPER_OPEN_V3PO : GRIPPER_OPEN_R2V2);
             closed = false;
         }
         return closed;
     }
 
     public double getDistance() {
-        if (!isBarney) return ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM);
+        if (!isV3PO) return ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM);
         return 0;
     }
 
     public String getState() {
-        if (!isBarney) return state;
+        if (!isV3PO) return state;
         return "";
     }
 
 
     public void deployed() {
-        if (isBarney) {
-            servo.setPosition(BATWING_DEPLOYED_Barney);
+        if (isV3PO) {
+            servo.setPosition(BATWING_DEPLOYED_V3PO);
         } else {
             servo.setPosition(BATWING_DEPLOYED_R2V2);
         }
@@ -79,8 +79,8 @@ public class BatWing extends SubsystemBase {
     } //this is deployed to align to a pole/junction --> parallel to the ground
 
     public void deployedLowJunction() {
-        if (isBarney) {
-            servo.setPosition(BATWING_DEPLOYED_LOW_JUNCTION_Barney);
+        if (isV3PO) {
+            servo.setPosition(BATWING_DEPLOYED_LOW_JUNCTION_V3PO);
         } else {
             servo.setPosition(BATWING_DEPLOYED_LOW_JUNCTION_R2V2);
         }
@@ -88,9 +88,9 @@ public class BatWing extends SubsystemBase {
     } //this is deployed to align to a low junction --> parallel to the ground
 
     public void retract() {
-        if (!isBarney && state != "STORAGE") {
-            if (isBarney) {
-                servo.setPosition(BATWING_RETRACTED_Barney);
+        if (!isV3PO && state != "STORAGE") {
+            if (isV3PO) {
+                servo.setPosition(BATWING_RETRACTED_V3PO);
             } else {
                 servo.setPosition(BATWING_RETRACTED_R2V2);
             }
@@ -99,8 +99,8 @@ public class BatWing extends SubsystemBase {
     } //used after dropping a cone --> retracts DOWN
 
     public void storage() {
-        if (isBarney) {
-            servo.setPosition(BATWING_STORAGE_Barney);
+        if (isV3PO) {
+            servo.setPosition(BATWING_STORAGE_V3PO);
         }else{
             servo.setPosition(BATWING_STORAGE_R2V2);
         }

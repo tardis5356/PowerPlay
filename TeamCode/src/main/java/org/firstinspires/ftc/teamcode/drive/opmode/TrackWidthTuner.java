@@ -6,14 +6,13 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.util.Angle;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.MovingStatistics;
 
 import org.firstinspires.ftc.robotcore.internal.system.Misc;
-import org.firstinspires.ftc.teamcode.drive.DriveConstants_R2V2;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
-import org.firstinspires.ftc.teamcode.drive.StandardTrackingWheelLocalizer_R2V2;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants_V3PO;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_V3PO;
 
 /*
  * This routine determines the effective track width. The procedure works by executing a point turn
@@ -40,11 +39,11 @@ public class TrackWidthTuner extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        //make sure that this points to the right bot - ie R2V2 or mse
-        SampleMecanumDrive_R2V2 drive = new SampleMecanumDrive_R2V2(hardwareMap);
+        //make sure that this points to the right bot - ie Gen3 or mse
+        SampleMecanumDrive_V3PO drive = new SampleMecanumDrive_V3PO(hardwareMap);
         // TODO: if you haven't already, set the localizer to something that doesn't depend on
         // drive encoders for computing the heading
-//        setLocalizer(new StandardTrackingWheelLocalizer_R2V2(hardwareMap));
+//        setLocalizer(new StandardTrackingWheelLocalizer_Gen3(hardwareMap));
 
 
         telemetry.addLine("Press play to begin the track width tuner routine");
@@ -57,6 +56,10 @@ public class TrackWidthTuner extends LinearOpMode {
 
         telemetry.clearAll();
         telemetry.addLine("Running...");
+        telemetry.addData("mFL", hardwareMap.get(DcMotorEx.class, "mFL").getCurrentPosition() );
+        telemetry.addData("mFR", -hardwareMap.get(DcMotorEx.class, "mFR").getCurrentPosition() );
+        telemetry.addData("mBL", hardwareMap.get(DcMotorEx.class, "mBL").getCurrentPosition() );
+        telemetry.addData("mBR", hardwareMap.get(DcMotorEx.class, "mBR").getCurrentPosition() );
         telemetry.update();
 
         MovingStatistics trackWidthStats = new MovingStatistics(NUM_TRIALS);
@@ -77,7 +80,7 @@ public class TrackWidthTuner extends LinearOpMode {
                 drive.update();
             }
 
-            double trackWidth = DriveConstants_R2V2.TRACK_WIDTH * Math.toRadians(ANGLE) / headingAccumulator;
+            double trackWidth = DriveConstants_V3PO.TRACK_WIDTH * Math.toRadians(ANGLE) / headingAccumulator;
             trackWidthStats.add(trackWidth);
 
             sleep(DELAY);

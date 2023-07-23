@@ -5,14 +5,13 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.drive.DriveConstants_Gen3;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_Gen3;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants_V3PO;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_V3PO;
 
 import java.util.Objects;
 
@@ -36,7 +35,7 @@ public class MaxVelocityTuner extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        SampleMecanumDrive_Gen3 drive = new SampleMecanumDrive_Gen3(hardwareMap);
+        SampleMecanumDrive_V3PO drive = new SampleMecanumDrive_V3PO(hardwareMap);
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -68,7 +67,7 @@ public class MaxVelocityTuner extends LinearOpMode {
 
         drive.setDrivePower(new Pose2d());
 
-        double effectiveKf = DriveConstants_Gen3.getMotorVelocityF(veloInchesToTicks(maxVelocity));
+        double effectiveKf = DriveConstants_V3PO.getMotorVelocityF(veloInchesToTicks(maxVelocity));
 
         telemetry.addData("Max Velocity", maxVelocity);
         telemetry.addData("Voltage Compensated kF", effectiveKf * batteryVoltageSensor.getVoltage() / 12);
@@ -78,6 +77,6 @@ public class MaxVelocityTuner extends LinearOpMode {
     }
 
     private double veloInchesToTicks(double inchesPerSec) {
-        return inchesPerSec / (2 * Math.PI * DriveConstants_Gen3.WHEEL_RADIUS) / DriveConstants_Gen3.GEAR_RATIO * DriveConstants_Gen3.TICKS_PER_REV;
+        return inchesPerSec / (2 * Math.PI * DriveConstants_V3PO.WHEEL_RADIUS) / DriveConstants_V3PO.GEAR_RATIO * DriveConstants_V3PO.TICKS_PER_REV;
     }
 }

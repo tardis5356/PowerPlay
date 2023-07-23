@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.GRIPPER_CLOSED_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.GRIPPER_CLOSED_V3PO;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.GRIPPER_CLOSED_R2V2;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.GRIPPER_OPEN_Barney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.GRIPPER_OPEN_V3PO;
 import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.GRIPPER_OPEN_R2V2;
-import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.isBarney;
+import static org.firstinspires.ftc.teamcode.subsystems.BotPositions.isV3PO;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.command.SubsystemBase;
@@ -43,20 +43,20 @@ public class Gripper extends SubsystemBase {
         // This method will be called once per scheduler run
     }
 
-    public void open(){ servo.setPosition(isBarney ? GRIPPER_OPEN_Barney : GRIPPER_OPEN_R2V2); }
+    public void open(){ servo.setPosition(isV3PO ? GRIPPER_OPEN_V3PO : GRIPPER_OPEN_R2V2); }
 
     public void close(){
-        servo.setPosition(isBarney ? GRIPPER_CLOSED_Barney : GRIPPER_CLOSED_R2V2);
+        servo.setPosition(isV3PO ? GRIPPER_CLOSED_V3PO : GRIPPER_CLOSED_R2V2);
     }
 
     public boolean hasCone(){
         double distance = ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM);
         boolean closed = false;
         if (distance < 4) {
-            // servo.setPosition(isBarney ? GRIPPER_CLOSED_Barney : GRIPPER_CLOSED_R2V2);
+            // servo.setPosition(isV3PO ? GRIPPER_CLOSED_V3PO : GRIPPER_CLOSED_R2V2);
             closed = true;
         } else {
-            //servo.setPosition(isBarney ? GRIPPER_OPEN_Barney : GRIPPER_OPEN_R2V2);
+            //servo.setPosition(isV3PO ? GRIPPER_OPEN_V3PO : GRIPPER_OPEN_R2V2);
             closed = false;
         }
         return closed;
@@ -65,17 +65,17 @@ public class Gripper extends SubsystemBase {
         double distance = ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM);
         boolean closed = false;
         if (distance < 7) {
-            // servo.setPosition(isBarney ? GRIPPER_CLOSED_Barney : GRIPPER_CLOSED_R2V2);
+            // servo.setPosition(isV3PO ? GRIPPER_CLOSED_V3PO : GRIPPER_CLOSED_R2V2);
             closed = true;
         } else {
-            //servo.setPosition(isBarney ? GRIPPER_OPEN_Barney : GRIPPER_OPEN_R2V2);
+            //servo.setPosition(isV3PO ? GRIPPER_OPEN_V3PO : GRIPPER_OPEN_R2V2);
             closed = false;
         }
         return closed;
     }
 
     public double getDistance(){
-        if (!isBarney) return ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM);
+        if (!isV3PO) return ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM);
         return 0;
     }
 

@@ -25,7 +25,7 @@ public class R2V2_MedPoleToStackAutoCommand extends ParallelCommandGroup {
 
 
         addCommands(
-                new R2V2_FollowTrajectoryCommand(drive, isBlue ? (isSlow ? R2V2_AutoTrajectories.blue_MedPoleToStackSlow : R2V2_AutoTrajectories.blue_MedPoleToStack) :  (isSlow ? R2V2_AutoTrajectories.red_MedPoleToStackSlow : R2V2_AutoTrajectories.red_MedPoleToStack)), //TODO: speed up a lot
+                new V3PO_FollowTrajectoryCommand(drive, isBlue ? (isSlow ? V3PO_AutoTrajectories.blue_MedPoleToStackSlow : V3PO_AutoTrajectories.blue_MedPoleToStack) :  (isSlow ? V3PO_AutoTrajectories.red_MedPoleToStackSlow : V3PO_AutoTrajectories.red_MedPoleToStack)), //TODO: speed up a lot
                 new SequentialCommandGroup(
                         new InstantCommand(arm::toTravelPosition),
                         new InstantCommand(wrist::toTravelPosition),

@@ -11,11 +11,11 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.auto.apriltags.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.commands.LiftToPositionCommand;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_AutoTrajectories;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.V3PO_AutoTrajectories;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS.R2V2_CycleToPoleAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS.R2V2_CycleToStackWaypointAutoCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS.R2V2_DeliverPreloadAutoCommand;
-import org.firstinspires.ftc.teamcode.commands.auto.R2V2.R2V2_FollowTrajectoryCommand;
+import org.firstinspires.ftc.teamcode.commands.auto.R2V2.V3PO_FollowTrajectoryCommand;
 import org.firstinspires.ftc.teamcode.commands.auto.R2V2.OLD_COMMANDS.R2V2_GrabFromStackCommand;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive_R2V2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
@@ -79,7 +79,7 @@ public class TEST_AUTO extends LinearOpMode {
     private R2V2_CycleToStackWaypointAutoCommand cycleToStackWaypointAutoCommand;
     private R2V2_DeliverPreloadAutoCommand deliverPreloadAutoCommand;
     private R2V2_GrabFromStackCommand grabFromStackCommand;
-    private R2V2_FollowTrajectoryCommand parkTrajectoryCommand;
+    private V3PO_FollowTrajectoryCommand parkTrajectoryCommand;
     private LiftToPositionCommand liftToPositionCommand;
 
     @Override
@@ -118,8 +118,8 @@ public class TEST_AUTO extends LinearOpMode {
 //        camera = new Camera(hardwareMap, telemetry2);
 
         //generate trajectories, must do this before you declare commands
-        drive.setPoseEstimate(R2V2_AutoTrajectories.red_StartPos);
-        R2V2_AutoTrajectories.generateTrajectories(drive);
+        drive.setPoseEstimate(V3PO_AutoTrajectories.red_StartPos);
+        V3PO_AutoTrajectories.generateTrajectories(drive);
 
         // declare commands
         cycleToPoleAutoCommand = new R2V2_CycleToPoleAutoCommand(drive, lift, arm, wrist, gripper, coffin, false);
@@ -234,7 +234,7 @@ public class TEST_AUTO extends LinearOpMode {
 /////////////////////////////////////////////////INIT DONE, ASSIGNING APRIL TAG////////////////////////////////////////////
         switch (tagOfInterest.id) {
             case 1:
-                parkTrajectory = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.red_StackFarWaypointPos)
+                parkTrajectory = drive.trajectorySequenceBuilder(V3PO_AutoTrajectories.red_StackFarWaypointPos)
                         .setReversed(true)
 //                        .splineTo(new Vector2d(-12, 12), Math.toRadians(90))
                         //.lineToConstantHeading(new Vector2d(-36, 18))
@@ -249,14 +249,14 @@ public class TEST_AUTO extends LinearOpMode {
 //                        .setReversed(true)
 //                        .splineTo(new Vector2d(-36, 12), Math.toRadians(90))
 //                        .build();
-                parkTrajectory = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.red_StackFarWaypointPos)
+                parkTrajectory = drive.trajectorySequenceBuilder(V3PO_AutoTrajectories.red_StackFarWaypointPos)
                         .setReversed(true)
                         .lineToConstantHeading(new Vector2d(36, 18))
                         .build();
                 break;
 
             case 3:
-                parkTrajectory = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.red_StackFarWaypointPos)
+                parkTrajectory = drive.trajectorySequenceBuilder(V3PO_AutoTrajectories.red_StackFarWaypointPos)
                         .setReversed(true)
 //                        .splineTo(new Vector2d(-60, 12), Math.toRadians(90))
                         .lineToConstantHeading(new Vector2d(12, 18))
@@ -264,7 +264,7 @@ public class TEST_AUTO extends LinearOpMode {
                 break;
 
             default:
-                parkTrajectory = drive.trajectorySequenceBuilder(R2V2_AutoTrajectories.red_StackFarWaypointPos)
+                parkTrajectory = drive.trajectorySequenceBuilder(V3PO_AutoTrajectories.red_StackFarWaypointPos)
                         .setReversed(true)
                         .lineToConstantHeading(new Vector2d(36, 18))
 
@@ -272,7 +272,7 @@ public class TEST_AUTO extends LinearOpMode {
                 break;
         }
 
-        parkTrajectoryCommand = new R2V2_FollowTrajectoryCommand(drive, parkTrajectory);
+        parkTrajectoryCommand = new V3PO_FollowTrajectoryCommand(drive, parkTrajectory);
 /////////////////////////////////////////////////////////////TAG ASSIGNED, START AUTO LOOP/////////////////////////////////////////////////
         while (!isStopRequested() && opModeIsActive()) {
             if (tagOfInterest != null) {
